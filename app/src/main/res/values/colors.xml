@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#009454</color>
+    <color name="colorPrimaryDark">#009758</color>
+    <color name="colorAccent">#00574B</color>
+    <color name="bgColor">#F9F9F9</color>
+    <color name="Love_Red">#E41B17</color>
+    <color name="Bean_Red">#265e00</color>
+    <color name="Ruby_Red">#8f0801</color>
+    <color name="marrom">#5B0A02</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+</resources>

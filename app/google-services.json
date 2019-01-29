@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "1092336112835",
+    "firebase_url": "https://hellpme-5afb2.firebaseio.com",
+    "project_id": "hellpme-5afb2",
+    "storage_bucket": "hellpme-5afb2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1092336112835:android:6be296807bdba1ae",
+        "android_client_info": {
+          "package_name": "com.example.vincius.myapplication"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1092336112835-1ua555lcjcf1vtc9so6u7eue3b2vldsu.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.vincius.myapplication",
+            "certificate_hash": "16bc2d42e9bafc0aee0ee737f07caa4115fe6a01"
+          }
+        },
+        {
+          "client_id": "1092336112835-erfo2bacjg11ju0ngkivcmc47kqssgo8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoele9t3p5Li9e0KPbOjTnwsQanS_279A"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1092336112835-erfo2bacjg11ju0ngkivcmc47kqssgo8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

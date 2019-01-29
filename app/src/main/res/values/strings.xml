@@ -1,0 +1,33 @@
+<resources>
+    <string name="app_name">Hellp.me</string>
+    <string name="Email">Email</string>
+    <string name="Senha">Senha</string>
+    <string name="cadastrar">cadastrar</string>
+    <string name="action_settings">LOGIN</string>
+    <string name="voltar">Voltar</string>
+    <string name="Login">login</string>
+    <string name="registrar">registrar</string>
+    <string name="none" />
+    <string name="cliqueAqui">Não tem uma conta? Crie aqui!</string>
+    <string name="Enter">Entrar</string>
+    <string name="nome">Nome</string>
+    <string name="photo">Foto</string>
+    <string name="create">Criar</string>
+    <string name="privates">Monitoria Privada</string>
+    <string name="publics">Monitoria Publica</string>
+    <string name="forgotpass">Esqueceu a senha?</string>
+    <string name="alterarsenha">Alterar senha</string>
+    <string name="orientationpass">Adicione o seu email de cadastro</string>
+    <string name="send">Enviar</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string-array name="titles_bar">
+        <item>MONITORIA</item>
+        <item>PESQUISA</item>
+        <item>PERFIL</item>
+    </string-array>
+
+</resources>
