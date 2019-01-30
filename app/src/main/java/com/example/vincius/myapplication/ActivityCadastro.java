@@ -16,6 +16,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.algolia.instantsearch.ui.helpers.InstantSearch;
+import com.algolia.search.saas.Client;
+import com.algolia.search.saas.Index;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -28,16 +31,26 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 
 public class ActivityCadastro extends AppCompatActivity {
 
+    private static final String YourApplicationID = "BD1URWQ8QG";
+    private static final String YourAPIKey = "f0fb0c31b0a88e819bd76c42fae84f55";
     private EditText editEmail, editSenha, editUsername;
     private Button btnCadastrar, btnSelectPhoto;
     private ImageView img_photo;
     private Uri selectedUri;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -135,7 +148,26 @@ public class ActivityCadastro extends AppCompatActivity {
                                String profileUrl = uri.toString();
                                int pontos = 0;
 
+
+
                                User user =  new User(uid,username,profileUrl,pontos);
+
+
+
+                               Client client = new Client(YourApplicationID, YourAPIKey);
+                               Index index = client.getIndex("users");
+                               Map<String, Object> usermap = new HashMap<>();
+                               usermap.put("username", username);
+                               usermap.put("uid", uid);
+                               usermap.put("profileUrl", profileUrl);
+
+                                List<JSONObject> userList = new ArrayList<>();
+                                userList.add(new JSONObject(usermap));
+                               index.addObjectsAsync(new JSONArray(userList), null);
+
+
+
+
 
                                FirebaseFirestore.getInstance().collection("users")
                                         .add(user)
