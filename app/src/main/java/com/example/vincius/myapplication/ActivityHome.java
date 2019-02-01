@@ -1,29 +1,18 @@
 package com.example.vincius.myapplication;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
-import android.widget.ListPopupWindow;
-import android.widget.Toast;
-import android.widget.Toolbar;
-
 import com.example.vincius.myapplication.Adapters.FragmentAdapter;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 
-import static android.widget.Toast.*;
 
 public class ActivityHome extends AppCompatActivity {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;
-    //private Button btn_create_group;
+    private ViewPager viewPager;;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +36,6 @@ public class ActivityHome extends AppCompatActivity {
     private void startComponents() {
         viewPager = (ViewPager) findViewById(R.id.viewpager);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        //btn_create_group = (Button) findViewById(R.id.btn_creeate);
         viewPager.setAdapter(new FragmentAdapter(getSupportFragmentManager(), getResources().getStringArray(R.array.titles_bar)));
         tabLayout.setupWithViewPager(viewPager);
     }
