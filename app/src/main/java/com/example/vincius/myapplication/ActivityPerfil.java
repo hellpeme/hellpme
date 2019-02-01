@@ -1,7 +1,6 @@
 package com.example.vincius.myapplication;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
@@ -20,7 +19,7 @@ public class ActivityPerfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        imgPerfilPhoto = findViewById(R.id.imgPerfilPhoto);
+        imgPerfilPhoto = findViewById(R.id.imagePerfil);
 
         if(getIntent().hasExtra("users")) {
             try {
@@ -42,6 +41,6 @@ public class ActivityPerfil extends AppCompatActivity {
     }
 
     private void startComponents() {
-        imgPerfilPhoto = findViewById(R.id.imgPerfilPhoto);
+        imgPerfilPhoto = findViewById(R.id.imagePerfil);
     }
 }
