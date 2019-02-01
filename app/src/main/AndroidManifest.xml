@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.vincius.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
+        android:debuggable="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:ignore="HardcodedDebugMode">
         <activity
             android:name=".ActivityLogin"
             android:label="@string/app_name">
@@ -20,24 +23,25 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:label="Cadastro"
-            android:name=".ActivityCadastro" >
+        <activity
+            android:name=".ActivityCadastro"
+            android:label="Cadastro">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityLogin"/>
+                android:value=".ActivityLogin" />
         </activity>
         <activity android:name=".ActivityPerfil" />
-        <activity android:name=".ActivityHome"
-            android:theme = "@style/AppTheme.NoActionBar"
-            />
-
-        <activity android:label="@string/alterarsenha"
-            android:name=".ActivityResetSenha">
+        <activity
+            android:name=".ActivityHome"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ActivityResetSenha"
+            android:label="@string/alterarsenha">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".ActivityLogin"/>
-
+                android:value=".ActivityLogin" />
         </activity>
+        <activity android:name=".ActivityMonitoria"></activity>
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ import com.algolia.instantsearch.core.helpers.Searcher;
 import com.algolia.instantsearch.ui.helpers.InstantSearch;
 import com.algolia.instantsearch.ui.utils.ItemClickSupport;
 import com.algolia.instantsearch.ui.views.Hits;
+import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
@@ -57,7 +58,7 @@ public class FragmentPesquisa extends Fragment {
             public void onItemClick(RecyclerView recyclerView, int position, View v) {
                 JSONObject hit = hits.get(position);
 
-                Intent intent = new Intent(getContext(), ActivityPerfil.class);
+                Intent intent = new Intent(getContext(), ActivityMonitoria.class);
                 intent.putExtra("users", hit.toString());
                 startActivity(intent);
 
