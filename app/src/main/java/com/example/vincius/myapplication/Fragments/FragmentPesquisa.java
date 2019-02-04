@@ -60,6 +60,7 @@ public class FragmentPesquisa extends Fragment {
 
                 Intent intent = new Intent(getContext(), ActivityMonitoria.class);
                 intent.putExtra("users", hit.toString());
+
                 startActivity(intent);
 
             }

@@ -170,11 +170,11 @@ public class ActivityCadastro extends AppCompatActivity {
 
 
                                FirebaseFirestore.getInstance().collection("users")
-                                        .add(user)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                       .document(uid)
+                                        .set(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                Log.i("teste", documentReference.getId());
+                                            public void onSuccess(Void aVoid) {
                                                 Intent intent = new Intent(ActivityCadastro.this, ActivityHome.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);

@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/ImgChat"
         android:layout_width="50dp"
         android:layout_height="50dp"
@@ -19,16 +19,14 @@
 
     <TextView
         android:id="@+id/txtChat"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:maxWidth="240dp"
         android:padding="8dp"
-        android:text="TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView TextView "
+        android:text="TextView  "
         app:layout_constraintEnd_toStartOf="@+id/ImgChat"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>
