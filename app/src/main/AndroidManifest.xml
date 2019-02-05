@@ -27,7 +27,7 @@
                 android:value=".ActivityLogin"/>
         </activity>
         <activity android:name=".ActivityPerfil" />
-        <activity android:name=".ActivityHome"
+        <activity android:name=".ActivityFragmentsNavigation"
             android:theme = "@style/AppTheme.NoActionBar"
             />
 

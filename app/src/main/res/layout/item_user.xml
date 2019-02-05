@@ -7,7 +7,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <ImageView
+        <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/ImageView"
             android:layout_width="79dp"
             android:layout_height="64dp"
@@ -18,7 +18,7 @@
             android:layout_marginEnd="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginBottom="8dp"
-            android:scaleType="fitCenter"
+            android:scaleType="centerCrop"
             algolia:attribute='@{"profileUrl"}'
             algolia:layout_constraintBottom_toBottomOf="parent"
             algolia:layout_constraintEnd_toEndOf="parent"
