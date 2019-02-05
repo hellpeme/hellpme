@@ -27,6 +27,8 @@
         android:maxWidth="240dp"
         android:padding="8dp"
         android:text="TextView  "
+        android:textSize="16dp"
+        android:background="@drawable/bordas_arredondadas_textview"
         app:layout_constraintStart_toEndOf="@+id/ImgChat"
         app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

@@ -6,6 +6,16 @@ public class Message {
     private long timestamp;
     private String fromId;
     private String toId;
+    private String imgPhoto;
+
+    public String getImgPhoto() {
+        return imgPhoto;
+    }
+
+    public void setImgPhoto(String imgPhoto) {
+        this.imgPhoto = imgPhoto;
+    }
+
 
     public void setText(String text) {
         this.text = text;

@@ -11,4 +11,5 @@
     <color name="white">#ffffff</color>
     <color name="transparent">#00000000</color>
     <color name="grey">#e0e0e0</color>
+    <color name="fromChat">#9ACD32</color>
 </resources>

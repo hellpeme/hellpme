@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -79,6 +80,14 @@ public class ActivityLogin extends AppCompatActivity {
                });
     }
 
+    private void verficarAuth() {
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            Intent intent = new Intent(ActivityLogin.this, ActivityHome.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
+
     private void alert(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
     }
@@ -89,5 +98,6 @@ public class ActivityLogin extends AppCompatActivity {
             btlogin = findViewById(R.id.btlogin);
             textRegister = findViewById(R.id.textRegister);
             textForgotPass = findViewById(R.id.textForgotPass);
+            verficarAuth();
     }
 }
