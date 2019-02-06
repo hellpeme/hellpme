@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -78,6 +79,7 @@ public class ActivityLogin extends AppCompatActivity {
                    }
                });
     }
+
 
     private void alert(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

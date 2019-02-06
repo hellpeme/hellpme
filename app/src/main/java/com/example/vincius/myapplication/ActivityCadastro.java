@@ -145,13 +145,11 @@ public class ActivityCadastro extends AppCompatActivity {
                                String uid = FirebaseAuth.getInstance().getUid();
                                String username = editUsername.getText().toString();
                                String profileUrl = uri.toString();
-                               int pontos = 0;
 
 
 
-                               User user =  new User(uid,username,profileUrl,pontos);
 
-
+                               User user =  new User(uid,username,profileUrl);
 
                                Client client = new Client(YourApplicationID, YourAPIKey);
                                Index index = client.getIndex("users");
@@ -165,16 +163,16 @@ public class ActivityCadastro extends AppCompatActivity {
                                index.addObjectsAsync(new JSONArray(userList), null);
 
 
-
-
-
                                FirebaseFirestore.getInstance().collection("users")
-                                        .add(user)
-                                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                                       .document(uid)
+                                        .set(user)
+                                        .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
+
                                             public void onSuccess(DocumentReference documentReference) {
                                                 Log.i("teste", documentReference.getId());
                                                 Intent intent = new Intent(ActivityCadastro.this, ActivityFragmentsNavigation.class);
+
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
                                                 alert("cadastrado com sucesso!");
