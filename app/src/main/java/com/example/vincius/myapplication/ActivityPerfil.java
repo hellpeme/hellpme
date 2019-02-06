@@ -27,21 +27,17 @@ public class ActivityPerfil extends AppCompatActivity {
                 JSONObject mJsonObject = new JSONObject(getIntent().getStringExtra("users"));
                 String username = (String) mJsonObject.get("username");
                 String imgPhoto = (String) mJsonObject.get("profileUrl");
-                getSupportActionBar().setTitle(username);
+                getSupportActionBar().setTitle(username); //titulo da act
 
                 Picasso.get()
                         .load(imgPhoto)
                         .into(imgPerfilPhoto);
 
+
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
         }
-        startComponents();
-
-    }
-
-    private void startComponents() {
-        imgPerfilPhoto = findViewById(R.id.imgPerfilPhoto);
     }
 }

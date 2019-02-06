@@ -9,23 +9,24 @@ import com.example.vincius.myapplication.Adapters.FragmentAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 
 
-public class ActivityHome extends AppCompatActivity {
+public class ActivityFragmentsNavigation extends AppCompatActivity {
 
     private TabLayout tabLayout;
-    private ViewPager viewPager;;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.activity_fragmentsnavigation);
         verficarAuth();
         startComponents();
+
 
     }
 
     private void verficarAuth() {
         if (FirebaseAuth.getInstance().getUid() == null) {
-            Intent intent = new Intent(ActivityHome.this, ActivityLogin.class);
+            Intent intent = new Intent(ActivityFragmentsNavigation.this, ActivityLogin.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
         }

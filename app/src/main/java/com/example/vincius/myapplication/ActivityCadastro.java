@@ -16,7 +16,6 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.algolia.instantsearch.ui.helpers.InstantSearch;
 import com.algolia.search.saas.Client;
 import com.algolia.search.saas.Index;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -169,8 +168,11 @@ public class ActivityCadastro extends AppCompatActivity {
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
-                                            public void onSuccess(Void aVoid) {
-                                                Intent intent = new Intent(ActivityCadastro.this, ActivityHome.class);
+
+                                            public void onSuccess(DocumentReference documentReference) {
+                                                Log.i("teste", documentReference.getId());
+                                                Intent intent = new Intent(ActivityCadastro.this, ActivityFragmentsNavigation.class);
+
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
                                                 alert("cadastrado com sucesso!");

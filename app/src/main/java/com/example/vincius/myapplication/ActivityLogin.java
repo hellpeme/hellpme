@@ -69,7 +69,7 @@ public class ActivityLogin extends AppCompatActivity {
                    @Override
                    public void onComplete(@NonNull Task<AuthResult> task) {
                        if(task.isSuccessful()){
-                           Intent i = new Intent(ActivityLogin.this, ActivityHome.class);
+                           Intent i = new Intent(ActivityLogin.this, ActivityFragmentsNavigation.class);
                            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                            startActivity(i);
                            alert("Login realizado com sucesso!");
