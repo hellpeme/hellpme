@@ -47,7 +47,6 @@ public class ActivityMonitoria extends AppCompatActivity {
     private EditText editChat;
     private String Uuid;
     private User me;
-    private String imgUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,7 +138,6 @@ public class ActivityMonitoria extends AppCompatActivity {
         message.setTimestamp(timestamp);
         message.setText(text);
 
-        imgUsuario = fromId;
 
 
         //
@@ -210,14 +208,13 @@ public class ActivityMonitoria extends AppCompatActivity {
             final ImageView imgChat = viewHolder.itemView.findViewById(R.id.ImgChat);
             txtChat.setText(message.getText());
 
-
-            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(imgUsuario);
+            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(message.getFromId());
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot doc = task.getResult();
-                        if(doc!= null) {
+                        if(doc!= null ) {
                             Picasso.get()
                                     .load(doc.getString("profileUrl"))
                                     .into(imgChat);
