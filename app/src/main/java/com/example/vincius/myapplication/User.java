@@ -14,11 +14,10 @@ public class User implements Parcelable {
 
     }
 
-    public User(String uid, String username, String profileUrl, int pontos) {
+    public User(String uid, String username, String profileUrl) {
         this.uid = uid;
         this.username = username;
         this.profileUrl = profileUrl;
-        this.pontos = pontos;
     }
 
     protected User(Parcel in) {

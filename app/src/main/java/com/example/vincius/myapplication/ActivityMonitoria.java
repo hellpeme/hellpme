@@ -47,6 +47,7 @@ public class ActivityMonitoria extends AppCompatActivity {
     private EditText editChat;
     private String Uuid;
     private User me;
+    private String imgUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,33 +132,21 @@ public class ActivityMonitoria extends AppCompatActivity {
         editChat.setText(null);
         String toId = Uuid;
         long timestamp = System.currentTimeMillis();
-        String fromId = FirebaseAuth.getInstance().getUid();
+        String fromId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Message message = new Message();
         message.setFromId(fromId);
         message.setToId(toId);
         message.setTimestamp(timestamp);
         message.setText(text);
 
-
-        DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(fromId);
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot doc = task.getResult();
-                    String imgUsuario = (String) doc.getString("profileUrl");
-                    message.setImgPhoto(imgUsuario);
-                    alert(imgUsuario);
-                }
-            }
-        });
-
+        imgUsuario = fromId;
 
 
         //
 
 
         if(!message.getText().isEmpty()){
+            getDocumentsinFirebase(message,fromId);
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(fromId)
                     .collection(toId)
@@ -196,6 +185,10 @@ public class ActivityMonitoria extends AppCompatActivity {
 
     }
 
+    private void getDocumentsinFirebase(final Message message, String fromId) {
+
+    }
+
     private void alert(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT);
     }
@@ -214,12 +207,28 @@ public class ActivityMonitoria extends AppCompatActivity {
         @Override
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
-            ImageView imgChat = viewHolder.itemView.findViewById(R.id.ImgChat);
+            final ImageView imgChat = viewHolder.itemView.findViewById(R.id.ImgChat);
             txtChat.setText(message.getText());
 
-            Picasso.get()
-                    .load(message.getImgPhoto())
-                    .into(imgChat);
+
+            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(imgUsuario);
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot doc = task.getResult();
+                        if(doc!= null) {
+                            Picasso.get()
+                                    .load(doc.getString("profileUrl"))
+                                    .into(imgChat);
+                            Log.i("teste", "este é o link da imagem  "+ message.getPhotoUrl());
+
+                        }
+                    }
+                }
+            });
+
+
         }
 
         @Override

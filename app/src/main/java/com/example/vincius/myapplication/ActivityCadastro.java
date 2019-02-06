@@ -146,13 +146,11 @@ public class ActivityCadastro extends AppCompatActivity {
                                String uid = FirebaseAuth.getInstance().getUid();
                                String username = editUsername.getText().toString();
                                String profileUrl = uri.toString();
-                               int pontos = 0;
 
 
 
-                               User user =  new User(uid,username,profileUrl,pontos);
 
-
+                               User user =  new User(uid,username,profileUrl);
 
                                Client client = new Client(YourApplicationID, YourAPIKey);
                                Index index = client.getIndex("users");
@@ -164,9 +162,6 @@ public class ActivityCadastro extends AppCompatActivity {
                                 List<JSONObject> userList = new ArrayList<>();
                                 userList.add(new JSONObject(usermap));
                                index.addObjectsAsync(new JSONArray(userList), null);
-
-
-
 
 
                                FirebaseFirestore.getInstance().collection("users")
