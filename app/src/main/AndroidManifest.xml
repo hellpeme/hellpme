@@ -31,18 +31,18 @@
                 android:value=".ActivityLogin" />
         </activity>
         <activity android:name=".ActivityPerfil" />
-
-        <activity android:name=".ActivityFragmentsNavigation"
-            android:theme = "@style/AppTheme.NoActionBar"
-            />
-
-        <activity android:label="@string/alterarsenha"
-            android:name=".ActivityResetSenha">
+        <activity
+            android:name=".ActivityFragmentsNavigation"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".ActivityResetSenha"
+            android:label="@string/alterarsenha">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityLogin" />
         </activity>
-        <activity android:name=".ActivityMonitoria"></activity>
+        <activity android:name=".ActivityMonitoria" />
+        <activity android:name=".ActivityPrivado"></activity>
     </application>
 
 </manifest>
