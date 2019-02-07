@@ -28,7 +28,7 @@ public class ActivityLogin extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         startComponents();
-
+        verficarAuth();
 
         btlogin.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,6 +80,13 @@ public class ActivityLogin extends AppCompatActivity {
                });
     }
 
+    private void verficarAuth() {
+        if (FirebaseAuth.getInstance().getUid() != null) {
+            Intent intent = new Intent(ActivityLogin.this, ActivityFragmentsNavigation.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+    }
 
     private void alert(String msg) {
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();

@@ -15,7 +15,8 @@
         android:layout_marginTop="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:background="@drawable/corner"/>
 
     <TextView
         android:id="@+id/txtChat"
@@ -26,9 +27,9 @@
         android:layout_marginTop="8dp"
         android:maxWidth="240dp"
         android:padding="8dp"
-        android:text="TextView  "
+        android:text="TextView"
         android:textSize="16dp"
-        android:background="@drawable/bordas_arredondadas_textview"
+        android:background="@drawable/rounded_rect"
         app:layout_constraintStart_toEndOf="@+id/ImgChat"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"/>
 </android.support.constraint.ConstraintLayout>

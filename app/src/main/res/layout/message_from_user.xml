@@ -15,7 +15,8 @@
         android:layout_marginRight="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
+        tools:srcCompat="@tools:sample/avatars"
+        android:background="@drawable/corner2"/>
 
     <TextView
         android:id="@+id/txtChat"
@@ -24,7 +25,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:background="@drawable/bordas_arredondadas_chat_from_user"
+        android:background="@drawable/rounded_rect2"
         android:maxWidth="240dp"
         android:minWidth="100dp"
         android:padding="8dp"

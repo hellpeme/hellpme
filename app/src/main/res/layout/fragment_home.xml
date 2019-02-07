@@ -15,14 +15,13 @@
         android:layout_height="285dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="288dp"
+        android:layout_marginTop="28dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:clickable="true"
         android:focusable="true"
         android:src="@android:drawable/ic_input_add"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:menu_colorNormal="@color/colorPrimary"
+        fab:fab_colorNormal="@color/colorPrimary"
         fab:layout_constraintEnd_toEndOf="parent"
         fab:layout_constraintHorizontal_bias="0.88"
         fab:layout_constraintStart_toStartOf="parent"
@@ -30,7 +29,7 @@
         fab:menu_backgroundColor="@color/transparent"
         fab:menu_fab_label=""
         fab:menu_labels_showShadow="true"
-        fab:menu_openDirection="up">
+        fab:menu_openDirection="down">
 
         <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabMonitoriaPrivada"
