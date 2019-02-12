@@ -47,13 +47,21 @@
     <Button
         android:id="@+id/btlogin"
         android:layout_width="0dp"
-        android:layout_height="50dp"
-        android:background="@drawable/bordas_arredondadas_button"
-        android:textColor="@color/white"
-        android:layout_marginTop="32dp"
+        android:layout_height="59dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginRight="24dp"
         android:text="@string/Enter"
         android:textStyle="bold"
+        style="@style/AlertDialog.AppCompat.Light"
+        android:textColor="@color/white"
+        android:background="@drawable/button_background"
+        android:outlineAmbientShadowColor="@color/Love_Red"
         app:layout_constraintEnd_toEndOf="@+id/viewEditSenha"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="@+id/viewEditSenha"
         app:layout_constraintTop_toBottomOf="@+id/viewEditSenha" />
 
@@ -61,25 +69,47 @@
         android:id="@+id/textRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         android:text="@string/cliqueAqui"
         android:textColor="@color/Bean_Red"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/btlogin"
+        app:layout_constraintHorizontal_bias="0.518"
         app:layout_constraintStart_toStartOf="@+id/btlogin"
         app:layout_constraintTop_toBottomOf="@+id/btlogin" />
 
     <TextView
         android:id="@+id/textForgotPass"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
+        android:layout_marginTop="16dp"
         android:text="@string/forgotpass"
         android:textColor="@color/Bean_Red"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textRegister"
-        app:layout_constraintVertical_bias="0.068" />
+        app:layout_constraintTop_toBottomOf="@+id/textRegister" />
+
+    <Button
+        android:id="@+id/login_button"
+        android:layout_width="0dp"
+        android:layout_height="59dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="48dp"
+        android:background="@color/com_facebook_blue"
+        android:text="@string/com_facebook_loginview_log_in_button_continue"
+        android:textColor="@color/white"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textForgotPass"
+        app:layout_constraintVertical_bias="0.461" />
 
 </android.support.constraint.ConstraintLayout>

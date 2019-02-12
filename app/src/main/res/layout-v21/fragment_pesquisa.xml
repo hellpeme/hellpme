@@ -8,7 +8,7 @@
     tools:context=".ActivityFragmentsNavigation">
 
     <android.support.constraint.ConstraintLayout
-
+        android:background="@color/bgColor"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -31,6 +31,9 @@
 
         <com.algolia.instantsearch.ui.views.SearchBox
             android:id="@+id/searchBox"
+            android:background="@color/bgColor"
+            android:outlineSpotShadowColor="@color/Black"
+            android:outlineAmbientShadowColor="@color/Black"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"

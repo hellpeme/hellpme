@@ -20,19 +20,19 @@
     <TextView
         android:id="@+id/txtChat"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_marginEnd="8dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="2dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginRight="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="10dp"
         android:background="@drawable/rounded_rect2"
-        android:maxWidth="240dp"
+        android:maxWidth="300dp"
         android:minWidth="100dp"
         android:padding="8dp"
-        android:paddingBottom="10dp"
-        android:text="TextView  "
+        android:paddingBottom="15dp"
+        android:text="TextView"
         android:textSize="15dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/ImgChat"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

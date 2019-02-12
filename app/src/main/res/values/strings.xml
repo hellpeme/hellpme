@@ -19,11 +19,15 @@
     <string name="alterarsenha">Alterar senha</string>
     <string name="orientationpass">Adicione o seu email de cadastro</string>
     <string name="send">Enviar</string>
+    <string name="facebook_app_id">417240049013442</string>
+    <string name="fb_login_protocol_scheme">fb417240049013442</string>
+    <string name="app_id">417240049013442</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="btn_chat">Enviar</string>
-    <string name="edit_chat">Digite sua mensagem aqui...</string>
+    <string name="edit_chat">Digite aqui...</string>
 
 
     <string-array name="titles_bar">

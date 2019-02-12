@@ -3,8 +3,8 @@
     <color name="colorPrimary">#009454</color>
     <color name="colorPrimaryDark">#009758</color>
     <color name="colorAccent">#00574B</color>
-    <color name="bgColor">#F9F9F9</color>
-    <color name="Love_Red">#E41B17</color>
+    <color name="bgColor">#F0F8FF</color>
+    <color name="Love_Red">#E6E6FA</color>
     <color name="Bean_Red">#265e00</color>
     <color name="Ruby_Red">#8f0801</color>
     <color name="marrom">#5B0A02</color>
@@ -12,4 +12,6 @@
     <color name="transparent">#00000000</color>
     <color name="grey">#e0e0e0</color>
     <color name="fromChat">#9ACD32</color>
+    <color name="Black">#000000</color>
+
 </resources>

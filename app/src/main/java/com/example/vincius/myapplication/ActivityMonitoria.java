@@ -3,6 +3,8 @@ package com.example.vincius.myapplication;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -11,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -42,40 +45,36 @@ import java.util.List;
 public class ActivityMonitoria extends AppCompatActivity {
 
     private GroupAdapter adapter;
-    private String username;
-    private String imgPhoto;
+    private String username, Uuid;
+    private ImageButton btnChat;
     private EditText editChat;
-    private String Uuid;
     private User me;
+
+    ConstraintSet set = new ConstraintSet();
+    ConstraintLayout layout;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoria);
+
         RecyclerView rv = findViewById(R.id.recyclerChat);
 
-        Button btnChat = (Button) findViewById(R.id.btnChat);
+        btnChat =  findViewById(R.id.btnChat);
         editChat = findViewById(R.id.editChat);
+        layout = findViewById(R.id.layout);
+        set.clone(layout);
+        fetchAtributesfromAlgolia();
+
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 sendMessage();
-
             }
         });
 
-        if(getIntent().hasExtra("users")) {
-            try {
-                JSONObject mJsonObject = new JSONObject(getIntent().getStringExtra("users"));
-                username = (String) mJsonObject.get("username");
-                getSupportActionBar().setTitle(username);
-                imgPhoto = (String) mJsonObject.get("profileUrl");
-                Uuid = (String) mJsonObject.get("uid");
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
 
         adapter = new GroupAdapter();
         rv.setLayoutManager( new LinearLayoutManager(  this));
@@ -92,6 +91,19 @@ public class ActivityMonitoria extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void fetchAtributesfromAlgolia() {
+        if(getIntent().hasExtra("users")) {
+            try {
+                JSONObject mJsonObject = new JSONObject(getIntent().getStringExtra("users"));
+                username = (String) mJsonObject.get("username");
+                Uuid = (String) mJsonObject.get("uid");
+                getSupportActionBar().setTitle(username);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void fetchMessage() {
@@ -113,6 +125,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                                     if (doc.getType() == DocumentChange.Type.ADDED){
                                         Message message = doc.getDocument().toObject(Message.class);
                                         adapter.add(new MessageItem(message));
+                                        set.clear(R.id.txtChat, ConstraintSet.TOP);
                                     }
                                 }
                             }
@@ -142,9 +155,8 @@ public class ActivityMonitoria extends AppCompatActivity {
 
         //
 
-
         if(!message.getText().isEmpty()){
-            getDocumentsinFirebase(message,fromId);
+
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(fromId)
                     .collection(toId)
@@ -181,14 +193,6 @@ public class ActivityMonitoria extends AppCompatActivity {
         }
 
 
-    }
-
-    private void getDocumentsinFirebase(final Message message, String fromId) {
-
-    }
-
-    private void alert(String msg) {
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT);
     }
 
     private class MessageItem extends Item<ViewHolder> {
