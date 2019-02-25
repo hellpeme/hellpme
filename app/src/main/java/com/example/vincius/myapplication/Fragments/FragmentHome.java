@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPrivado;
+import com.example.vincius.myapplication.ActivityPublico;
 import com.example.vincius.myapplication.R;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
@@ -45,9 +46,10 @@ public class FragmentHome extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         FloatingActionButton btnPrivate = view.findViewById(R.id.fabMonitoriaPrivada);
-
+        FloatingActionButton btnPublico = view.findViewById(R.id.fabMonitoriaPublica);
         RecyclerView rv = view.findViewById(R.id.lastMessages);
         adapter = new GroupAdapter();
+
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
         fetchLastMessages();
@@ -72,6 +74,15 @@ public class FragmentHome extends Fragment {
             }
         });
 
+        btnPrivate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ActivityPublico.class);
+
+                startActivity(intent);
+
+            }
+        });
 
     }
 
