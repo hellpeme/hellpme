@@ -1,6 +1,38 @@
 package com.example.vincius.myapplication.Fragments;
 
-public class Contact {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Contact implements Parcelable {
+    private String uid;
+    private String username;
+    private long timestamp;
+    private String photoUrl;
+    private String lastMessage;
+
+    public Contact(Parcel in) {
+        uid = in.readString();
+        username = in.readString();
+        timestamp = in.readLong();
+        photoUrl = in.readString();
+        lastMessage = in.readString();
+    }
+
+    public static final Creator<Contact> CREATOR = new Creator<Contact>() {
+        @Override
+        public Contact createFromParcel(Parcel in) {
+            return new Contact(in);
+        }
+
+        @Override
+        public Contact[] newArray(int size) {
+            return new Contact[size];
+        }
+    };
+
+    public Contact() {
+
+    }
 
     public String getUid() {
         return uid;
@@ -18,11 +50,11 @@ public class Contact {
         this.username = username;
     }
 
-    public String getTimestamp() {
+    public long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -34,8 +66,25 @@ public class Contact {
         this.photoUrl = photoUrl;
     }
 
-    private String uid;
-    private String username;
-    private String timestamp;
-    private String photoUrl;
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public void setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(uid);
+        dest.writeString(username);
+        dest.writeLong(timestamp);
+        dest.writeString(photoUrl);
+        dest.writeString(lastMessage);
+    }
 }

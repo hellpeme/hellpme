@@ -1,5 +1,4 @@
 package com.example.vincius.myapplication;
-
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -14,41 +13,31 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
-
-import com.algolia.search.saas.Client;
-import com.algolia.search.saas.Index;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 
 
 public class ActivityCadastro extends AppCompatActivity {
 
-    private static final String YourApplicationID = "BD1URWQ8QG";
-    private static final String YourAPIKey = "f0fb0c31b0a88e819bd76c42fae84f55";
     private EditText editEmail, editSenha, editUsername;
+    private TextView txtloading;
     private Button btnCadastrar, btnSelectPhoto;
     private ImageView img_photo;
     private Uri selectedUri;
+    private ProgressBar loading;
 
 
     @Override
@@ -71,6 +60,8 @@ public class ActivityCadastro extends AppCompatActivity {
                 String senha = editSenha.getText().toString();
                 String username = editUsername.getText().toString();
                 criarUser(email, senha, username);
+                loading.setVisibility(View.GONE);
+                txtloading.setVisibility(View.GONE);
             }
         });
 
@@ -79,22 +70,21 @@ public class ActivityCadastro extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(resultCode == RESULT_OK) {
             if (data.getData() != null) {
                 selectedUri = data.getData();
-        }else{
-            finish();
-        }
-            Bitmap bitmap = null;
-                try {
-                    bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedUri);
-                    img_photo.setImageDrawable(new BitmapDrawable(bitmap));
-                    btnSelectPhoto.setAlpha(0);
-                } catch (IOException e) {
-                    finish();
-                }
+            }else{
+                finish();
             }
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedUri);
+                img_photo.setImageDrawable(new BitmapDrawable(bitmap));
+                btnSelectPhoto.setAlpha(0);
+            } catch (IOException e) {
+                finish();
+            }
+        }
         }
 
     private void selecionarFoto() {
@@ -116,18 +106,34 @@ public class ActivityCadastro extends AppCompatActivity {
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
+                        txtloading.setText("Analisando o seu IRA");
+                        txtloading.setVisibility(View.VISIBLE);
+                        loading.setVisibility(View.VISIBLE);
                         if (task.isSuccessful()){
                             Log.i("teste", task.getResult().getUser().getUid());
                             salvarUserInFirebase();
+                            sendEmail();
                         }
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
+                        alert("Este email não é válido.");
                         Log.i("teste", e.getMessage());
                     }
                 });
+    }
+
+    private void sendEmail() {
+        FirebaseAuth.getInstance().getCurrentUser().sendEmailVerification().addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Log.i("teste", "email send");
+                }
+            }
+        });
     }
 
     private void salvarUserInFirebase() {
@@ -140,36 +146,21 @@ public class ActivityCadastro extends AppCompatActivity {
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
+                                txtloading.setText("Contando Reprovações.");
                                 Log.i("teste", uri.toString());
-
                                String uid = FirebaseAuth.getInstance().getUid();
                                String username = editUsername.getText().toString();
                                String profileUrl = uri.toString();
 
-
-
-
                                User user =  new User(uid,username,profileUrl);
-
-                               Client client = new Client(YourApplicationID, YourAPIKey);
-                               Index index = client.getIndex("users");
-                               Map<String, Object> usermap = new HashMap<>();
-                               usermap.put("username", username);
-                               usermap.put("uid", uid);
-                               usermap.put("profileUrl", profileUrl);
-
-                                List<JSONObject> userList = new ArrayList<>();
-                                userList.add(new JSONObject(usermap));
-                               index.addObjectsAsync(new JSONArray(userList), null);
-
-
                                FirebaseFirestore.getInstance().collection("users")
                                        .document(uid)
                                         .set(user)
                                         .addOnSuccessListener(new OnSuccessListener<Void>() {
                                             @Override
                                             public void onSuccess(Void aVoid) {
-                                                Intent intent = new Intent(ActivityCadastro.this, ActivityFragmentsNavigation.class);
+                                                txtloading.setText("Cadastrando a conta.");
+                                                Intent intent = new Intent(ActivityCadastro.this, ActivityLogin.class);
                                                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 startActivity(intent);
                                                 alert("cadastrado com sucesso!");
@@ -195,13 +186,16 @@ public class ActivityCadastro extends AppCompatActivity {
     }
 
 
-    private void alert(String menssagem){
-        Toast.makeText(ActivityCadastro.this,menssagem,Toast.LENGTH_SHORT).show();
+    private void alert(String msg){
+        Toast.makeText(ActivityCadastro.this,msg,Toast.LENGTH_SHORT).show();
 
     }
 
 
     private void startComponents() {
+        txtloading = findViewById(R.id.txtLoading);
+        loading = findViewById(R.id.progressBar);
+        loading.setVisibility(View.INVISIBLE);
         editUsername = findViewById(R.id.viewEditUsername2);
         editEmail = findViewById(R.id.viewEditEmail2);
         editSenha = findViewById(R.id.viewEditSenha2);

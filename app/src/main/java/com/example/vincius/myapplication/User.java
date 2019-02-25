@@ -3,7 +3,7 @@ package com.example.vincius.myapplication;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+public class User implements Parcelable{
 
     private  String uid;
     private  String username;
@@ -54,6 +54,7 @@ public class User implements Parcelable {
     public int getPontos() {
         return pontos;
     }
+
 
     @Override
     public int describeContents() {

@@ -14,11 +14,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode">
+        <meta-data android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id"/>
         <activity
             android:name=".ActivityLogin"
-            android:label="@string/app_name">
-            <meta-data android:name="com.facebook.sdk.ApplicationId"
-                android:value="@string/facebook_app_id"/>
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -32,10 +33,16 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityLogin" />
         </activity>
-        <activity android:name=".ActivityPerfil" />
+        <activity
+            android:name=".ActivityPerfil">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ActivityFragmentsNavigation" />
+        </activity>
+
         <activity
             android:name=".ActivityFragmentsNavigation"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ActivityResetSenha"
             android:label="@string/alterarsenha">
@@ -52,7 +59,11 @@
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
 
-        <activity android:name=".ActivityPrivado"></activity>
+        <activity android:name=".ActivityPrivado">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
     </application>
 
 </manifest>

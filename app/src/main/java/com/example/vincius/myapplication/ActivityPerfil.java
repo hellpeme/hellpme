@@ -5,6 +5,7 @@ import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -14,30 +15,39 @@ import org.json.JSONObject;
 public class ActivityPerfil extends AppCompatActivity {
 
     private ImageView imgPerfilPhoto;
+    private TextView txtNameProfileUser;
+    private String username, uuid, photoUrl;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
-
-        imgPerfilPhoto = findViewById(R.id.imgPerfilPhoto);
-
-        if(getIntent().hasExtra("users")) {
-            try {
-                JSONObject mJsonObject = new JSONObject(getIntent().getStringExtra("users"));
-                String username = (String) mJsonObject.get("username");
-                String imgPhoto = (String) mJsonObject.get("profileUrl");
-                getSupportActionBar().setTitle(username); //titulo da act
-
-                Picasso.get()
-                        .load(imgPhoto)
-                        .into(imgPerfilPhoto);
+        startComponents();
+        fetchAtributes();
 
 
 
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        }
+    }
+
+
+    private void startComponents() {
+        imgPerfilPhoto = findViewById(R.id.imagePerfilPhoto);
+        txtNameProfileUser = findViewById(R.id.textNameUserPerfil);
+    }
+
+    private void fetchAtributes() {
+
+        User user = getIntent().getExtras().getParcelable("user");
+        photoUrl = user.getProfileUrl();
+        username = user.getUsername();
+        uuid = user.getUid();
+
+        //setando valores recebidos no imageview/textview
+        Picasso.get()
+                .load(photoUrl)
+                .into(imgPerfilPhoto);
+
+        txtNameProfileUser.setText(username);
+
     }
 }

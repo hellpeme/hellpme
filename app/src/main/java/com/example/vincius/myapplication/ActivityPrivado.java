@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -7,9 +8,11 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vincius.myapplication.Fragments.FragmentPesquisa;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -23,6 +26,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
+import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
 
 import java.util.List;
@@ -39,10 +43,24 @@ public class ActivityPrivado extends AppCompatActivity {
         RecyclerView rv = findViewById(R.id.recyclePrivate);
 
         adapter = new GroupAdapter();
-
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
+        adapter.setOnItemClickListener(new OnItemClickListener() {
+            @Override
+            public void onItemClick(@NonNull Item item, @NonNull View view) {
+                Intent intent = new Intent(ActivityPrivado.this, ActivityMonitoria.class);
+                UsersItem userItem = (UsersItem) item;
+                intent.putExtra("user", userItem.user);
+                startActivity(intent);
+            }
+        });
+
+
+        fetchUsers();
+    }
+
+    private void fetchUsers() {
         CollectionReference doc = FirebaseFirestore.getInstance().collection("users");
         doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
@@ -61,8 +79,6 @@ public class ActivityPrivado extends AppCompatActivity {
 
             }
         });
-
-
     }
 
 

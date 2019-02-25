@@ -1,6 +1,6 @@
 package com.example.vincius.myapplication;
 
-import android.net.Uri;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -11,13 +11,12 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.vincius.myapplication.Fragments.Contact;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -31,24 +30,22 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
 import com.squareup.picasso.Picasso;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.ViewHolder;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.List;
 
 public class ActivityMonitoria extends AppCompatActivity {
 
     private GroupAdapter adapter;
-    private String username, Uuid;
+    private String username, uuid;
     private ImageButton btnChat;
     private EditText editChat;
-    private User me;
+    private User me, user;
+    private Contact userFromContact;
 
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
@@ -65,7 +62,10 @@ public class ActivityMonitoria extends AppCompatActivity {
         editChat = findViewById(R.id.editChat);
         layout = findViewById(R.id.layout);
         set.clone(layout);
-        fetchAtributesfromAlgolia();
+        userFromContact = getIntent().getExtras().getParcelable("user2");
+        user = getIntent().getExtras().getParcelable("user");
+        fetchAtributes();
+        getSupportActionBar().setTitle(username);
 
 
         btnChat.setOnClickListener(new View.OnClickListener() {
@@ -93,23 +93,20 @@ public class ActivityMonitoria extends AppCompatActivity {
 
     }
 
-    private void fetchAtributesfromAlgolia() {
-        if(getIntent().hasExtra("users")) {
-            try {
-                JSONObject mJsonObject = new JSONObject(getIntent().getStringExtra("users"));
-                username = (String) mJsonObject.get("username");
-                Uuid = (String) mJsonObject.get("uid");
-                getSupportActionBar().setTitle(username);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+    private void fetchAtributes() {
+        if(user != null) {
+            username = user.getUsername();
+            uuid = user.getUid();
+        }else{
+            username = userFromContact.getUsername();
+            uuid = userFromContact.getUid();
         }
     }
 
     private void fetchMessage() {
         if(me != null){
             String fromId = me.getUid();
-            String toId = Uuid;
+            String toId = uuid;
 
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(fromId)
@@ -142,9 +139,9 @@ public class ActivityMonitoria extends AppCompatActivity {
 
 
         editChat.setText(null);
-        String toId = Uuid;
+        final String toId = uuid;
         long timestamp = System.currentTimeMillis();
-        String fromId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String fromId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         final Message message = new Message();
         message.setFromId(fromId);
         message.setToId(toId);
@@ -165,6 +162,20 @@ public class ActivityMonitoria extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d( "Teste",documentReference.getId());
+
+                            // create last messages
+                            Contact contact = new Contact();
+                            contact.setUid(toId);
+                            contact.setUsername(user.getUsername());
+                            contact.setPhotoUrl(user.getProfileUrl());
+                            contact.setTimestamp(message.getTimestamp());
+                            contact.setLastMessage(message.getText());
+
+                            FirebaseFirestore.getInstance().collection("/last-messages")
+                                    .document(fromId)
+                                    .collection("contacts")
+                                    .document(toId)
+                                    .set(contact);
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
@@ -181,6 +192,20 @@ public class ActivityMonitoria extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d( "Teste",documentReference.getId());
+
+                            Contact contact = new Contact();
+                            contact.setUid(toId);
+                            contact.setUsername(user.getUsername());
+                            contact.setPhotoUrl(user.getProfileUrl());
+                            contact.setTimestamp(message.getTimestamp());
+                            contact.setLastMessage(message.getText());
+
+                            FirebaseFirestore.getInstance().collection("/last-messages")
+                                    .document(toId)
+                                    .collection("contacts")
+                                    .document(fromId)
+                                    .set(contact);
+
                         }
                     })
                     .addOnFailureListener(new OnFailureListener() {
