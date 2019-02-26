@@ -74,7 +74,7 @@ public class FragmentHome extends Fragment {
             }
         });
 
-        btnPrivate.setOnClickListener(new View.OnClickListener() {
+        btnPublico.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ActivityPublico.class);
