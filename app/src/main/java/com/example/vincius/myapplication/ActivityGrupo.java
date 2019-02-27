@@ -2,6 +2,7 @@ package com.example.vincius.myapplication;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.constraint.ConstraintSet;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -45,6 +46,8 @@ public class ActivityGrupo extends AppCompatActivity {
     private String uuid;
 
     ConstraintSet set = new ConstraintSet();
+    ConstraintLayout layout;
+
 
 
     @Override
@@ -56,6 +59,10 @@ public class ActivityGrupo extends AppCompatActivity {
         btnChat =  findViewById(R.id.btnChat);
         editChat = findViewById(R.id.editChat);
 
+        set.clone(layout);
+        layout = findViewById(R.id.layout);
+
+        group = getIntent().getExtras().getParcelable("group");
         uuid = group.getGroupName().toString();
 
         btnChat.setOnClickListener(new View.OnClickListener() {

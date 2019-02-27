@@ -22,6 +22,7 @@ import com.algolia.search.saas.Index;
 import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPrivado;
+import com.example.vincius.myapplication.Group;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -67,12 +68,18 @@ public class FragmentPesquisa extends Fragment{
             @Override
             public void onItemClick(@NonNull Item item, @NonNull View view) {
                 Intent intent = new Intent(getActivity(), ActivityPerfil.class);
-                UsersItem userItem = (UsersItem) item;
-                intent.putExtra("user", userItem.user);
+                if(item instanceof UsersItem) {
+                    UsersItem userItem =(UsersItem) item;
+                    intent.putExtra("user", userItem.user);
+                } else if (item instanceof GroupItem){
+                    GroupItem groupItem = (GroupItem) item;
+                    intent.putExtra("group", groupItem.group);
+                }
                 startActivity(intent);
             }
         });
         fetchUsers();
+        fetchGroups();
     }
 
     private void fetchUsers() {
@@ -89,6 +96,26 @@ public class FragmentPesquisa extends Fragment{
                         User user = doc.toObject(User.class);
                         Log.d("Teste", "onEvent: " + user.getUsername());
                         adapter.add(new UsersItem(user));
+                    }
+                }
+
+            }
+        });
+    }
+    private void fetchGroups() {
+        CollectionReference doc = FirebaseFirestore.getInstance().collection("groups");
+        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                } else {
+                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+                    for (DocumentSnapshot doc :
+                            docs) {
+                        Group group = doc.toObject(Group.class);
+                        Log.d("Teste", "onEvent: " + group.getGroupName());
+                        adapter.add(new GroupItem(group));
                     }
                 }
 
@@ -131,6 +158,34 @@ public class FragmentPesquisa extends Fragment{
 
             Picasso.get()
                     .load(user.getProfileUrl())
+                    .into(imgUser);
+
+        }
+
+        @Override
+        public int getLayout() {
+            return R.layout.item_user;
+        }
+
+    }
+    private static class GroupItem extends Item<ViewHolder> {
+
+        private final Group group;
+
+        private GroupItem(Group group) {
+            this.group = group;
+        }
+
+        @Override
+        public void bind(@NonNull ViewHolder viewHolder, int position) {
+
+            TextView txtUser = viewHolder.itemView.findViewById(R.id.textNameUserPesquisa);
+            ImageView imgUser = viewHolder.itemView.findViewById(R.id.ImageView);
+
+            txtUser.setText(group.getGroupName());
+
+            Picasso.get()
+                    .load(group.getGroupName())
                     .into(imgUser);
 
         }

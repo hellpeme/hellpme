@@ -119,7 +119,7 @@ public class ActivityPublico extends AppCompatActivity {
                                 String uid = FirebaseAuth.getInstance().getUid();
                                 String groupname = editNome.getText().toString();
                                 String profileUrl = uri.toString();
-                                String adminUser = FirebaseAuth.getInstance().getCurrentUser().toString();
+                                String adminUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
                                 final Group group = new Group(groupname,uid,profileUrl,adminUser);
                                 FirebaseFirestore.getInstance().collection("groups")
@@ -129,7 +129,6 @@ public class ActivityPublico extends AppCompatActivity {
                                             @Override
                                             public void onSuccess(Void aVoid) {
                                                 Intent intent = new Intent(ActivityPublico.this,ActivityGrupo.class);
-                                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                                                 intent.putExtra("group", group);
                                                 startActivity(intent);
                                                 Toast.makeText( ActivityPublico.this,"Grupo Criado!",Toast.LENGTH_SHORT).show();
