@@ -12,8 +12,11 @@ public class Group implements Parcelable {
     private String profileUrl;
     private String adminUser;
 
-    private List<User> listUser;
+    //private List<User> listUser;
 
+    public Group(){
+
+    }
 
     public Group(String groupName, String uid, String profileUrl, String adminUser) {
         this.groupName = groupName;
@@ -58,13 +61,13 @@ public class Group implements Parcelable {
         return adminUser;
     }
 
-    public List<User> getListUser() {
-        return listUser;
-    }
+   // public List<User> getListUser() {
+   //     return listUser;
+    //}
 
-    public void setListUser(User user) {
-        listUser.add(user);
-    }
+    //public void setListUser(User user) {
+      //  listUser.add(user);
+    //}
 
 
     @Override

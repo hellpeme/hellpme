@@ -19,6 +19,7 @@ import com.algolia.instantsearch.ui.helpers.InstantSearch;
 import com.algolia.instantsearch.ui.utils.ItemClickSupport;
 import com.algolia.instantsearch.ui.views.Hits;
 import com.algolia.search.saas.Index;
+import com.example.vincius.myapplication.ActivityGrupo;
 import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPrivado;
@@ -67,11 +68,13 @@ public class FragmentPesquisa extends Fragment{
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull Item item, @NonNull View view) {
-                Intent intent = new Intent(getActivity(), ActivityPerfil.class);
+                Intent intent;
                 if(item instanceof UsersItem) {
+                    intent = new Intent(getActivity(), ActivityPerfil.class);
                     UsersItem userItem =(UsersItem) item;
                     intent.putExtra("user", userItem.user);
-                } else if (item instanceof GroupItem){
+                } else{
+                    intent = new Intent(getActivity(), ActivityGrupo.class);
                     GroupItem groupItem = (GroupItem) item;
                     intent.putExtra("group", groupItem.group);
                 }
@@ -179,14 +182,14 @@ public class FragmentPesquisa extends Fragment{
         @Override
         public void bind(@NonNull ViewHolder viewHolder, int position) {
 
-            TextView txtUser = viewHolder.itemView.findViewById(R.id.textNameUserPesquisa);
-            ImageView imgUser = viewHolder.itemView.findViewById(R.id.ImageView);
+            TextView txtGroup = viewHolder.itemView.findViewById(R.id.textNameUserPesquisa);
+            ImageView imgGroup = viewHolder.itemView.findViewById(R.id.ImageView);
 
-            txtUser.setText(group.getGroupName());
+            txtGroup.setText(group.getGroupName());
 
             Picasso.get()
-                    .load(group.getGroupName())
-                    .into(imgUser);
+                    .load(group.getProfileUrl())
+                    .into(imgGroup);
 
         }
 

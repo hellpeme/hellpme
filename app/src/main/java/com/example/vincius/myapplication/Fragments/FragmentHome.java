@@ -13,11 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vincius.myapplication.ActivityGrupo;
 import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPrivado;
 import com.example.vincius.myapplication.ActivityPublico;
 import com.example.vincius.myapplication.R;
+import com.example.vincius.myapplication.User;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -32,6 +34,7 @@ import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FragmentHome extends Fragment {
 
@@ -57,9 +60,18 @@ public class FragmentHome extends Fragment {
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull Item item, @NonNull View view) {
-                Intent intent = new Intent(getActivity(), ActivityMonitoria.class);
                 ContactItem contact = (ContactItem) item;
-                intent.putExtra("user2", contact.contact);
+                Intent intent;
+
+                if (FirebaseFirestore.getInstance().collection("users")
+                        .document(contact.contact.getUid()) != null){
+                    intent = new Intent(getActivity(), ActivityMonitoria.class);
+                    intent.putExtra("user2", contact.contact);
+                } else {
+                    intent = new Intent(getActivity(), ActivityGrupo.class);
+                    intent.putExtra("user2", contact.contact);
+                }
+
                 startActivity(intent);
             }
         });
@@ -143,7 +155,6 @@ public class FragmentHome extends Fragment {
             TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
             TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
-
             username.setText(contact.getUsername());
             message.setText(contact.getLastMessage());
             Picasso.get()

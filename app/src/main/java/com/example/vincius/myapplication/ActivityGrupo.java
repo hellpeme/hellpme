@@ -58,12 +58,11 @@ public class ActivityGrupo extends AppCompatActivity {
 
         btnChat =  findViewById(R.id.btnChat);
         editChat = findViewById(R.id.editChat);
-
-        set.clone(layout);
         layout = findViewById(R.id.layout);
+        set.clone(layout);
 
         group = getIntent().getExtras().getParcelable("group");
-        uuid = group.getGroupName().toString();
+        uuid = group.getUid().toString();
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +76,16 @@ public class ActivityGrupo extends AppCompatActivity {
         rv.setLayoutManager( new LinearLayoutManager(  this));
         rv.setAdapter(adapter);
 
-        
+        FirebaseFirestore.getInstance().collection("/groups")
+                .document(group.getUid())
+                .get()
+                .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
+                    @Override
+                    public void onSuccess(DocumentSnapshot documentSnapshot) {
+                        me = documentSnapshot.toObject(User.class);
+                        fetchMessage();
+                    }
+                });
     }
 
     private void fetchMessage() {
@@ -87,7 +95,7 @@ public class ActivityGrupo extends AppCompatActivity {
 
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(toId)
-                    .collection("/AllUsers")
+                    .collection("/AllMensagens")
                     .orderBy("timestamp", Query.Direction.ASCENDING)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
@@ -126,45 +134,9 @@ public class ActivityGrupo extends AppCompatActivity {
         message.setText(text);
 
 
-
-        //
-
-        if(!message.getText().isEmpty()){
-
-            FirebaseFirestore.getInstance().collection("/conversas")
-                    .document(fromId)
-                    .collection(toId)
-                    .add(message)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d( "Teste",documentReference.getId());
-
-                            // create last messages
-                            Contact contact = new Contact();
-                            contact.setUid(toId);
-                            contact.setUsername(group.getGroupName());
-                            contact.setPhotoUrl(group.getProfileUrl());
-                            contact.setTimestamp(message.getTimestamp());
-                            contact.setLastMessage(message.getText());
-
-                            FirebaseFirestore.getInstance().collection("/last-messages")
-                                    .document(fromId)
-                                    .collection("contacts")
-                                    .document(toId)
-                                    .set(contact);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("Teste", e.getMessage());
-                        }
-                    });
-
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(toId)
-                    .collection("/AllUsers")
+                    .collection("/AllMensagens")
                     .add(message)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
@@ -190,8 +162,6 @@ public class ActivityGrupo extends AppCompatActivity {
                             Log.d("Teste", e.getMessage());
                         }
                     });
-
-        }
 
 
     }

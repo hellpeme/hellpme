@@ -96,7 +96,6 @@ public class ActivityPublico extends AppCompatActivity {
 
         salvarGruopoInFirebase();
 
-
     }
 
     private void selecionarFoto() {
