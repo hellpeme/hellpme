@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication.Fragments;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -22,7 +23,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.algolia.search.saas.Index;
+import com.example.vincius.myapplication.ActivityAlterarSenha;
 import com.example.vincius.myapplication.ActivityLogin;
+import com.example.vincius.myapplication.ActivityResetSenha;
 import com.example.vincius.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -49,8 +52,9 @@ public class FragmentPerfil extends Fragment {
     private ImageView imageDoPerfil;
     private TextView txtUsernamePerfil;
     private EditText editName;
-    private Button btnlogOf, btnDeleteUser, btnChangeName;
-    private ImageButton btnChangePhoto;
+    private Button btnlogOf, btnDeleteUser;
+    private ImageButton btnChangePhoto, btnChangeName;
+    private Button btnAlterarSenha;
     private Uri selectedUri;
     private String photoPerfil;
     //algolia api
@@ -73,13 +77,16 @@ public class FragmentPerfil extends Fragment {
 
     private void startComponents() {
         imageDoPerfil = (ImageView) view.findViewById(R.id.imgPerfilPhoto);
-        txtUsernamePerfil = (TextView) view.findViewById(R.id.txtPerfilUsername);
+        txtUsernamePerfil = (TextView) view.findViewById(R.id.txtUsernamePerfil);
         editName = (EditText) view.findViewById(R.id.editTypName);
         btnlogOf = (Button) view.findViewById(R.id.btnLogOf);
-        btnChangeName = (Button) view.findViewById(R.id.btnChangeName);
+        btnChangeName = (ImageButton) view.findViewById(R.id.btnChangeName);
         btnDeleteUser = (Button) view.findViewById(R.id.btnDeleteUser);
         btnChangePhoto = (ImageButton) view.findViewById(R.id.btnChangePhoto);
+        btnAlterarSenha = (Button) view.findViewById(R.id.btnAlterarSenha);
     }
+
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -118,6 +125,9 @@ public class FragmentPerfil extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         startComponents();
+
+
+
 
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
@@ -172,6 +182,14 @@ public class FragmentPerfil extends Fragment {
             @Override
             public void onClick(View v) {
                 selecionarFoto();
+            }
+        });
+
+        btnAlterarSenha.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(), ActivityAlterarSenha.class);
+                startActivity(intent);
             }
         });
     }

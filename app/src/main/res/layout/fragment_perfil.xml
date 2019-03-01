@@ -24,9 +24,9 @@
         tools:srcCompat="@tools:sample/avatars" />
 
     <TextView
-        android:id="@+id/txtPerfilUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:id="@+id/txtUsernamePerfil"
+        android:layout_width="126dp"
+        android:layout_height="30dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
@@ -36,10 +36,10 @@
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="@+id/imgPerfilPhoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.484"
+        app:layout_constraintHorizontal_bias="0.402"
         app:layout_constraintStart_toEndOf="@+id/imgPerfilPhoto"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.374" />
+        app:layout_constraintVertical_bias="0.312" />
 
     <Button
         android:id="@+id/btnLogOf"
@@ -47,7 +47,7 @@
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="252dp"
+        android:layout_marginTop="312dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/button_background"
@@ -65,7 +65,7 @@
         android:layout_height="46dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="308dp"
+        android:layout_marginTop="368dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/button_background"
@@ -77,37 +77,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnChangeName"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="148dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
-        android:text="Button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.765"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
     <EditText
         android:id="@+id/editTypName"
         android:layout_width="169dp"
-        android:layout_height="wrap_content"
+        android:layout_height="53dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
+        app:layout_constraintBottom_toBottomOf="@+id/imgPerfilPhoto"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.489"
+        app:layout_constraintHorizontal_bias="0.875"
         app:layout_constraintStart_toEndOf="@+id/imgPerfilPhoto"
-        app:layout_constraintTop_toBottomOf="@+id/txtPerfilUsername" />
+        app:layout_constraintTop_toBottomOf="@+id/txtUsernamePerfil"
+        app:layout_constraintVertical_bias="0.105" />
 
     <ImageButton
         android:id="@+id/btnChangePhoto"
@@ -120,5 +108,36 @@
         app:layout_constraintStart_toStartOf="@+id/imgPerfilPhoto"
         app:layout_constraintTop_toTopOf="@+id/imgPerfilPhoto"
         app:srcCompat="@android:drawable/ic_menu_camera" />
+
+    <ImageButton
+        android:id="@+id/btnChangeName"
+        android:layout_width="32dp"
+        android:layout_height="34dp"
+        android:background="@drawable/bordas_arredondadas_button"
+        app:layout_constraintBottom_toBottomOf="@+id/editTypName"
+        app:layout_constraintEnd_toEndOf="@+id/editTypName"
+        app:layout_constraintHorizontal_bias="0.963"
+        app:layout_constraintStart_toStartOf="@+id/editTypName"
+        app:layout_constraintTop_toTopOf="@+id/editTypName"
+        app:srcCompat="@android:drawable/ic_menu_rotate" />
+
+    <Button
+        android:id="@+id/btnAlterarSenha"
+        android:layout_width="361dp"
+        android:layout_height="40dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        android:background="@drawable/button_background"
+        android:text="@string/alterarsenha"
+        android:textColor="@color/white"
+        app:layout_constraintBottom_toTopOf="@+id/btnLogOf"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
 
 </android.support.constraint.ConstraintLayout>
