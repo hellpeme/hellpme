@@ -61,7 +61,8 @@
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
         <activity android:name=".ActivityGrupo" />
-        <activity android:name=".ActivityPublico"></activity>
+        <activity android:name=".ActivityPublico" />
+        <activity android:name=".ActivityPerfilGroup"></activity>
     </application>
 
 </manifest>

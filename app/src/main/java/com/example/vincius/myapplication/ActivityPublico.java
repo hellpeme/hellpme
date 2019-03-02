@@ -14,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -25,7 +27,6 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
-import java.util.BitSet;
 import java.util.UUID;
 
 public class ActivityPublico extends AppCompatActivity {
@@ -34,15 +35,16 @@ public class ActivityPublico extends AppCompatActivity {
     private EditText editNome;
     private Button btnCreate;
     private Button btnImage;
+    private RadioButton rbtn15;
+    private RadioButton rbtn30;
+    private RadioGroup rGruop;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_publico);
 
-        imgGroup = findViewById(R.id.imgPublico);
-        editNome = findViewById(R.id.editPublico);
-        btnCreate = findViewById(R.id.btnPublico);
-        btnImage = findViewById(R.id.btnImagePublico);
+        startComponents();
 
         btnImage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -55,13 +57,24 @@ public class ActivityPublico extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String name = editNome.getText().toString();
-                criarGrupo(name);
+
+                switch (rGruop.getCheckedRadioButtonId()){
+                    case R.id.rbtn15: criarGrupo(name,2); break  ;
+                    case R.id.rbtn30: criarGrupo(name,30); break  ;
+                    default:
+                        Toast.makeText(ActivityPublico.this,
+                                "Por favor selecione a quantidade de alunos para esta Monitoria¹", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+
             }
         });
 
 
 
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -84,17 +97,19 @@ public class ActivityPublico extends AppCompatActivity {
         }
     }
 
-    private void criarGrupo(String nome) {
+    private void criarGrupo(String nome,int numeroDeAlunos) {
 
         if(nome == null || nome.isEmpty()){
             Toast.makeText( ActivityPublico.this,"Nome deve ser preenchido!",Toast.LENGTH_SHORT).show();
+            return;
         }
 
         if(selectedUri == null){
             Toast.makeText( ActivityPublico.this,"Coloque uma foto para o Grupo!",Toast.LENGTH_SHORT).show();
+            return;
         }
 
-        salvarGruopoInFirebase();
+        salvarGrupoInFirebase(numeroDeAlunos);
 
     }
 
@@ -105,8 +120,8 @@ public class ActivityPublico extends AppCompatActivity {
     }
 
 
-    private void salvarGruopoInFirebase() {
-        String filename = UUID.randomUUID().toString();
+    private void salvarGrupoInFirebase(final int numeroDeAlunos) {
+        final String filename = UUID.randomUUID().toString();
         final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
         ref.putFile(selectedUri)
                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
@@ -115,12 +130,12 @@ public class ActivityPublico extends AppCompatActivity {
                         ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                             @Override
                             public void onSuccess(Uri uri) {
-                                String uid = FirebaseAuth.getInstance().getUid();
+                                String uid = filename;
                                 String groupname = editNome.getText().toString();
                                 String profileUrl = uri.toString();
                                 String adminUser = FirebaseAuth.getInstance().getCurrentUser().getUid().toString();
 
-                                final Group group = new Group(groupname,uid,profileUrl,adminUser);
+                                final Group group = new Group(groupname,uid,profileUrl,adminUser, numeroDeAlunos);
                                 FirebaseFirestore.getInstance().collection("groups")
                                         .document(uid)
                                         .set(group)
@@ -150,4 +165,16 @@ public class ActivityPublico extends AppCompatActivity {
             }
         });
     }
+
+    private void startComponents() {
+        rbtn15 = findViewById(R.id.rbtn15);
+        rbtn30 = findViewById(R.id.rbtn30);
+        rGruop = findViewById(R.id.rGroupPublico);
+        imgGroup = findViewById(R.id.imgPublico);
+        editNome = findViewById(R.id.editPublico);
+        btnCreate = findViewById(R.id.btnPublico);
+        btnImage = findViewById(R.id.btnImagePublico);
+
+    }
+
 }

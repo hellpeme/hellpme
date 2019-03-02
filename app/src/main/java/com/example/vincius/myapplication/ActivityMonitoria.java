@@ -41,7 +41,7 @@ import java.util.List;
 public class ActivityMonitoria extends AppCompatActivity {
 
     private GroupAdapter adapter;
-    private String username, uuid;
+    private String username, uuid,photoUrl;
     private ImageButton btnChat;
     private EditText editChat;
     private User me, user;
@@ -61,10 +61,15 @@ public class ActivityMonitoria extends AppCompatActivity {
         btnChat =  findViewById(R.id.btnChat);
         editChat = findViewById(R.id.editChat);
         layout = findViewById(R.id.layout);
+
         set.clone(layout);
+
         userFromContact = getIntent().getExtras().getParcelable("user2");
+
         user = getIntent().getExtras().getParcelable("user");
+
         fetchAtributes();
+
         getSupportActionBar().setTitle(username);
 
 
@@ -77,6 +82,7 @@ public class ActivityMonitoria extends AppCompatActivity {
 
 
         adapter = new GroupAdapter();
+
         rv.setLayoutManager( new LinearLayoutManager(  this));
         rv.setAdapter(adapter);
 
@@ -97,9 +103,11 @@ public class ActivityMonitoria extends AppCompatActivity {
         if(user != null) {
             username = user.getUsername();
             uuid = user.getUid();
+            photoUrl = user.getProfileUrl();
         }else{
             username = userFromContact.getUsername();
             uuid = userFromContact.getUid();
+            photoUrl = userFromContact.getPhotoUrl();
         }
     }
 
@@ -139,10 +147,15 @@ public class ActivityMonitoria extends AppCompatActivity {
 
 
         editChat.setText(null);
+
         final String toId = uuid;
+
         long timestamp = System.currentTimeMillis();
+
         final String fromId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         final Message message = new Message();
+
         message.setFromId(fromId);
         message.setToId(toId);
         message.setTimestamp(timestamp);
@@ -166,8 +179,8 @@ public class ActivityMonitoria extends AppCompatActivity {
                             // create last messages
                             Contact contact = new Contact();
                             contact.setUid(toId);
-                            contact.setUsername(user.getUsername());
-                            contact.setPhotoUrl(user.getProfileUrl());
+                            contact.setUsername(username);
+                            contact.setPhotoUrl(photoUrl);
                             contact.setTimestamp(message.getTimestamp());
                             contact.setLastMessage(message.getText());
 
@@ -184,6 +197,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                             Log.d("Teste", e.getMessage());
                         }
                     });
+
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(toId)
                     .collection(fromId)
@@ -195,8 +209,8 @@ public class ActivityMonitoria extends AppCompatActivity {
 
                             Contact contact = new Contact();
                             contact.setUid(toId);
-                            contact.setUsername(user.getUsername());
-                            contact.setPhotoUrl(user.getProfileUrl());
+                            contact.setUsername(username);
+                            contact.setPhotoUrl(photoUrl);
                             contact.setTimestamp(message.getTimestamp());
                             contact.setLastMessage(message.getText());
 
@@ -234,26 +248,13 @@ public class ActivityMonitoria extends AppCompatActivity {
         @Override
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
-            final ImageView imgChat = viewHolder.itemView.findViewById(R.id.ImgChat);
+
+            if(getLayout() == R.layout.message_to_user) {
+                TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
+                txtNameMessage.setText(null);
+            }
+
             txtChat.setText(message.getText());
-
-            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(message.getFromId());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot doc = task.getResult();
-                        if(doc!= null ) {
-                            Picasso.get()
-                                    .load(doc.getString("profileUrl"))
-                                    .into(imgChat);
-                            Log.i("teste", "este é o link da imagem  "+ message.getPhotoUrl());
-
-                        }
-                    }
-                }
-            });
-
 
         }
 

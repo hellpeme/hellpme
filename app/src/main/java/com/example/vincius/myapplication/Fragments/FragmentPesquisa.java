@@ -1,5 +1,4 @@
 package com.example.vincius.myapplication.Fragments;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,24 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.algolia.instantsearch.core.helpers.Searcher;
-import com.algolia.instantsearch.ui.helpers.InstantSearch;
-import com.algolia.instantsearch.ui.utils.ItemClickSupport;
-import com.algolia.instantsearch.ui.views.Hits;
-import com.algolia.search.saas.Index;
 import com.example.vincius.myapplication.ActivityGrupo;
-import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
-import com.example.vincius.myapplication.ActivityPrivado;
+import com.example.vincius.myapplication.ActivityPerfilGroup;
 import com.example.vincius.myapplication.Group;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -41,9 +29,6 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
-
-import org.json.JSONObject;
-
 import java.util.List;
 
 
@@ -74,7 +59,7 @@ public class FragmentPesquisa extends Fragment{
                     UsersItem userItem =(UsersItem) item;
                     intent.putExtra("user", userItem.user);
                 } else{
-                    intent = new Intent(getActivity(), ActivityGrupo.class);
+                    intent = new Intent(getActivity(), ActivityPerfilGroup.class);
                     GroupItem groupItem = (GroupItem) item;
                     intent.putExtra("group", groupItem.group);
                 }

@@ -55,26 +55,29 @@ public class FragmentHome extends Fragment {
 
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        fetchLastMessages();
+
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull Item item, @NonNull View view) {
-                ContactItem contact = (ContactItem) item;
                 Intent intent;
 
-                if (FirebaseFirestore.getInstance().collection("users")
-                        .document(contact.contact.getUid()) != null){
+                if (item instanceof ContactItem ){
+                    ContactItem contact = (ContactItem) item;
                     intent = new Intent(getActivity(), ActivityMonitoria.class);
                     intent.putExtra("user2", contact.contact);
                 } else {
+                    ContactGroupItem contact = (ContactGroupItem) item;
                     intent = new Intent(getActivity(), ActivityGrupo.class);
-                    intent.putExtra("user2", contact.contact);
+                    intent.putExtra("group2", contact.contact);
                 }
 
                 startActivity(intent);
             }
         });
+
+        fetchLastMessages();
+        fetchLastMessagesGroup();
 
         btnPrivate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +136,30 @@ public class FragmentHome extends Fragment {
                 });
     }
 
+    private void fetchLastMessagesGroup() {
+        String uid = FirebaseAuth.getInstance().getUid();
+
+        FirebaseFirestore.getInstance().collection("/last-messages")
+                .document(uid)
+                .collection("contactsgroups")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        List<DocumentChange> documentChanges = queryDocumentSnapshots.getDocumentChanges();
+                        if(documentChanges != null){
+                            for (DocumentChange doc: documentChanges) {
+                                if(doc.getType() == DocumentChange.Type.ADDED){
+                                    ContactGroup contact = doc.getDocument().toObject(ContactGroup.class);
+                                    adapter.add(new ContactGroupItem(contact));
+
+                                }
+                            }
+                        }
+
+                    }
+                });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -147,6 +174,32 @@ public class FragmentHome extends Fragment {
         private final Contact contact;
 
         private ContactItem(Contact contact) {
+            this.contact = contact;
+        }
+
+        @Override
+        public void bind(@NonNull ViewHolder viewHolder, int position) {
+            TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
+            TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
+            ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
+            username.setText(contact.getUsername());
+            message.setText(contact.getLastMessage());
+            Picasso.get()
+                    .load(contact.getPhotoUrl())
+                    .into(imgPhoto);
+        }
+
+        @Override
+        public int getLayout() {
+            return R.layout.item_messages;
+        }
+    }
+
+    private class ContactGroupItem extends Item<ViewHolder> {
+
+        private final ContactGroup contact;
+
+        private ContactGroupItem(ContactGroup contact) {
             this.contact = contact;
         }
 

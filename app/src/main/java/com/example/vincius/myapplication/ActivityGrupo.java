@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -14,8 +15,10 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vincius.myapplication.Fragments.Contact;
+import com.example.vincius.myapplication.Fragments.ContactGroup;
 import com.example.vincius.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -35,7 +38,9 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.ViewHolder;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ActivityGrupo extends AppCompatActivity {
     private ImageButton btnChat;
@@ -43,12 +48,12 @@ public class ActivityGrupo extends AppCompatActivity {
     private GroupAdapter adapter;
     private User me;
     private Group group;
-    private String uuid;
-
+    private ContactGroup groupFromContact;
+    private String uuid,adminUser,groupName,profileUrl;
+    private int currentNumUser, usersMax;
+    private HashMap<String,String> listIDUser;
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,8 +66,10 @@ public class ActivityGrupo extends AppCompatActivity {
         layout = findViewById(R.id.layout);
         set.clone(layout);
 
+        groupFromContact = getIntent().getExtras().getParcelable("group2");
         group = getIntent().getExtras().getParcelable("group");
-        uuid = group.getUid().toString();
+
+        fetchAtributes();
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +84,7 @@ public class ActivityGrupo extends AppCompatActivity {
         rv.setAdapter(adapter);
 
         FirebaseFirestore.getInstance().collection("/groups")
-                .document(group.getUid())
+                .document(uuid)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -86,6 +93,26 @@ public class ActivityGrupo extends AppCompatActivity {
                         fetchMessage();
                     }
                 });
+    }
+
+    private void fetchAtributes(){
+        if(group != null) {
+            uuid = group.getUid();
+            groupName = group.getGroupName();
+            profileUrl = group.getProfileUrl();
+            adminUser = group.getAdminUser();
+            currentNumUser = group.getCurrentNumUsers();
+            usersMax = group.getMaxUsers();
+            listIDUser = group.getListIDUser();
+        }else{
+            uuid = groupFromContact.getUid();
+            groupName = groupFromContact.getUsername();
+            profileUrl = groupFromContact.getPhotoUrl();
+            adminUser = groupFromContact.getAdminUser();
+            currentNumUser = groupFromContact.getCurrentNumUsers();
+            usersMax = groupFromContact.getMaxUsers();
+            listIDUser = groupFromContact.getListIDUser();
+        }
     }
 
     private void fetchMessage() {
@@ -143,16 +170,40 @@ public class ActivityGrupo extends AppCompatActivity {
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d( "Teste",documentReference.getId());
 
-                            Contact contact = new Contact();
+                            ContactGroup contact = new ContactGroup();
                             contact.setUid(toId);
-                            contact.setUsername(group.getGroupName());
-                            contact.setPhotoUrl(group.getProfileUrl());
                             contact.setTimestamp(message.getTimestamp());
                             contact.setLastMessage(message.getText());
+                            contact.setUsername(groupName);
+                            contact.setPhotoUrl(profileUrl);
+                            contact.setAdminUser(adminUser);
+                            contact.setCurrentNumUsers(currentNumUser);
+                            contact.setMaxUsers(usersMax);
+                            contact.setListIDUser(listIDUser);
 
+                            //Vai mandar a mensagem para o Admin da Monitoria
                             FirebaseFirestore.getInstance().collection("/last-messages")
-                                    .document(toId)
+                                    .document(adminUser)
+                                    .collection("contactsgroups")
+                                    .document(uuid)
                                     .set(contact);
+
+                            //Manda Mensagem para todos os Usuarios do Grupo
+                            if(group.getCurrentNumUsers() > 0) {
+                                for (String userIdGroup : group.getListIDUser().values()) {
+                                    if (!userIdGroup.isEmpty() || userIdGroup != null) {
+                                        FirebaseFirestore.getInstance().collection("/last-messages")
+                                                .document(userIdGroup)
+                                                .collection("contactsgroups")
+                                                .document(uuid)
+                                                .set(contact);
+                                    }
+                                }
+                            } else{
+                                Toast.makeText(ActivityGrupo.this,
+                                        "Ainda não existe alunos nesta Monitoria, espere até que algum aluno entre para iniciar a Monitoria!",Toast.LENGTH_SHORT);
+                            }
+
 
                         }
                     })
@@ -179,27 +230,23 @@ public class ActivityGrupo extends AppCompatActivity {
 
         @Override
         public void bind(@NonNull ViewHolder viewHolder, int position) {
-            TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
-            final ImageView imgChat = viewHolder.itemView.findViewById(R.id.ImgChat);
+            final TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
+
+            if(getLayout() == R.layout.message_to_user) {
+                final TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
+
+                FirebaseFirestore.getInstance().collection("users")
+                        .document(message.getFromId())
+                        .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                txtNameMessage.setText(documentSnapshot.getString("username").toString());
+                            }
+                        });
+
+            }
+
             txtChat.setText(message.getText());
-
-            DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(message.getFromId());
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot doc = task.getResult();
-                        if(doc!= null ) {
-                            Picasso.get()
-                                    .load(doc.getString("profileUrl"))
-                                    .into(imgChat);
-                            Log.i("teste", "este é o link da imagem  "+ message.getPhotoUrl());
-
-                        }
-                    }
-                }
-            });
-
 
         }
 
