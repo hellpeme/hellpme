@@ -47,12 +47,38 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
         setContentView(R.layout.activity_fragmentsnavigation);
         adapter = new GroupAdapter();
         getSupportActionBar().setElevation(0);
+
         verficarAuth();
         startComponents();
         fetchUsers();
+        fetchGroups();
         FragmentPesquisa.setAdapter(adapter);
 
 
+    }
+
+
+
+    private void fetchGroups() {
+        CollectionReference doc = FirebaseFirestore.getInstance().collection("groups");
+        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                } else {
+                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+                    for (DocumentSnapshot doc :
+                            docs) {
+                        Group group = doc.toObject(Group.class);
+                        Log.d("Teste", "onEvent: " + group.getGroupName());
+                        names.add(group.getGroupName());
+                        adapter.add(new GroupItem(group));
+                    }
+                }
+
+            }
+        });
     }
 
     private void fetchUsers() {
@@ -79,9 +105,11 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
 
     private void verficarAuth() {
         if (FirebaseAuth.getInstance().getUid() == null) {
-            Intent intent = new Intent(ActivityFragmentsNavigation.this, ActivityLogin.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
+            if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
+                Intent intent = new Intent(ActivityFragmentsNavigation.this, ActivityLogin.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+            }
         }
     }
 
@@ -134,6 +162,7 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
                 Log.d("teste", "FILTERS USERS: " + newList.toString());
             }
             fetchUpdateUsers(newList);
+            fetchUpdateGroups(newList);
         }
 
         return false;
@@ -163,6 +192,29 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
         });
     }
 
+    private void fetchUpdateGroups(final List<String> newList) {
+        CollectionReference doc = FirebaseFirestore.getInstance().collection("groups");
+        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                } else {
+                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+                    for (DocumentSnapshot doc :
+                            docs) {
+                        Group group = doc.toObject(Group.class);
+                        if (newList.contains(group.getGroupName())) {
+                            adapter.add(new GroupItem(group));
+                            adapter.notifyDataSetChanged();
+                        }
+
+                    }
+                }
+            }
+        });
+    }
+
     public static class UsersItem extends Item<ViewHolder> {
 
         public final User user;
@@ -182,6 +234,35 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
             Picasso.get()
                     .load(user.getProfileUrl())
                     .into(imgUser);
+
+        }
+
+        @Override
+        public int getLayout() {
+            return R.layout.item_user;
+        }
+
+    }
+
+    public static class GroupItem extends Item<ViewHolder> {
+
+        public final Group group;
+
+        private GroupItem(Group group) {
+            this.group = group;
+        }
+
+        @Override
+        public void bind(@NonNull ViewHolder viewHolder, int position) {
+
+            TextView txtGroup = viewHolder.itemView.findViewById(R.id.textNameUserPesquisa);
+            ImageView imgGroup = viewHolder.itemView.findViewById(R.id.ImageView);
+
+            txtGroup.setText(group.getGroupName());
+
+            Picasso.get()
+                    .load(group.getProfileUrl())
+                    .into(imgGroup);
 
         }
 

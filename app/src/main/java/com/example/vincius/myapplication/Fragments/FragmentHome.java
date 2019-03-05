@@ -219,10 +219,16 @@ public class FragmentHome extends Fragment {
             TextView txtTimestamp = viewHolder.itemView.findViewById(R.id.txtTimestamp);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
 
+            //convert timestamp to date
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date d = new Date(contact.getTimestamp());
+            String date = format.format(d);
+
+
             if(contact.getPhotoUrl() == null)
                 contact.setPhotoUrl("https://firebasestorage.googleapis.com/v0/b/hellpme-5afb2.appspot.com/o/images%2Fno-avatar.jpg?alt=media&token=0971d28b-d919-47ac-b04b-857e7ed0639d");
 
-            //txtTimestamp.setText(contact.getTimestamp());
+            txtTimestamp.setText(date);
             username.setText(contact.getUsername());
             message.setText(contact.getLastMessage());
             Picasso.get()

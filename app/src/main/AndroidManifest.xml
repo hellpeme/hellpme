@@ -54,7 +54,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
-        <activity android:name=".ActivityPrivado">
+        <activity android:name=".ActivityPrivado"
+                  android:label="Criar Monitoria">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
@@ -64,9 +65,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
-        <activity android:name=".ActivityPublico" />
-        <activity android:name=".ActivityPerfilGroup" />
-        <activity android:name=".ActivitySettings"></activity>
+        <activity android:name=".ActivityPublico"
+                  android:label="Criar Monitoria">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity android:name=".ActivityPerfilGroup">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity android:name=".ActivitySettings"
+                  android:label="Configurações">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
     </application>
 
 </manifest>

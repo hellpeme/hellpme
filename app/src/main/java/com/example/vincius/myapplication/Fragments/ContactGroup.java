@@ -62,11 +62,8 @@ public class ContactGroup implements Parcelable {
         this.username = username;
     }
 
-    public String getTimestamp() {
-        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
-        Date d = new Date(this.timestamp);
-        String date = format.format(d);
-        return date;
+    public long getTimestamp() {
+        return timestamp;
     }
 
     public void setTimestamp(long timestamp) {

@@ -13,6 +13,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
+import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
@@ -24,6 +25,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FacebookAuthCredential;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -115,9 +117,8 @@ public class ActivityLogin extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser!= null && currentUser.isEmailVerified()) {
-            updateUI();
-        }
+        updateUI(currentUser);
+
     }
 
     private void updateUI() {
@@ -154,7 +155,7 @@ public class ActivityLogin extends AppCompatActivity {
                             Log.w("teste", "signInWithCredential:failure", task.getException());
                             Toast.makeText(ActivityLogin.this, "Authentication failed.",
                                     Toast.LENGTH_SHORT).show();
-                            updateUI();
+                            updateUI(null);
 
                         }
 
@@ -205,7 +206,7 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void updateUI(FirebaseUser currentUser) {
         if (currentUser != null) {
-            String username = ( currentUser.getDisplayName());
+            String username = (currentUser.getDisplayName());
             String uid = (currentUser.getUid());
 
         }

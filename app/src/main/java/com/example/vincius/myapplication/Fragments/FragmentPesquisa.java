@@ -85,62 +85,20 @@ public class FragmentPesquisa extends Fragment {
                     GroupItem groupItem = (GroupItem) item;
                     intent.putExtra("group", groupItem.group);
                 }
-                else {
+                else if( item instanceof ActivityFragmentsNavigation.UsersItem){
                     intent = new Intent(getActivity(), ActivityPerfil.class);
                     ActivityFragmentsNavigation.UsersItem userItem =(ActivityFragmentsNavigation.UsersItem) item;
                     intent.putExtra("user", userItem.user);
+                }else{
+                    intent = new Intent(getActivity(), ActivityPerfilGroup.class);
+                    ActivityFragmentsNavigation.GroupItem groupItem =(ActivityFragmentsNavigation.GroupItem) item;
+                    intent.putExtra("group", groupItem.group);
                 }
                 startActivity(intent);
             }
         });
-      //  fetchUsers();
-        fetchGroups();
     }
 
-
-    private void fetchUsers() {
-        CollectionReference doc = FirebaseFirestore.getInstance().collection("users");
-        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                } else {
-                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
-                    for (DocumentSnapshot doc :
-                            docs) {
-                        User user = doc.toObject(User.class);
-                        Log.d("Teste", "onEvent: " + user.getUsername());
-                        names.add(user.getUsername());
-                        adapter.add(new UsersItem(user));
-                    }
-                }
-
-            }
-        });
-    }
-
-
-    private void fetchGroups() {
-        CollectionReference doc = FirebaseFirestore.getInstance().collection("groups");
-        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                } else {
-                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
-                    for (DocumentSnapshot doc :
-                            docs) {
-                        Group group = doc.toObject(Group.class);
-                        Log.d("Teste", "onEvent: " + group.getGroupName());
-                        adapter.add(new GroupItem(group));
-                    }
-                }
-
-            }
-        });
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
