@@ -30,20 +30,33 @@
 
         <TextView
             android:id="@+id/textNameUserPesquisa"
-            android:layout_width="258dp"
-            android:layout_height="51dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="8dp"
+            android:layout_marginTop="32dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:text="Textview"
             android:textSize="16dp"
             algolia:attribute='@{"username"}'
+            algolia:layout_constraintEnd_toEndOf="parent"
+            algolia:layout_constraintHorizontal_bias="0.378"
+            algolia:layout_constraintStart_toEndOf="@+id/ImageView"
+            algolia:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_marginStart="80dp"
+            android:layout_marginLeft="80dp"
+            android:layout_marginEnd="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@android:color/darker_gray"
             algolia:layout_constraintBottom_toBottomOf="parent"
             algolia:layout_constraintEnd_toEndOf="parent"
-            algolia:layout_constraintHorizontal_bias="0.448"
-            algolia:layout_constraintStart_toEndOf="@+id/ImageView"
-            algolia:layout_constraintTop_toTopOf="parent"
-            algolia:layout_constraintVertical_bias="0.47" />
+            algolia:layout_constraintHorizontal_bias="1.0"
+            algolia:layout_constraintStart_toStartOf="parent" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

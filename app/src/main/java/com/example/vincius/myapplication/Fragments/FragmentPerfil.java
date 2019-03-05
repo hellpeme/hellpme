@@ -164,7 +164,7 @@ public class FragmentPerfil extends Fragment {
             @Override
             public void onClick(View v) {
                 changeNameInFirestore();
-                getActivity().recreate();
+
             }
         });
 
@@ -188,7 +188,6 @@ public class FragmentPerfil extends Fragment {
                     public void onSuccess(Uri uri) {
                         photoPerfil = uri.toString();
                         updatePhoto();
-                        getActivity().recreate();
                     }
                 });
             }

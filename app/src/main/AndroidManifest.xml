@@ -42,7 +42,7 @@
         </activity>
         <activity
             android:name=".ActivityFragmentsNavigation"
-            android:theme="@style/AppTheme.NoActionBar" />
+            />
         <activity
             android:name=".ActivityResetSenha"
             android:label="@string/alterarsenha">

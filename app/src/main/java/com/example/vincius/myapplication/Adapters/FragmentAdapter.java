@@ -10,6 +10,11 @@ import com.example.vincius.myapplication.Fragments.FragmentPesquisa;
 
 
 public class FragmentAdapter extends FragmentStatePagerAdapter {
+    public int position = 0;
+
+    public int getPosition() {
+        return position;
+    }
 
     private String[] mTabTitles;
 
@@ -20,6 +25,7 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
+        position = i;
         switch (i){
             case 0:
                 return new FragmentHome();
