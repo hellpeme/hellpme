@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -37,7 +38,7 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
     private List<String> names = new ArrayList<>();
     private TabLayout tabLayout;
     private ViewPager viewPager;
-    public MenuItem menuItem;
+    public MenuItem menuItemSearch, menuItemOptions;
     public GroupAdapter adapter;
 
     @Override
@@ -95,12 +96,25 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu_options, menu);
-        menuItem = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItem.getActionView();
+        menuItemSearch = menu.findItem(R.id.action_search);
+        menuItemOptions = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) menuItemSearch.getActionView();
         searchView.setOnQueryTextListener(this);
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_options:
+                Intent i= new Intent(this, ActivitySettings.class);
+                startActivity(i);
+                return true;
+
+                default:
+                    return super.onOptionsItemSelected(item);
+        }
+    }
 
     @Override
     public boolean onQueryTextSubmit(String s) {

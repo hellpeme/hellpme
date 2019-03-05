@@ -1,5 +1,9 @@
 package com.example.vincius.myapplication;
 
+import java.sql.Timestamp;
+import java.util.Calendar;
+import java.util.Date;
+
 public class Message {
 
     private String text;

@@ -253,9 +253,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                 TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
                 txtNameMessage.setText(null);
             }
-
             txtChat.setText(message.getText());
-
         }
 
         @Override

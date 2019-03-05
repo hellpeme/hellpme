@@ -3,6 +3,8 @@ package com.example.vincius.myapplication.Fragments;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ContactGroup implements Parcelable {
@@ -60,8 +62,11 @@ public class ContactGroup implements Parcelable {
         this.username = username;
     }
 
-    public long getTimestamp() {
-        return timestamp;
+    public String getTimestamp() {
+        SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+        Date d = new Date(this.timestamp);
+        String date = format.format(d);
+        return date;
     }
 
     public void setTimestamp(long timestamp) {

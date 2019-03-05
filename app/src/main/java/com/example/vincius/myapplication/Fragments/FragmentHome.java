@@ -33,6 +33,8 @@ import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -181,7 +183,14 @@ public class FragmentHome extends Fragment {
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
             TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
+            TextView txtTimestamp = viewHolder.itemView.findViewById(R.id.txtTimestamp);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
+
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date d = new Date(contact.getTimestamp());
+            String date = format.format(d);
+
+            txtTimestamp.setText(date);
             username.setText(contact.getUsername());
             message.setText(contact.getLastMessage());
             Picasso.get()
@@ -207,7 +216,13 @@ public class FragmentHome extends Fragment {
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
             TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
+            TextView txtTimestamp = viewHolder.itemView.findViewById(R.id.txtTimestamp);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
+
+            if(contact.getPhotoUrl() == null)
+                contact.setPhotoUrl("https://firebasestorage.googleapis.com/v0/b/hellpme-5afb2.appspot.com/o/images%2Fno-avatar.jpg?alt=media&token=0971d28b-d919-47ac-b04b-857e7ed0639d");
+
+            //txtTimestamp.setText(contact.getTimestamp());
             username.setText(contact.getUsername());
             message.setText(contact.getLastMessage());
             Picasso.get()

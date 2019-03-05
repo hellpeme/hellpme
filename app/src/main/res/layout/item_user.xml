@@ -13,24 +13,20 @@
             android:layout_width="79dp"
             android:layout_height="64dp"
             android:layout_margin="10dp"
-            android:layout_marginStart="28dp"
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
             android:layout_marginBottom="8dp"
             android:scaleType="centerCrop"
             algolia:attribute='@{"profileUrl"}'
             algolia:layout_constraintBottom_toBottomOf="parent"
-            algolia:layout_constraintEnd_toEndOf="parent"
-            algolia:layout_constraintHorizontal_bias="0.0"
             algolia:layout_constraintStart_toStartOf="parent"
             algolia:layout_constraintTop_toTopOf="parent"
-            algolia:layout_constraintVertical_bias="0.0" />
+            algolia:layout_constraintVertical_bias="1.0" />
 
         <TextView
             android:id="@+id/textNameUserPesquisa"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
@@ -41,22 +37,23 @@
             android:textSize="16dp"
             algolia:attribute='@{"username"}'
             algolia:layout_constraintEnd_toEndOf="parent"
-            algolia:layout_constraintHorizontal_bias="0.378"
+            algolia:layout_constraintHorizontal_bias="0.0"
             algolia:layout_constraintStart_toEndOf="@+id/ImageView"
             algolia:layout_constraintTop_toTopOf="parent" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_marginStart="80dp"
-            android:layout_marginLeft="80dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginLeft="8dp"
             android:layout_marginEnd="24dp"
             android:layout_marginRight="24dp"
-            android:background="@android:color/darker_gray"
+            android:layout_marginBottom="4dp"
+            android:background="@color/grey"
             algolia:layout_constraintBottom_toBottomOf="parent"
             algolia:layout_constraintEnd_toEndOf="parent"
-            algolia:layout_constraintHorizontal_bias="1.0"
-            algolia:layout_constraintStart_toStartOf="parent" />
+            algolia:layout_constraintHorizontal_bias="0.0"
+            algolia:layout_constraintStart_toEndOf="@+id/ImageView" />
 
     </android.support.constraint.ConstraintLayout>
 </layout>

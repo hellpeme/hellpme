@@ -93,7 +93,7 @@ public class FragmentPesquisa extends Fragment {
                 startActivity(intent);
             }
         });
-        fetchUsers();
+      //  fetchUsers();
         fetchGroups();
     }
 

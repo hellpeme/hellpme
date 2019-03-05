@@ -3,6 +3,10 @@ package com.example.vincius.myapplication.Fragments;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Contact implements Parcelable {
     private String uid;
     private String username;
