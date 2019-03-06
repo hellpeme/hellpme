@@ -14,10 +14,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.algolia.search.saas.Index;
@@ -42,9 +45,9 @@ public class ActivitySettings extends AppCompatActivity {
 
     private ImageView imageDoPerfil;
     private TextView txtUsernamePerfil;
-    private Button btnlogOf, btnDeleteUser;
+    private ListView listView;
     private String photoPerfil;
-
+    private String items[] = new String[]{"Mudar a senha", "Mudar o nome", "Apagar minha conta", "Sair"};
     final String uid = FirebaseAuth.getInstance().getUid();
 
 
@@ -73,23 +76,37 @@ public class ActivitySettings extends AppCompatActivity {
             }
         });
 
-        btnlogOf.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FirebaseAuth.getInstance().signOut();
-                Intent intent = new Intent(ActivitySettings.this, ActivityLogin.class);
-                startActivity(intent);
-            }
-        });
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, items);
+        listView.setAdapter(adapter);
 
-        btnDeleteUser.setOnClickListener(new View.OnClickListener() {
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(ActivitySettings.this, ActivityLogin.class);
-                deleteAuth();
-                deleteUser();
-                startActivity(intent);
-                FirebaseAuth.getInstance().signOut();
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                switch (position){
+                    case 0:
+                        Intent intent1 = new Intent(ActivitySettings.this, ActivityAlterarSenha.class);
+                        startActivity(intent1);
+                        break;
+                    case 1:
+                        Intent intent2 = new Intent(ActivitySettings.this, ActivitySettingsPerfil.class);
+                        startActivity(intent2);
+                        break;
+                    case 2:
+                        Intent intent = new Intent(ActivitySettings.this, ActivityLogin.class);
+                        deleteAuth();
+                        deleteUser();
+                        startActivity(intent);
+                        FirebaseAuth.getInstance().signOut();
+                        break;
+                    case 3:
+                        FirebaseAuth.getInstance().signOut();
+                        Intent inten = new Intent(ActivitySettings.this, ActivityLogin.class);
+                        startActivity(inten);
+                        break;
+                        default:
+                            break;
+                }
             }
         });
 
@@ -97,10 +114,9 @@ public class ActivitySettings extends AppCompatActivity {
 
 
     private void startComponents() {
+        listView = findViewById(R.id.listSettings);
         imageDoPerfil = findViewById(R.id.imgPerfilPhoto);
         txtUsernamePerfil = findViewById(R.id.txtPerfilUsername);
-        btnlogOf = findViewById(R.id.btnLogOf);
-        btnDeleteUser = findViewById(R.id.btnDeleteUser);
     }
 
     private void deleteAuth() {

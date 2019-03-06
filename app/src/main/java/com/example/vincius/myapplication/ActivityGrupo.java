@@ -240,7 +240,7 @@ public class ActivityGrupo extends AppCompatActivity {
                         .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                txtNameMessage.setText(documentSnapshot.getString("username").toString());
+                                txtNameMessage.setText(documentSnapshot.getString("username"));
                             }
                         });
 

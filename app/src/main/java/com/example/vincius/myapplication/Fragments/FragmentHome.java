@@ -21,6 +21,7 @@ import com.example.vincius.myapplication.ActivityPublico;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -85,7 +86,6 @@ public class FragmentHome extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ActivityPrivado.class);
-
                 startActivity(intent);
 
             }
@@ -95,7 +95,6 @@ public class FragmentHome extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ActivityPublico.class);
-
                 startActivity(intent);
 
             }
@@ -106,11 +105,6 @@ public class FragmentHome extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
-
     }
 
 
@@ -186,9 +180,10 @@ public class FragmentHome extends Fragment {
             TextView txtTimestamp = viewHolder.itemView.findViewById(R.id.txtTimestamp);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
 
-            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+
+            SimpleDateFormat formatToday = new SimpleDateFormat("HH:mm");
             Date d = new Date(contact.getTimestamp());
-            String date = format.format(d);
+            String date = formatToday.format(d);
 
             txtTimestamp.setText(date);
             username.setText(contact.getUsername());

@@ -54,8 +54,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
-        <activity android:name=".ActivityPrivado"
-                  android:label="Criar Monitoria">
+        <activity
+            android:name=".ActivityPrivado"
+            android:label="Criar Monitoria">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
@@ -65,8 +66,9 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
-        <activity android:name=".ActivityPublico"
-                  android:label="Criar Monitoria">
+        <activity
+            android:name=".ActivityPublico"
+            android:label="Criar Monitoria">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
@@ -76,11 +78,23 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
-        <activity android:name=".ActivitySettings"
-                  android:label="Configurações">
+        <activity
+            android:name=".ActivitySettings"
+            android:label="Configurações">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity android:name=".ActivityAlterarSenha">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivitySettings" />
+        </activity>
+        <activity android:name=".ActivitySettingsPerfil">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivitySettings" />
         </activity>
     </application>
 
