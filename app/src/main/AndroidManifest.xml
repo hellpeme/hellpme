@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.vincius.myapplication">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:debuggable="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:largeHeap="true"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="HardcodedDebugMode">
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+
+        <activity
+            android:name=".ActivityLogin"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".ActivityCadastro"
+            android:label="Cadastro">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityLogin" />
+        </activity>
+        <activity android:name=".ActivityPerfil">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity android:name=".ActivityFragmentsNavigation" />
+        <activity
+            android:name=".ActivityResetSenha"
+            android:label="@string/alterarsenha">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityLogin" />
+        </activity>
+        <activity android:name=".ActivityMonitoria">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity
+            android:name=".ActivityPrivado"
+            android:label="Criar Monitoria">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity android:name=".ActivityGrupo">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity
+            android:name=".ActivityPublico"
+            android:label="Criar Monitoria">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity android:name=".ActivityPerfilGroup">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity
+            android:name=".ActivitySettings"
+            android:label="Configurações">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
+        <activity android:name=".ActivityAlterarSenha">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivitySettings" />
+        </activity>
+        <activity android:name=".ActivitySettingsPerfil">
+
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivitySettings" />
+        </activity>
+    </application>
+
+</manifest>
