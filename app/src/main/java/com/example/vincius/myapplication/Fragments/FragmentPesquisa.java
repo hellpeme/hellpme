@@ -1,5 +1,4 @@
 package com.example.vincius.myapplication.Fragments;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,22 +12,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.algolia.instantsearch.core.helpers.Searcher;
-import com.algolia.instantsearch.ui.helpers.InstantSearch;
-import com.algolia.instantsearch.ui.utils.ItemClickSupport;
-import com.algolia.instantsearch.ui.views.Hits;
-import com.algolia.search.saas.Index;
-import com.example.vincius.myapplication.ActivityMonitoria;
+import com.example.vincius.myapplication.ActivityGrupo;
 import com.example.vincius.myapplication.ActivityPerfil;
-import com.example.vincius.myapplication.ActivityPrivado;
+import com.example.vincius.myapplication.ActivityPerfilGroup;
+import com.example.vincius.myapplication.Group;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -39,9 +29,6 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
-
-import org.json.JSONObject;
-
 import java.util.List;
 
 
@@ -66,13 +53,21 @@ public class FragmentPesquisa extends Fragment{
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull Item item, @NonNull View view) {
-                Intent intent = new Intent(getActivity(), ActivityPerfil.class);
-                UsersItem userItem = (UsersItem) item;
-                intent.putExtra("user", userItem.user);
+                Intent intent;
+                if(item instanceof UsersItem) {
+                    intent = new Intent(getActivity(), ActivityPerfil.class);
+                    UsersItem userItem =(UsersItem) item;
+                    intent.putExtra("user", userItem.user);
+                } else{
+                    intent = new Intent(getActivity(), ActivityPerfilGroup.class);
+                    GroupItem groupItem = (GroupItem) item;
+                    intent.putExtra("group", groupItem.group);
+                }
                 startActivity(intent);
             }
         });
         fetchUsers();
+        fetchGroups();
     }
 
     private void fetchUsers() {
@@ -89,6 +84,26 @@ public class FragmentPesquisa extends Fragment{
                         User user = doc.toObject(User.class);
                         Log.d("Teste", "onEvent: " + user.getUsername());
                         adapter.add(new UsersItem(user));
+                    }
+                }
+
+            }
+        });
+    }
+    private void fetchGroups() {
+        CollectionReference doc = FirebaseFirestore.getInstance().collection("groups");
+        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    return;
+                } else {
+                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
+                    for (DocumentSnapshot doc :
+                            docs) {
+                        Group group = doc.toObject(Group.class);
+                        Log.d("Teste", "onEvent: " + group.getGroupName());
+                        adapter.add(new GroupItem(group));
                     }
                 }
 
@@ -132,6 +147,34 @@ public class FragmentPesquisa extends Fragment{
             Picasso.get()
                     .load(user.getProfileUrl())
                     .into(imgUser);
+
+        }
+
+        @Override
+        public int getLayout() {
+            return R.layout.item_user;
+        }
+
+    }
+    private static class GroupItem extends Item<ViewHolder> {
+
+        private final Group group;
+
+        private GroupItem(Group group) {
+            this.group = group;
+        }
+
+        @Override
+        public void bind(@NonNull ViewHolder viewHolder, int position) {
+
+            TextView txtGroup = viewHolder.itemView.findViewById(R.id.textNameUserPesquisa);
+            ImageView imgGroup = viewHolder.itemView.findViewById(R.id.ImageView);
+
+            txtGroup.setText(group.getGroupName());
+
+            Picasso.get()
+                    .load(group.getProfileUrl())
+                    .into(imgGroup);
 
         }
 
