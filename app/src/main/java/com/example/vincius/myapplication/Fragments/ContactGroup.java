@@ -3,6 +3,8 @@ package com.example.vincius.myapplication.Fragments;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 public class ContactGroup implements Parcelable {

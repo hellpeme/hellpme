@@ -1,4 +1,5 @@
 package com.example.vincius.myapplication.Fragments;
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -6,15 +7,23 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.vincius.myapplication.ActivityFragmentsNavigation;
 import com.example.vincius.myapplication.ActivityGrupo;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPerfilGroup;
+import com.example.vincius.myapplication.ActivityPrivado;
 import com.example.vincius.myapplication.Group;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
@@ -29,13 +38,25 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
+
+import java.util.ArrayList;
 import java.util.List;
 
 
-public class FragmentPesquisa extends Fragment{
+public class FragmentPesquisa extends Fragment {
 
-    private GroupAdapter adapter;
+    private List<String> names = new ArrayList<>();
+
+    public static GroupAdapter adapter = new GroupAdapter();
+    public  static  RecyclerView rv;
     View view;
+
+    public static void setAdapter(GroupAdapter adapter) {
+        FragmentPesquisa.adapter = adapter;
+    }
+
+
+
 
     public FragmentPesquisa() {
         // Required empty public constructor
@@ -45,8 +66,9 @@ public class FragmentPesquisa extends Fragment{
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        RecyclerView rv = view.findViewById(R.id.hits);
-        adapter = new GroupAdapter();
+
+        rv = view.findViewById(R.id.hits);
+        adapter.notifyDataSetChanged();
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -58,58 +80,25 @@ public class FragmentPesquisa extends Fragment{
                     intent = new Intent(getActivity(), ActivityPerfil.class);
                     UsersItem userItem =(UsersItem) item;
                     intent.putExtra("user", userItem.user);
-                } else{
+                } else if (item instanceof GroupItem){
                     intent = new Intent(getActivity(), ActivityPerfilGroup.class);
                     GroupItem groupItem = (GroupItem) item;
+                    intent.putExtra("group", groupItem.group);
+                }
+                else if( item instanceof ActivityFragmentsNavigation.UsersItem){
+                    intent = new Intent(getActivity(), ActivityPerfil.class);
+                    ActivityFragmentsNavigation.UsersItem userItem =(ActivityFragmentsNavigation.UsersItem) item;
+                    intent.putExtra("user", userItem.user);
+                }else{
+                    intent = new Intent(getActivity(), ActivityPerfilGroup.class);
+                    ActivityFragmentsNavigation.GroupItem groupItem =(ActivityFragmentsNavigation.GroupItem) item;
                     intent.putExtra("group", groupItem.group);
                 }
                 startActivity(intent);
             }
         });
-        fetchUsers();
-        fetchGroups();
     }
 
-    private void fetchUsers() {
-        CollectionReference doc = FirebaseFirestore.getInstance().collection("users");
-        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                } else {
-                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
-                    for (DocumentSnapshot doc :
-                            docs) {
-                        User user = doc.toObject(User.class);
-                        Log.d("Teste", "onEvent: " + user.getUsername());
-                        adapter.add(new UsersItem(user));
-                    }
-                }
-
-            }
-        });
-    }
-    private void fetchGroups() {
-        CollectionReference doc = FirebaseFirestore.getInstance().collection("groups");
-        doc.addSnapshotListener(new EventListener<QuerySnapshot>() {
-            @Override
-            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-                if (e != null) {
-                    return;
-                } else {
-                    List<DocumentSnapshot> docs = queryDocumentSnapshots.getDocuments();
-                    for (DocumentSnapshot doc :
-                            docs) {
-                        Group group = doc.toObject(Group.class);
-                        Log.d("Teste", "onEvent: " + group.getGroupName());
-                        adapter.add(new GroupItem(group));
-                    }
-                }
-
-            }
-        });
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +116,7 @@ public class FragmentPesquisa extends Fragment{
         view = inflater.inflate(R.layout.fragment_pesquisa, container, false);
         return view;
     }
+
 
     private static class UsersItem extends Item<ViewHolder> {
 

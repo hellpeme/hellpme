@@ -29,11 +29,9 @@
     <string name="btn_chat">Enviar</string>
     <string name="edit_chat">Digite aqui...</string>
 
-
     <string-array name="titles_bar">
-        <item>MONITORIA</item>
-        <item>PESQUISA</item>
-        <item>PERFIL</item>
+        <item>CONVERSAS</item>
+        <item>MONITORIAS</item>
     </string-array>
 
 </resources>

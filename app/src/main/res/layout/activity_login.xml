@@ -101,10 +101,10 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="48dp"
-        android:background="@color/com_facebook_blue"
-        android:text="@string/com_facebook_loginview_log_in_button_continue"
+        android:text="ENTRAR COM O FACEBOOK"
         android:textColor="@color/white"
         android:textStyle="bold"
+        android:background="@drawable/bordas_arredondadas_facebook_button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -146,6 +146,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_button" />
+        app:layout_constraintTop_toBottomOf="@+id/textForgotPass" />
 
 </android.support.constraint.ConstraintLayout>

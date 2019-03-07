@@ -21,6 +21,7 @@ import com.example.vincius.myapplication.ActivityPublico;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
@@ -33,6 +34,8 @@ import com.xwray.groupie.Item;
 import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -83,7 +86,6 @@ public class FragmentHome extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ActivityPrivado.class);
-
                 startActivity(intent);
 
             }
@@ -93,7 +95,6 @@ public class FragmentHome extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(),ActivityPublico.class);
-
                 startActivity(intent);
 
             }
@@ -104,11 +105,6 @@ public class FragmentHome extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
-
-
     }
 
 
@@ -181,7 +177,15 @@ public class FragmentHome extends Fragment {
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
             TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
+            TextView txtTimestamp = viewHolder.itemView.findViewById(R.id.txtTimestamp);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
+
+
+            SimpleDateFormat formatToday = new SimpleDateFormat("HH:mm");
+            Date d = new Date(contact.getTimestamp());
+            String date = formatToday.format(d);
+
+            txtTimestamp.setText(date);
             username.setText(contact.getUsername());
             message.setText(contact.getLastMessage());
             Picasso.get()
@@ -207,7 +211,19 @@ public class FragmentHome extends Fragment {
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
             TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
+            TextView txtTimestamp = viewHolder.itemView.findViewById(R.id.txtTimestamp);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
+
+            //convert timestamp to date
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date d = new Date(contact.getTimestamp());
+            String date = format.format(d);
+
+
+            if(contact.getPhotoUrl() == null)
+                contact.setPhotoUrl("https://firebasestorage.googleapis.com/v0/b/hellpme-5afb2.appspot.com/o/images%2Fno-avatar.jpg?alt=media&token=0971d28b-d919-47ac-b04b-857e7ed0639d");
+
+            txtTimestamp.setText(date);
             username.setText(contact.getUsername());
             message.setText(contact.getLastMessage());
             Picasso.get()

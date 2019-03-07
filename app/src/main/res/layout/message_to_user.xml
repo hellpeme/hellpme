@@ -16,10 +16,9 @@
         android:layout_marginBottom="5dp"
         android:background="@drawable/rounded_rect"
         android:maxWidth="240dp"
-        android:padding="8dp"
-        android:text="Exemplo de texto"
+        android:padding="10dp"
+        android:text="TextView"
         android:textSize="16dp"
-
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -28,13 +27,17 @@
     <TextView
         android:id="@+id/txtNameUserMessage"
         android:layout_width="wrap_content"
-        android:layout_height="11dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="4dp"
-        android:text="Exemplo de Nome"
-        android:textSize="5dp"
+        android:layout_height="15dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:paddingLeft="8dp"
+        android:text="name"
+        android:textSize="10dp"
+        app:layout_constraintBottom_toBottomOf="@+id/txtChat"
+        app:layout_constraintEnd_toEndOf="@+id/txtChat"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="@+id/txtChat"
-        app:layout_constraintTop_toTopOf="@+id/txtChat" />
+        app:layout_constraintTop_toTopOf="@+id/txtChat"
+        app:layout_constraintVertical_bias="0.0" />
 
 </android.support.constraint.ConstraintLayout>

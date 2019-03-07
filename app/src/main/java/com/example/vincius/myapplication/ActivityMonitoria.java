@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.app.ActionBar;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -69,9 +72,6 @@ public class ActivityMonitoria extends AppCompatActivity {
         user = getIntent().getExtras().getParcelable("user");
 
         fetchAtributes();
-
-        getSupportActionBar().setTitle(username);
-
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -253,9 +253,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                 TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
                 txtNameMessage.setText(null);
             }
-
             txtChat.setText(message.getText());
-
         }
 
         @Override

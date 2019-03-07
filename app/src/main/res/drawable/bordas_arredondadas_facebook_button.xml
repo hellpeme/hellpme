@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <solid android:color="@color/com_facebook_blue"></solid>
+    <corners android:radius="25dp"></corners>
+    <selector xmlns:android="http://schemas.android.com/apk/res/android">
+        <item android:state_focused="true" android:state_pressed="false" />
+        <item android:state_focused="true" android:state_pressed="true"/>
+        <item android:state_focused="false" android:state_pressed="true"/>
+
+    </selector>
+</shape>
+

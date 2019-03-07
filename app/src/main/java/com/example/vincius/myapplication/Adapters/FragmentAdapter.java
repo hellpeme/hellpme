@@ -3,13 +3,18 @@ package com.example.vincius.myapplication.Adapters;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentPagerAdapter;
+
 import com.example.vincius.myapplication.Fragments.FragmentHome;
-import com.example.vincius.myapplication.Fragments.FragmentPerfil;
 import com.example.vincius.myapplication.Fragments.FragmentPesquisa;
 
 
-public class FragmentAdapter extends FragmentStatePagerAdapter {
+public class FragmentAdapter extends FragmentPagerAdapter {
+    public int position = 0;
+
+    public int getPosition() {
+        return position;
+    }
 
     private String[] mTabTitles;
 
@@ -20,13 +25,12 @@ public class FragmentAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int i) {
+        position = i;
         switch (i){
             case 0:
                 return new FragmentHome();
             case 1:
                 return new FragmentPesquisa();
-            case 2:
-                return new FragmentPerfil();
                 default:
                     return null;
         }
