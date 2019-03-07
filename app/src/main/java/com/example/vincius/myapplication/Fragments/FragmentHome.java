@@ -13,10 +13,13 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vincius.myapplication.ActivityGrupo;
 import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPrivado;
+import com.example.vincius.myapplication.ActivityPublico;
 import com.example.vincius.myapplication.R;
+import com.example.vincius.myapplication.User;
 import com.github.clans.fab.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentChange;
@@ -31,6 +34,7 @@ import com.xwray.groupie.OnItemClickListener;
 import com.xwray.groupie.ViewHolder;
 
 import java.util.List;
+import java.util.Objects;
 
 public class FragmentHome extends Fragment {
 
@@ -45,22 +49,35 @@ public class FragmentHome extends Fragment {
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         FloatingActionButton btnPrivate = view.findViewById(R.id.fabMonitoriaPrivada);
-
+        FloatingActionButton btnPublico = view.findViewById(R.id.fabMonitoriaPublica);
         RecyclerView rv = view.findViewById(R.id.lastMessages);
         adapter = new GroupAdapter();
+
         rv.setAdapter(adapter);
         rv.setLayoutManager(new LinearLayoutManager(getActivity()));
-        fetchLastMessages();
+
 
         adapter.setOnItemClickListener(new OnItemClickListener() {
             @Override
             public void onItemClick(@NonNull Item item, @NonNull View view) {
-                Intent intent = new Intent(getActivity(), ActivityMonitoria.class);
-                ContactItem contact = (ContactItem) item;
-                intent.putExtra("user2", contact.contact);
+                Intent intent;
+
+                if (item instanceof ContactItem ){
+                    ContactItem contact = (ContactItem) item;
+                    intent = new Intent(getActivity(), ActivityMonitoria.class);
+                    intent.putExtra("user2", contact.contact);
+                } else {
+                    ContactGroupItem contact = (ContactGroupItem) item;
+                    intent = new Intent(getActivity(), ActivityGrupo.class);
+                    intent.putExtra("group2", contact.contact);
+                }
+
                 startActivity(intent);
             }
         });
+
+        fetchLastMessages();
+        fetchLastMessagesGroup();
 
         btnPrivate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -72,6 +89,15 @@ public class FragmentHome extends Fragment {
             }
         });
 
+        btnPublico.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ActivityPublico.class);
+
+                startActivity(intent);
+
+            }
+        });
 
     }
 
@@ -110,6 +136,30 @@ public class FragmentHome extends Fragment {
                 });
     }
 
+    private void fetchLastMessagesGroup() {
+        String uid = FirebaseAuth.getInstance().getUid();
+
+        FirebaseFirestore.getInstance().collection("/last-messages")
+                .document(uid)
+                .collection("contactsgroups")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        List<DocumentChange> documentChanges = queryDocumentSnapshots.getDocumentChanges();
+                        if(documentChanges != null){
+                            for (DocumentChange doc: documentChanges) {
+                                if(doc.getType() == DocumentChange.Type.ADDED){
+                                    ContactGroup contact = doc.getDocument().toObject(ContactGroup.class);
+                                    adapter.add(new ContactGroupItem(contact));
+
+                                }
+                            }
+                        }
+
+                    }
+                });
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -132,7 +182,32 @@ public class FragmentHome extends Fragment {
             TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
             TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
             ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
+            username.setText(contact.getUsername());
+            message.setText(contact.getLastMessage());
+            Picasso.get()
+                    .load(contact.getPhotoUrl())
+                    .into(imgPhoto);
+        }
 
+        @Override
+        public int getLayout() {
+            return R.layout.item_messages;
+        }
+    }
+
+    private class ContactGroupItem extends Item<ViewHolder> {
+
+        private final ContactGroup contact;
+
+        private ContactGroupItem(ContactGroup contact) {
+            this.contact = contact;
+        }
+
+        @Override
+        public void bind(@NonNull ViewHolder viewHolder, int position) {
+            TextView username = viewHolder.itemView.findViewById(R.id.txtNameMessages);
+            TextView message = viewHolder.itemView.findViewById(R.id.txtContentMessages);
+            ImageView imgPhoto = viewHolder.itemView.findViewById(R.id.imageLastMessages);
             username.setText(contact.getUsername());
             message.setText(contact.getLastMessage());
             Picasso.get()

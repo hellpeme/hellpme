@@ -15,6 +15,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode"
         android:name="android.support.multidex.MultiDexApplication">
+  
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
@@ -62,6 +63,9 @@
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
         <activity android:name=".ActivityAlterarSenha"></activity>
+        <activity android:name=".ActivityGrupo" />
+        <activity android:name=".ActivityPublico" />
+        <activity android:name=".ActivityPerfilGroup"></activity>
     </application>
 
 </manifest>

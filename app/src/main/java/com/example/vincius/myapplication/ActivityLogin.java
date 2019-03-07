@@ -35,7 +35,6 @@ public class ActivityLogin extends AppCompatActivity {
     private TextView textRegister, textForgotPass, textTitle;
     private EditText editEmail, editSenha;
     private Button btnlogin, btnLoginFacebook;
-    private LoginButton loginButton;
     private FirebaseAuth mAuth;
     private CallbackManager mCallbackManager;
     private ProgressBar loading;
@@ -49,8 +48,8 @@ public class ActivityLogin extends AppCompatActivity {
         verficarAuth();
 
 
-            FacebookSdk.setIsDebugEnabled(true);
-            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+        FacebookSdk.setIsDebugEnabled(true);
+        FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
 
         mAuth = FirebaseAuth.getInstance();
 
@@ -116,7 +115,7 @@ public class ActivityLogin extends AppCompatActivity {
         super.onStart();
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        if (currentUser!= null) {
+        if (currentUser!= null && currentUser.isEmailVerified()) {
             updateUI();
         }
     }
@@ -225,6 +224,5 @@ public class ActivityLogin extends AppCompatActivity {
             btnLoginFacebook = findViewById(R.id.btnLoginFacebook);
             textRegister = findViewById(R.id.textRegister);
             textForgotPass = findViewById(R.id.textForgotPass);
-            loginButton = findViewById(R.id.login_button);
     }
 }

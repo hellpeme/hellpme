@@ -15,8 +15,11 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.vincius.myapplication.Fragments.Contact;
+import com.example.vincius.myapplication.Fragments.ContactGroup;
+import com.example.vincius.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -34,44 +37,39 @@ import com.squareup.picasso.Picasso;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.ViewHolder;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-public class ActivityMonitoria extends AppCompatActivity {
-
-    private GroupAdapter adapter;
-    private String username, uuid,photoUrl;
+public class ActivityGrupo extends AppCompatActivity {
     private ImageButton btnChat;
     private EditText editChat;
-    private User me, user;
-    private Contact userFromContact;
-
+    private GroupAdapter adapter;
+    private User me;
+    private Group group;
+    private ContactGroup groupFromContact;
+    private String uuid,adminUser,groupName,profileUrl;
+    private int currentNumUser, usersMax;
+    private HashMap<String,String> listIDUser;
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_monitoria);
-
+        setContentView(R.layout.activity_grupo);
         RecyclerView rv = findViewById(R.id.recyclerChat);
 
         btnChat =  findViewById(R.id.btnChat);
         editChat = findViewById(R.id.editChat);
         layout = findViewById(R.id.layout);
-
         set.clone(layout);
 
-        userFromContact = getIntent().getExtras().getParcelable("user2");
-
-        user = getIntent().getExtras().getParcelable("user");
+        groupFromContact = getIntent().getExtras().getParcelable("group2");
+        group = getIntent().getExtras().getParcelable("group");
 
         fetchAtributes();
-
-        getSupportActionBar().setTitle(username);
-
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,15 +77,14 @@ public class ActivityMonitoria extends AppCompatActivity {
                 sendMessage();
             }
         });
-
-
+        
         adapter = new GroupAdapter();
-
+        
         rv.setLayoutManager( new LinearLayoutManager(  this));
         rv.setAdapter(adapter);
 
-        FirebaseFirestore.getInstance().collection("/users")
-                .document(FirebaseAuth.getInstance().getUid())
+        FirebaseFirestore.getInstance().collection("/groups")
+                .document(uuid)
                 .get()
                 .addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
@@ -96,18 +93,25 @@ public class ActivityMonitoria extends AppCompatActivity {
                         fetchMessage();
                     }
                 });
-
     }
 
-    private void fetchAtributes() {
-        if(user != null) {
-            username = user.getUsername();
-            uuid = user.getUid();
-            photoUrl = user.getProfileUrl();
+    private void fetchAtributes(){
+        if(group != null) {
+            uuid = group.getUid();
+            groupName = group.getGroupName();
+            profileUrl = group.getProfileUrl();
+            adminUser = group.getAdminUser();
+            currentNumUser = group.getCurrentNumUsers();
+            usersMax = group.getMaxUsers();
+            listIDUser = group.getListIDUser();
         }else{
-            username = userFromContact.getUsername();
-            uuid = userFromContact.getUid();
-            photoUrl = userFromContact.getPhotoUrl();
+            uuid = groupFromContact.getUid();
+            groupName = groupFromContact.getUsername();
+            profileUrl = groupFromContact.getPhotoUrl();
+            adminUser = groupFromContact.getAdminUser();
+            currentNumUser = groupFromContact.getCurrentNumUsers();
+            usersMax = groupFromContact.getMaxUsers();
+            listIDUser = groupFromContact.getListIDUser();
         }
     }
 
@@ -117,8 +121,8 @@ public class ActivityMonitoria extends AppCompatActivity {
             String toId = uuid;
 
             FirebaseFirestore.getInstance().collection("/conversas")
-                    .document(fromId)
-                    .collection(toId)
+                    .document(toId)
+                    .collection("/AllMensagens")
                     .orderBy("timestamp", Query.Direction.ASCENDING)
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
@@ -129,7 +133,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                                 for (DocumentChange doc : documentChanges) {
                                     if (doc.getType() == DocumentChange.Type.ADDED){
                                         Message message = doc.getDocument().toObject(Message.class);
-                                        adapter.add(new MessageItem(message));
+                                        adapter.add(new ActivityGrupo.MessageItem(message));
                                         set.clear(R.id.txtChat, ConstraintSet.TOP);
                                     }
                                 }
@@ -147,78 +151,59 @@ public class ActivityMonitoria extends AppCompatActivity {
 
 
         editChat.setText(null);
-
         final String toId = uuid;
-
         long timestamp = System.currentTimeMillis();
-
         final String fromId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         final Message message = new Message();
-
         message.setFromId(fromId);
         message.setToId(toId);
         message.setTimestamp(timestamp);
         message.setText(text);
 
 
-
-        //
-
-        if(!message.getText().isEmpty()){
-
-            FirebaseFirestore.getInstance().collection("/conversas")
-                    .document(fromId)
-                    .collection(toId)
-                    .add(message)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d( "Teste",documentReference.getId());
-
-                            // create last messages
-                            Contact contact = new Contact();
-                            contact.setUid(toId);
-                            contact.setUsername(username);
-                            contact.setPhotoUrl(photoUrl);
-                            contact.setTimestamp(message.getTimestamp());
-                            contact.setLastMessage(message.getText());
-
-                            FirebaseFirestore.getInstance().collection("/last-messages")
-                                    .document(fromId)
-                                    .collection("contacts")
-                                    .document(toId)
-                                    .set(contact);
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("Teste", e.getMessage());
-                        }
-                    });
-
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(toId)
-                    .collection(fromId)
+                    .collection("/AllMensagens")
                     .add(message)
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d( "Teste",documentReference.getId());
 
-                            Contact contact = new Contact();
+                            ContactGroup contact = new ContactGroup();
                             contact.setUid(toId);
-                            contact.setUsername(username);
-                            contact.setPhotoUrl(photoUrl);
                             contact.setTimestamp(message.getTimestamp());
                             contact.setLastMessage(message.getText());
+                            contact.setUsername(groupName);
+                            contact.setPhotoUrl(profileUrl);
+                            contact.setAdminUser(adminUser);
+                            contact.setCurrentNumUsers(currentNumUser);
+                            contact.setMaxUsers(usersMax);
+                            contact.setListIDUser(listIDUser);
 
+                            //Vai mandar a mensagem para o Admin da Monitoria
                             FirebaseFirestore.getInstance().collection("/last-messages")
-                                    .document(toId)
-                                    .collection("contacts")
-                                    .document(fromId)
+                                    .document(adminUser)
+                                    .collection("contactsgroups")
+                                    .document(uuid)
                                     .set(contact);
+
+                            //Manda Mensagem para todos os Usuarios do Grupo
+                            if(group.getCurrentNumUsers() > 0) {
+                                for (String userIdGroup : group.getListIDUser().values()) {
+                                    if (!userIdGroup.isEmpty() || userIdGroup != null) {
+                                        FirebaseFirestore.getInstance().collection("/last-messages")
+                                                .document(userIdGroup)
+                                                .collection("contactsgroups")
+                                                .document(uuid)
+                                                .set(contact);
+                                    }
+                                }
+                            } else{
+                                Toast.makeText(ActivityGrupo.this,
+                                        "Ainda não existe alunos nesta Monitoria, espere até que algum aluno entre para iniciar a Monitoria!",Toast.LENGTH_SHORT);
+                            }
+
 
                         }
                     })
@@ -228,8 +213,6 @@ public class ActivityMonitoria extends AppCompatActivity {
                             Log.d("Teste", e.getMessage());
                         }
                     });
-
-        }
 
 
     }
@@ -247,11 +230,20 @@ public class ActivityMonitoria extends AppCompatActivity {
 
         @Override
         public void bind(@NonNull ViewHolder viewHolder, int position) {
-            TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
+            final TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
 
             if(getLayout() == R.layout.message_to_user) {
-                TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
-                txtNameMessage.setText(null);
+                final TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
+
+                FirebaseFirestore.getInstance().collection("users")
+                        .document(message.getFromId())
+                        .addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                            @Override
+                            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                txtNameMessage.setText(documentSnapshot.getString("username").toString());
+                            }
+                        });
+
             }
 
             txtChat.setText(message.getText());
@@ -265,4 +257,6 @@ public class ActivityMonitoria extends AppCompatActivity {
                     : R.layout.message_to_user;
         }
     }
+
+
 }
