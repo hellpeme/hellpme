@@ -44,6 +44,14 @@
         fab:menu_openDirection="up">
 
         <com.github.clans.fab.FloatingActionButton
+            android:id="@+id/fabWatson"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_group_black_24dp"
+            fab:fab_size="mini"
+            fab:fab_label="Watson" />
+
+        <com.github.clans.fab.FloatingActionButton
             android:id="@+id/fabMonitoriaPrivada"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -58,6 +66,7 @@
             android:src="@drawable/ic_group_black_24dp"
             fab:fab_size="mini"
             fab:fab_label="@string/publics" />
+
 
     </com.github.clans.fab.FloatingActionMenu>
 

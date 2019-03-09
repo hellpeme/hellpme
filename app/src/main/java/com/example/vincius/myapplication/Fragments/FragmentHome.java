@@ -18,6 +18,7 @@ import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPrivado;
 import com.example.vincius.myapplication.ActivityPublico;
+import com.example.vincius.myapplication.ActivityWatson;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
 import com.github.clans.fab.FloatingActionButton;
@@ -53,6 +54,8 @@ public class FragmentHome extends Fragment {
         super.onActivityCreated(savedInstanceState);
         FloatingActionButton btnPrivate = view.findViewById(R.id.fabMonitoriaPrivada);
         FloatingActionButton btnPublico = view.findViewById(R.id.fabMonitoriaPublica);
+        FloatingActionButton watson = view.findViewById(R.id.fabWatson);
+
         RecyclerView rv = view.findViewById(R.id.lastMessages);
         adapter = new GroupAdapter();
 
@@ -97,6 +100,14 @@ public class FragmentHome extends Fragment {
                 Intent intent = new Intent(getActivity(),ActivityPublico.class);
                 startActivity(intent);
 
+            }
+        });
+
+        watson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ActivityWatson.class);
+                startActivity(intent);
             }
         });
 

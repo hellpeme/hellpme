@@ -189,8 +189,8 @@ public class ActivityGrupo extends AppCompatActivity {
                                     .set(contact);
 
                             //Manda Mensagem para todos os Usuarios do Grupo
-                            if(group.getCurrentNumUsers() > 0) {
-                                for (String userIdGroup : group.getListIDUser().values()) {
+                            if(currentNumUser > 0) {
+                                for (String userIdGroup : listIDUser.values()) {
                                     if (!userIdGroup.isEmpty() || userIdGroup != null) {
                                         FirebaseFirestore.getInstance().collection("/last-messages")
                                                 .document(userIdGroup)

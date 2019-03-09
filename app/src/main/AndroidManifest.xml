@@ -91,11 +91,11 @@
                 android:value=".ActivitySettings" />
         </activity>
         <activity android:name=".ActivitySettingsPerfil">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivitySettings" />
         </activity>
+        <activity android:name=".ActivityWatson"></activity>
     </application>
 
 </manifest>
