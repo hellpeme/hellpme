@@ -21,8 +21,6 @@ import com.ibm.watson.developer_cloud.assistant.v1.model.InputData;
 import com.ibm.watson.developer_cloud.assistant.v1.model.MessageOptions;
 import com.ibm.watson.developer_cloud.assistant.v1.model.MessageResponse;
 import com.ibm.watson.developer_cloud.assistant.v1.Assistant;
-import com.ibm.watson.developer_cloud.assistant.v1.model.MessageInput;
-import com.ibm.watson.developer_cloud.http.ServiceCall;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.ViewHolder;
@@ -31,7 +29,7 @@ import com.xwray.groupie.ViewHolder;
 public class ActivityWatson extends AppCompatActivity {
 
     private GroupAdapter adapter;
-    private String username, uuid,photoUrl;
+    private String uuid;
     private ImageButton btnChat;
     private EditText editChat;
     private User me;
@@ -76,9 +74,25 @@ public class ActivityWatson extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         me = documentSnapshot.toObject(User.class);
+                        uuid = me.getUid();
+                        welcome();
                     }
                 });
 
+    }
+
+    private void welcome() {
+
+        final String welcome = "Olá seja bem vindo! Meu nome é Watson e sou um bot e também serei seu assistente e guia. Faça uma pergunta e qualquer dúvida digite Help ou Ajuda.";
+
+        final Message mesgWelcome = new Message();
+        mesgWelcome.setText(welcome);
+        mesgWelcome.setFromId("Welcome");
+        mesgWelcome.setToId(uuid);
+        mesgWelcome.setTimestamp(System.currentTimeMillis());
+        mesgWelcome.setPhotoUrl("null");
+
+        adapter.add(new MessageItem(mesgWelcome));
     }
 
     private void fetchAtributes() {
@@ -86,6 +100,7 @@ public class ActivityWatson extends AppCompatActivity {
         assistant = new Assistant("2019-03-08","apikey","ipq3za265_GpXGRdtMsIYtjhCkgR9EJdphWawF3gN_8o");
 
         assistant.setEndPoint( "https://gateway-lon.watsonplatform.net/assistant/api");
+
     }
 
 

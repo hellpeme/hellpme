@@ -74,7 +74,8 @@ public class ActivityPerfilGroup extends AppCompatActivity {
 
     private boolean verificadorDeIngresso() {
         int countUser = 0;
-        if(group.getCurrentNumUsers() < group.getMaxUsers()){
+        if((group.getCurrentNumUsers() < group.getMaxUsers()) &&
+                !group.getListIDUser().containsValue(FirebaseAuth.getInstance().getUid())){
             int currentNum = group.getCurrentNumUsers();
             listUsersUpdate.put("" + (2 + currentNum),fromId);
             FirebaseFirestore.getInstance().collection("groups")
