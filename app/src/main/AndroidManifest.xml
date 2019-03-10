@@ -29,7 +29,6 @@
 
         <activity
             android:name=".ActivityLogin"
-            android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
         <activity
@@ -93,7 +92,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivitySettings" />
         </activity>
-        <activity android:name=".ActivitySettingsPerfil">
+        <activity android:name=".ActivitySettingsPerfil"
+            android:label="Perfil">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:label="Perfil"
