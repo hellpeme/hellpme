@@ -38,6 +38,8 @@ import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
 import com.xwray.groupie.ViewHolder;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -231,15 +233,24 @@ public class ActivityGrupo extends AppCompatActivity {
         @Override
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             final TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
+            TextView timestamp = viewHolder.itemView.findViewById(R.id.timestamp);
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date d = new Date(message.getTimestamp());
+            String date = format.format(d);
 
             if(getLayout() == R.layout.message_to_user) {
                 final TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
+
+
+
+                timestamp.setText(date);
 
                 FirebaseFirestore.getInstance().collection("users")
                         .document(message.getFromId())
                         .addSnapshotListener(new EventListener<DocumentSnapshot>() {
                             @Override
                             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+
                                 txtNameMessage.setText(documentSnapshot.getString("username"));
                             }
                         });
@@ -247,7 +258,7 @@ public class ActivityGrupo extends AppCompatActivity {
             }
 
             txtChat.setText(message.getText());
-
+            timestamp.setText(date);
         }
 
         @Override

@@ -48,6 +48,9 @@ import com.xwray.groupie.Item;
 import com.xwray.groupie.ViewHolder;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -272,9 +275,9 @@ public class ActivityMonitoria extends AppCompatActivity {
                             });
 
                             final Contact contact = new Contact();
-                            contact.setUid(toId);
-                            contact.setUsername(username);
-                            contact.setPhotoUrl(photoUrl);
+                            contact.setUid(fromId);
+                            contact.setUsername(me.getUsername());
+                            contact.setPhotoUrl(me.getProfileUrl());
                             contact.setTimestamp(message.getTimestamp());
                             contact.setLastMessage(message.getText());
 
@@ -358,11 +361,17 @@ public class ActivityMonitoria extends AppCompatActivity {
         @Override
         public void bind(@NonNull ViewHolder viewHolder, int position) {
             TextView txtChat = viewHolder.itemView.findViewById(R.id.txtChat);
+            TextView timestamp = viewHolder.itemView.findViewById(R.id.timestamp);
 
             if(getLayout() == R.layout.message_to_user) {
                 TextView txtNameMessage = viewHolder.itemView.findViewById(R.id.txtNameUserMessage);
                 txtNameMessage.setText(null);
             }
+
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date d = new Date(message.getTimestamp());
+            String date = format.format(d);
+            timestamp.setText(date);
             txtChat.setText(message.getText());
         }
 
