@@ -38,6 +38,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
         app:menu_colorNormal="@color/colorPrimary"
+        app:menu_colorPressed="@color/colorPrimaryDark"
         fab:menu_backgroundColor="@color/transparent"
         fab:menu_fab_label=""
         fab:menu_labels_showShadow="true"
@@ -48,6 +49,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_group_black_24dp"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_colorRipple="@color/colorAccent"
             fab:fab_size="mini"
             fab:fab_label="Watson" />
 
@@ -56,6 +60,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_person_black_24dp"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_colorRipple="@color/colorAccent"
             fab:fab_size="mini"
             fab:fab_label="@string/privates" />
 
@@ -64,6 +71,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_group_black_24dp"
+            fab:fab_colorNormal="@color/colorPrimary"
+            fab:fab_colorPressed="@color/colorPrimaryDark"
+            fab:fab_colorRipple="@color/colorAccent"
             fab:fab_size="mini"
             fab:fab_label="@string/publics" />
 
