@@ -9,6 +9,7 @@ import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -35,9 +36,10 @@ import java.util.UUID;
 public class ActivitySettingsPerfil extends AppCompatActivity {
 
     private ImageView imageDoPerfil;
-    private EditText editName;
+    private TextView txtName;
+    private CardView cardView;
     private Button btnChangePhoto;
-    private ImageButton btnChangeName;
+    private ImageButton btnPenName;
     private Uri selectedUri;
     private String photoPerfil;
     final String uid = FirebaseAuth.getInstance().getUid();
@@ -47,7 +49,26 @@ public class ActivitySettingsPerfil extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings_perfil);
         startComponents();
+        fetchNameAndPhoto();
 
+
+        btnChangePhoto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selecionarFoto();
+            }
+        });
+        btnPenName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivitySettingsPerfil.this, ActivityChangeName.class);
+                startActivity(intent);
+            }
+        });
+        
+    }
+
+    private void fetchNameAndPhoto() {
         DocumentReference docRef = FirebaseFirestore.getInstance().collection("users").document(uid);
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
@@ -56,7 +77,7 @@ public class ActivitySettingsPerfil extends AppCompatActivity {
 
                     DocumentSnapshot doc = task.getResult();
                     if(doc!= null) {
-                        editName.setText(doc.getString("username"));
+                        txtName.setText(doc.getString("username"));
                         Picasso.get()
                                 .load(doc.getString("profileUrl"))
                                 .into(imageDoPerfil);
@@ -67,21 +88,6 @@ public class ActivitySettingsPerfil extends AppCompatActivity {
                 }
             }
         });
-
-
-        btnChangePhoto.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                selecionarFoto();
-            }
-        });
-        btnChangeName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                changeNameInFirestore();
-            }
-        });
-        
     }
 
     private void selecionarFoto() {
@@ -107,31 +113,14 @@ public class ActivitySettingsPerfil extends AppCompatActivity {
         });
     }
 
-    private void changeNameInFirestore() {
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference noteRef = db.collection("users")
-                .document(uid);
-        final String name = editName.getText().toString();
 
-        noteRef.update("username", name).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if(task.isSuccessful()){
-                    editName.setText(name);
-                    Log.d("teste", "Username change!");
-                }
-                else{
-                    Log.d("teste", "Username not change at all!");
-                }
-            }
-        });
-    }
 
     private void startComponents() {
         imageDoPerfil = findViewById(R.id.imgPerfilPhoto);
-        editName = findViewById(R.id.editTypName);
         btnChangePhoto = findViewById(R.id.btnChangePhoto);
-        btnChangeName = findViewById(R.id.btnChangeName);
+        cardView = findViewById(R.id.cardName);
+        txtName = findViewById(R.id.txtName);
+        btnPenName = findViewById(R.id.btnPenName);
     }
 
     @Override

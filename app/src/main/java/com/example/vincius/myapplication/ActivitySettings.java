@@ -10,6 +10,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -46,6 +47,7 @@ public class ActivitySettings extends AppCompatActivity {
     private ImageView imageDoPerfil;
     private TextView txtUsernamePerfil;
     private ListView listView;
+    private CardView cardView;
     private String photoPerfil;
     private String items[] = new String[]{"Mudar a senha", "Mudar o nome", "Apagar minha conta", "Sair"};
     final String uid = FirebaseAuth.getInstance().getUid();
@@ -73,6 +75,14 @@ public class ActivitySettings extends AppCompatActivity {
                         Log.i("teste", "profile Url: "+ doc.getString("profileUrl"));
                     }
                 }
+            }
+        });
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivitySettings.this, ActivitySettingsPerfil.class);
+                startActivity(intent);
             }
         });
 
@@ -117,6 +127,7 @@ public class ActivitySettings extends AppCompatActivity {
         listView = findViewById(R.id.listSettings);
         imageDoPerfil = findViewById(R.id.imgPerfilPhoto);
         txtUsernamePerfil = findViewById(R.id.txtPerfilUsername);
+        cardView = findViewById(R.id.cardView);
     }
 
     private void deleteAuth() {

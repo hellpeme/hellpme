@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,10 +16,12 @@ import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.vincius.myapplication.Adapters.FragmentAdapter;
+import com.example.vincius.myapplication.Fragments.FragmentHome;
 import com.example.vincius.myapplication.Fragments.FragmentPesquisa;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -40,20 +45,20 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
     private ViewPager viewPager;
     public MenuItem menuItemSearch, menuItemOptions;
     public GroupAdapter adapter;
+    private SearchView searchView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_fragmentsnavigation);
         adapter = new GroupAdapter();
         getSupportActionBar().setElevation(0);
-
-        verficarAuth();
         startComponents();
         fetchUsers();
         fetchGroups();
         FragmentPesquisa.setAdapter(adapter);
-
 
     }
 
@@ -103,15 +108,6 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
         });
     }
 
-    private void verficarAuth() {
-        if (FirebaseAuth.getInstance().getUid() == null) {
-            if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
-                Intent intent = new Intent(ActivityFragmentsNavigation.this, ActivityLogin.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-            }
-        }
-    }
 
 
     private void startComponents() {
@@ -122,13 +118,47 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
     }
 
     @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menuItemSearch = menu.findItem(R.id.action_search);
+        menuItemOptions = menu.findItem(R.id.action_options);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu_options, menu);
         menuItemSearch = menu.findItem(R.id.action_search);
-        menuItemOptions = menu.findItem(R.id.action_search);
-        SearchView searchView = (SearchView) menuItemSearch.getActionView();
+        menuItemOptions = menu.findItem(R.id.action_options);
+        searchView = (SearchView) menuItemSearch.getActionView();
         searchView.setOnQueryTextListener(this);
+        searchView.setIconified(true);
+        searchView.setMaxWidth(10000);
+
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(menuItemOptions!= null){
+                    getSupportActionBar().setTitle(null);
+                    menuItemOptions.setVisible(false);
+                }
+
+            }
+        });
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                menuItemOptions.setVisible(true);
+                getSupportActionBar().setTitle("Hellp.me");
+                return false;
+            }
+        });
+
+
+
         return true;
+
     }
 
     @Override
@@ -138,7 +168,6 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
                 Intent i= new Intent(this, ActivitySettings.class);
                 startActivity(i);
                 return true;
-
                 default:
                     return super.onOptionsItemSelected(item);
         }
@@ -151,6 +180,7 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
 
     @Override
     public boolean onQueryTextChange(String s) {
+
         String userinput = s.toLowerCase();
         List<String> newList = new ArrayList<>();
 
@@ -214,6 +244,7 @@ public class ActivityFragmentsNavigation extends AppCompatActivity implements Se
             }
         });
     }
+
 
     public static class UsersItem extends Item<ViewHolder> {
 

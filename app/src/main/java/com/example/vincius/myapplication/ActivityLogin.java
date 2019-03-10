@@ -48,7 +48,7 @@ import java.util.UUID;
 
 public class ActivityLogin extends AppCompatActivity {
 
-    private TextView textRegister, textForgotPass, textTitle;
+    private TextView textRegister, textForgotPass;
     private EditText editEmail, editSenha;
     private Button btnlogin, btnLoginFacebook;
     private FirebaseAuth mAuth;
@@ -58,7 +58,6 @@ public class ActivityLogin extends AppCompatActivity {
     private String username;
     private String uid;
     private String profileUrl;
-
 
 
     @Override
@@ -215,6 +214,12 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void verficarAuth() {
 
+        if(FacebookSdk.getClientToken() != null){
+            Intent intent = new Intent(ActivityLogin.this, ActivityFragmentsNavigation.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
         if (FirebaseAuth.getInstance().getUid() != null) {
             if(FirebaseAuth.getInstance().getCurrentUser().isEmailVerified()) {
                 Intent intent = new Intent(ActivityLogin.this, ActivityFragmentsNavigation.class);
@@ -270,7 +275,6 @@ public class ActivityLogin extends AppCompatActivity {
 
     private void startComponents() {
             loading = findViewById(R.id.loadingLogin);
-            textTitle = findViewById(R.id.txtTitle);
             editEmail = findViewById(R.id.viewEditEmail);
             editSenha = findViewById(R.id.viewEditSenha);
             btnlogin = findViewById(R.id.btlogin);
