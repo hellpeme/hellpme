@@ -30,7 +30,6 @@ public class Group implements Parcelable {
         this.profileUrl = profileUrl;
         this.adminUser = adminUser;
         listIDUser = new HashMap<>();
-        listIDUser.put("1", adminUser);
         maxUsers = numberUsers;
         currentNumUsers = 0;
     }
