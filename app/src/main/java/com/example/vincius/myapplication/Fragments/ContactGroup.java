@@ -25,9 +25,9 @@ public class ContactGroup implements Parcelable {
         photoUrl = in.readString();
         lastMessage = in.readString();
         adminUser = in.readString();
+        listIDUser = (HashMap<String, String>) in.readSerializable();
         maxUsers = in.readInt();
         currentNumUsers = in.readInt();
-        listIDUser = (HashMap<String, String>) in.readSerializable();
     }
 
     public static final Creator<ContactGroup> CREATOR = new Creator<ContactGroup>() {

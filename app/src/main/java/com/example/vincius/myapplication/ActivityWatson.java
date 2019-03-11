@@ -67,6 +67,8 @@ public class ActivityWatson extends AppCompatActivity {
         rv.setLayoutManager( new LinearLayoutManager(  this));
         rv.setAdapter(adapter);
 
+        welcome();
+
         FirebaseFirestore.getInstance().collection("/users")
                 .document(FirebaseAuth.getInstance().getUid())
                 .get()
@@ -74,8 +76,6 @@ public class ActivityWatson extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         me = documentSnapshot.toObject(User.class);
-                        uuid = me.getUid();
-                        welcome();
                     }
                 });
 
@@ -88,7 +88,7 @@ public class ActivityWatson extends AppCompatActivity {
         final Message mesgWelcome = new Message();
         mesgWelcome.setText(welcome);
         mesgWelcome.setFromId("Welcome");
-        mesgWelcome.setToId(uuid);
+        mesgWelcome.setToId(FirebaseAuth.getInstance().getUid());
         mesgWelcome.setTimestamp(System.currentTimeMillis());
         mesgWelcome.setPhotoUrl("null");
 
