@@ -142,7 +142,7 @@ public class ActivityWatson extends AppCompatActivity {
 
                     MessageResponse response = assistant.message(options).execute();
 
-                    Message outputMessage = new Message();
+                    final Message outputMessage = new Message();
                     if(response != null &&
                             response.getOutput() != null &&
                             "text".equals(response.getOutput().getGeneric().get(0).getResponseType())
@@ -152,7 +152,13 @@ public class ActivityWatson extends AppCompatActivity {
                         outputMessage.setPhotoUrl("null");
                         outputMessage.setTimestamp(timestamp);
                         outputMessage.setText(response.getOutput().getGeneric().get(0).getText());
-                        adapter.add(new MessageItem(outputMessage));
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.add(new MessageItem(outputMessage));
+                            }
+                        });
                     }
 
                 }catch(Exception e){
