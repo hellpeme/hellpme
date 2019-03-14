@@ -112,6 +112,8 @@ public class ActivityPerfilGroup extends AppCompatActivity {
     }
 
     private void seachListUsers() {
+        users = new ArrayList<User>();
+
             FirebaseFirestore.getInstance().collection("users")
                     .addSnapshotListener(new EventListener<QuerySnapshot>() {
                         @Override
@@ -124,6 +126,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
                                     txtMonitor.setText(user.getUsername());
                                 } else if(listUsersUpdate.containsValue(user.getUid())){
                                     users.add(user);
+                                    Log.d("teste perfil", user.getUsername());
                                 }
                             }
                         }
@@ -163,13 +166,13 @@ public class ActivityPerfilGroup extends AppCompatActivity {
 
 
 
-    private class AdapterUsername extends ArrayAdapter<User>{
+    public class AdapterUsername extends ArrayAdapter<User>{
         private class ViewHolder{
             TextView nome;
         }
 
         private AdapterUsername(Context context, ArrayList<User> users){
-            super(context,0,users);
+            super(context,R.layout.item_user,users);
         }
 
         @NonNull
@@ -182,7 +185,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
                 viewHolder = new ViewHolder();
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 convertView = inflater.inflate(R.layout.item_user,parent,false);
-                viewHolder.nome = (TextView) findViewById(R.id.textNameUserPesquisa);
+                viewHolder.nome = (TextView) convertView.findViewById(R.id.textNameUserPesquisa);
 
                 convertView.setTag(viewHolder);
             } else{
