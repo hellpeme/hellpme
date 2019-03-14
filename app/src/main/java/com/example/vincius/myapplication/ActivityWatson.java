@@ -67,6 +67,8 @@ public class ActivityWatson extends AppCompatActivity {
         rv.setLayoutManager( new LinearLayoutManager(  this));
         rv.setAdapter(adapter);
 
+        welcome();
+
         FirebaseFirestore.getInstance().collection("/users")
                 .document(FirebaseAuth.getInstance().getUid())
                 .get()
@@ -74,8 +76,6 @@ public class ActivityWatson extends AppCompatActivity {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         me = documentSnapshot.toObject(User.class);
-                        uuid = me.getUid();
-                        welcome();
                     }
                 });
 
@@ -88,7 +88,7 @@ public class ActivityWatson extends AppCompatActivity {
         final Message mesgWelcome = new Message();
         mesgWelcome.setText(welcome);
         mesgWelcome.setFromId("Welcome");
-        mesgWelcome.setToId(uuid);
+        mesgWelcome.setToId(FirebaseAuth.getInstance().getUid());
         mesgWelcome.setTimestamp(System.currentTimeMillis());
         mesgWelcome.setPhotoUrl("null");
 
@@ -142,7 +142,7 @@ public class ActivityWatson extends AppCompatActivity {
 
                     MessageResponse response = assistant.message(options).execute();
 
-                    Message outputMessage = new Message();
+                    final Message outputMessage = new Message();
                     if(response != null &&
                             response.getOutput() != null &&
                             "text".equals(response.getOutput().getGeneric().get(0).getResponseType())
@@ -152,7 +152,13 @@ public class ActivityWatson extends AppCompatActivity {
                         outputMessage.setPhotoUrl("null");
                         outputMessage.setTimestamp(timestamp);
                         outputMessage.setText(response.getOutput().getGeneric().get(0).getText());
-                        adapter.add(new MessageItem(outputMessage));
+
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                adapter.add(new MessageItem(outputMessage));
+                            }
+                        });
                     }
 
                 }catch(Exception e){
