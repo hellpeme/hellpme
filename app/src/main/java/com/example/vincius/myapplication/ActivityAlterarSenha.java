@@ -28,7 +28,7 @@ public class ActivityAlterarSenha extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_alterar_senha);
-        starComponents();
+        startComponents();
         btnAlterarSenha2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -37,7 +37,7 @@ public class ActivityAlterarSenha extends AppCompatActivity {
         });
     }
 
-    private void starComponents(){
+    private void startComponents(){
         txtAntigaSenha = (EditText) findViewById(R.id.txtAntigaSenha);
         txtNovaSenha = (EditText) findViewById(R.id.txtNovaSenha);
         txtConfirmarNovaSenha = (EditText) findViewById(R.id.txtConfirmarNovaSenha);

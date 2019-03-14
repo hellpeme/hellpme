@@ -91,11 +91,15 @@
                 android:value=".ActivitySettings" />
         </activity>
         <activity android:name=".ActivitySettingsPerfil">
-
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivitySettings" />
         </activity>
+        <activity
+            android:name=".ActivityReportarProblema"
+            android:label="@string/title_activity_reportar_problema"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ActivityDenunciar"></activity>
     </application>
 
 </manifest>
