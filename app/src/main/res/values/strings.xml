@@ -33,5 +33,6 @@
         <item>CONVERSAS</item>
         <item>MONITORIAS</item>
     </string-array>
+    <string name="title_activity_list_user_in_group">ActivityListUserInGroup</string>
 
 </resources>
