@@ -5,14 +5,19 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -23,11 +28,13 @@ import java.util.Map;
 public class ActivityPerfil extends AppCompatActivity {
 
     private ImageView imgPerfilPhoto;
-    private TextView txtNameProfileUser;
+    private TextView txtNameProfileUser, txtPontosUser;
     private String username, uuid, photoUrl;
-    private Button btnIngress;
+    private Button btnIngress, btnMais, btnMenos;
     private User user;
-
+    private int valor;
+    private static boolean pontou;
+    private Integer pontos;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -35,8 +42,15 @@ public class ActivityPerfil extends AppCompatActivity {
         setContentView(R.layout.activity_perfil);
         startComponents();
         fetchAtributes();
+        fetchPontos();
 
-        final String fromId = FirebaseAuth.getInstance().getUid().toString();
+        if(pontou){
+            btnMais.setVisibility(View.INVISIBLE);
+            btnMenos.setVisibility(View.VISIBLE);
+        }else{
+            btnMais.setVisibility(View.VISIBLE);
+            btnMenos.setVisibility(View.INVISIBLE);
+        }
 
         btnIngress.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,13 +61,57 @@ public class ActivityPerfil extends AppCompatActivity {
             }
         });
 
+        btnMais.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pontou = true;
+                valor = 1;
+                updatePontos(valor);
+                btnMais.setVisibility(View.INVISIBLE);
+                btnMenos.setVisibility(View.VISIBLE);
+            }
+        });
 
+        btnMenos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pontou = false;
+                valor = -1;
+                updatePontos(valor);
+                btnMais.setVisibility(View.VISIBLE);
+                btnMenos.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    private void updatePontos(int valor) {
+        FirebaseFirestore.getInstance().collection("users").document(uuid).update("pontos", pontos + valor)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        Log.d("teste", "onSuccess: Atualizado!");
+                    }
+                });
+    }
+
+    private void fetchPontos() {
+        FirebaseFirestore.getInstance().collection("users").document(uuid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                User user = documentSnapshot.toObject(User.class);
+                pontos = user.getPontos();
+                txtPontosUser.setText(pontos.toString());
+            }
+        });
     }
 
     private void startComponents() {
         imgPerfilPhoto = findViewById(R.id.imagePerfilPhoto);
         txtNameProfileUser = findViewById(R.id.textNameUserPerfil);
+        txtPontosUser = findViewById(R.id.textPontos);
         btnIngress = findViewById(R.id.btnIngress);
+        btnMais = findViewById(R.id.btnPontuarMais);
+        btnMenos = findViewById(R.id.btnPontuarMenos);
     }
 
     private void fetchAtributes() {
