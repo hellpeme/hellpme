@@ -34,7 +34,6 @@
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:text="TextView"
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="@+id/imgPerfilPhoto"
         app:layout_constraintEnd_toEndOf="parent"
@@ -48,29 +47,35 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="260dp"
+        android:layout_marginTop="252dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="Monitor:"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.146"
+        app:layout_constraintHorizontal_bias="0.089"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/btnIngress"
-        android:layout_width="50dp"
-        android:layout_height="wrap_content"
+        style="@style/Widget.AppCompat.Button.Small"
+        android:layout_width="112dp"
+        android:layout_height="46dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/circulo_completo"
+        android:background="@color/colorAccent"
+        android:text="Entrar"
+        android:textAppearance="@style/TextAppearance.AppCompat.Inverse"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3" />
 
     <TextView
         android:id="@+id/textView3"
@@ -81,13 +86,14 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
         android:text="Clique para ingressar na sala!"
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/btnIngress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rvAlunos" />
+        app:layout_constraintTop_toBottomOf="@+id/listAlunos" />
 
     <TextView
         android:id="@+id/textView4"
@@ -95,7 +101,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
         android:text="Alunos na monitoria"
@@ -107,26 +113,37 @@
     <ListView
         android:id="@+id/listAlunos"
         android:layout_width="0dp"
-        android:layout_height="60dp"
+        android:layout_height="72dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView3"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView4" />
+        app:layout_constraintTop_toBottomOf="@+id/textView4"
+        app:layout_constraintVertical_bias="0.068" />
 
     <TextView
         android:id="@+id/txtMonitor"
-        android:layout_width="190dp"
-        android:layout_height="31dp"
+        android:layout_width="224dp"
+        android:layout_height="28dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:text="TextView"
+        android:layout_marginBottom="8dp"
+        android:text="sdasdadsadsa"
+        android:textSize="18dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.117"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@+id/textView2"
-        app:layout_constraintTop_toBottomOf="@+id/textNameUserPerfil" />
+        app:layout_constraintTop_toBottomOf="@+id/textNameUserPerfil"
+        app:layout_constraintVertical_bias="0.75" />
 
 </android.support.constraint.ConstraintLayout>

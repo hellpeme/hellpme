@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.vincius.myapplication.Fragments.Contact;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -32,6 +33,7 @@ public class ActivityPerfil extends AppCompatActivity {
     private String username, uuid, photoUrl;
     private Button btnIngress, btnMais, btnMenos;
     private User user;
+    private Contact userFromContact;
     private int valor;
     private static boolean pontou;
     private Integer pontos;
@@ -43,6 +45,12 @@ public class ActivityPerfil extends AppCompatActivity {
         startComponents();
         fetchAtributes();
         fetchPontos();
+
+        Picasso.get()
+                .load(photoUrl)
+                .into(imgPerfilPhoto);
+
+        txtNameProfileUser.setText(username);
 
         if(pontou){
             btnMais.setVisibility(View.INVISIBLE);
@@ -56,7 +64,10 @@ public class ActivityPerfil extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityPerfil.this,ActivityMonitoria.class);
-                intent.putExtra("user",user);
+                if(user instanceof User)
+                intent.putExtra("user", user);
+                else
+                    intent.putExtra("user2", userFromContact);
                 startActivity(intent);
             }
         });
@@ -117,17 +128,17 @@ public class ActivityPerfil extends AppCompatActivity {
     private void fetchAtributes() {
 
         user = getIntent().getExtras().getParcelable("user");
+        if(user != null){
+            photoUrl = user.getProfileUrl();
+            username = user.getUsername();
+            uuid = user.getUid();
+        }else{
+            userFromContact = getIntent().getExtras().getParcelable("user2");
+            photoUrl = userFromContact.getPhotoUrl();
+            username = userFromContact.getUsername();
+            uuid = userFromContact.getUid();
+        }
 
-        photoUrl = user.getProfileUrl();
-        username = user.getUsername();
-        uuid = user.getUid();
-
-        //setando valores recebidos no imageview/textview
-        Picasso.get()
-                .load(photoUrl)
-                .into(imgPerfilPhoto);
-
-        txtNameProfileUser.setText(username);
 
     }
 }
