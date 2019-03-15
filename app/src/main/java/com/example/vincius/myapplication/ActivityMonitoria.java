@@ -1,6 +1,7 @@
 package com.example.vincius.myapplication;
 
 import android.app.ActionBar;
+import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -60,12 +62,15 @@ import retrofit2.Response;
 public class ActivityMonitoria extends AppCompatActivity {
 
     private GroupAdapter adapter;
+    private TextView txtnameUser;
+    private ImageView imageUser;
     private RecyclerView rv;
     private String username, uuid,photoUrl;
     private ImageButton btnChat;
     private EditText editChat;
     private User me, user;
     private Contact userFromContact;
+    private Toolbar toolbar;
 
     APIService apiService;
     boolean notify = false;
@@ -78,15 +83,17 @@ public class ActivityMonitoria extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_monitoria);
         startComponents();
-
-
+        setSupportActionBar(toolbar);
         set.clone(layout);
-
-        userFromContact = getIntent().getExtras().getParcelable("user2");
-
-        user = getIntent().getExtras().getParcelable("user");
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         fetchAtributes();
+
+        txtnameUser.setText(username);
+
+        Picasso.get()
+                .load(photoUrl)
+                .into(imageUser);
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +103,17 @@ public class ActivityMonitoria extends AppCompatActivity {
             }
         });
 
+        txtnameUser.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityMonitoria.this, ActivityPerfil.class);
+                if(user != null)
+                intent.putExtra("user", user);
+                else
+                    intent.putExtra("user2", userFromContact);
+                startActivity(intent);
+            }
+        });
 
         adapter = new GroupAdapter();
 
@@ -120,18 +138,23 @@ public class ActivityMonitoria extends AppCompatActivity {
     }
 
     private void startComponents() {
+        toolbar = findViewById(R.id.toolbar_monitoria);
         rv = findViewById(R.id.recyclerChat);
         btnChat =  findViewById(R.id.btnChat);
         editChat = findViewById(R.id.editChat);
         layout = findViewById(R.id.layout);
+        imageUser = findViewById(R.id.imageUserMonitoria);
+        txtnameUser = findViewById(R.id.textNameUserMonitoria);
     }
 
     private void fetchAtributes() {
+        user = getIntent().getExtras().getParcelable("user");
         if(user != null) {
             username = user.getUsername();
             uuid = user.getUid();
             photoUrl = user.getProfileUrl();
-        }else{
+        }else {
+            userFromContact = getIntent().getExtras().getParcelable("user2");
             username = userFromContact.getUsername();
             uuid = userFromContact.getUid();
             photoUrl = userFromContact.getPhotoUrl();

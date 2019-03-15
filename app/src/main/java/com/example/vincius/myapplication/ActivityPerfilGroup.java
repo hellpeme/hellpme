@@ -10,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.example.vincius.myapplication.Fragments.ContactGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
@@ -38,8 +40,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class ActivityPerfilGroup extends AppCompatActivity {
+
     private ImageView imgPerfilPhoto;
-    private TextView txtNameProfileUser,txtMonitor;
+    private TextView txtNameGroup,txtMonitor;
     private ListView listAlunos;
     private AdapterUsername adapter;
     private ArrayList<User> users;
@@ -47,9 +50,10 @@ public class ActivityPerfilGroup extends AppCompatActivity {
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
 
-    private String username, uuid, photoUrl,adminUserId;
+    private String nameGroup, uuid, photoUrl,adminUserId;
     private Button btnIngress;
     private Group group;
+    private ContactGroup groupFromContact;
     private HashMap<String,String> listUsersUpdate;
     private String fromId;
 
@@ -59,14 +63,16 @@ public class ActivityPerfilGroup extends AppCompatActivity {
         setContentView(R.layout.activity_perfil_group);
         startComponents();
 
-        group = getIntent().getExtras().getParcelable("group");
-
         fetchAtributes();
+        Picasso.get()
+                .load(photoUrl)
+                .into(imgPerfilPhoto);
 
-        fromId = FirebaseAuth.getInstance().getUid().toString();
+        txtNameGroup.setText(nameGroup);
+
+        fromId = FirebaseAuth.getInstance().getUid();
 
         seachListUsers();
-
 
         set.clone(layout);
         adapter = new AdapterUsername(ActivityPerfilGroup.this, users);
@@ -85,7 +91,12 @@ public class ActivityPerfilGroup extends AppCompatActivity {
                             .document(group.getUid())
                             .update("listIDUser", listUsersUpdate);
                     intent = new Intent(ActivityPerfilGroup.this, ActivityGrupo.class);
+                    if(group != null)
                     intent.putExtra("group",group);
+                    else{
+                        intent.putExtra("group2",groupFromContact);
+
+                    }
                     startActivity(intent);
                 }
 
@@ -98,17 +109,21 @@ public class ActivityPerfilGroup extends AppCompatActivity {
 
 
     private void fetchAtributes() {
-        photoUrl = group.getProfileUrl();
-        username = group.getGroupName();
-        uuid = group.getUid();
-        adminUserId = group.getAdminUser();
-        listUsersUpdate = group.getListIDUser();
-
-        Picasso.get()
-                .load(photoUrl)
-                .into(imgPerfilPhoto);
-
-        txtNameProfileUser.setText(username);
+        group = getIntent().getExtras().getParcelable("group");
+        if(group != null) {
+            photoUrl = group.getProfileUrl();
+            nameGroup = group.getGroupName();
+            uuid = group.getUid();
+            adminUserId = group.getAdminUser();
+            listUsersUpdate = group.getListIDUser();
+        }else{
+            groupFromContact = getIntent().getExtras().getParcelable("group2");
+            photoUrl = groupFromContact.getPhotoUrl();
+            nameGroup = groupFromContact.getUsername();
+            uuid = groupFromContact.getUid();
+            adminUserId = groupFromContact.getAdminUser();
+            listUsersUpdate = groupFromContact.getListIDUser();
+        }
     }
 
     private void seachListUsers() {
@@ -159,7 +174,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
         imgPerfilPhoto = findViewById(R.id.imagePerfilPhoto);
         txtMonitor = findViewById(R.id.txtMonitor);
         listAlunos = findViewById(R.id.listAlunos);
-        txtNameProfileUser = findViewById(R.id.textNameUserPerfil);
+        txtNameGroup = findViewById(R.id.textNameUserPerfil);
         btnIngress = findViewById(R.id.btnIngress);
         layout = findViewById(R.id.layoutPG);
     }

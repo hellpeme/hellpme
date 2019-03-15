@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.content.Intent;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -47,6 +49,8 @@ import java.util.Map;
 public class ActivityGrupo extends AppCompatActivity {
     private ImageButton btnChat;
     private EditText editChat;
+    private TextView txtNameGroup;
+    private ImageView imageGroup;
     private GroupAdapter adapter;
     private User me;
     private Group group;
@@ -56,22 +60,23 @@ public class ActivityGrupo extends AppCompatActivity {
     private HashMap<String,String> listIDUser;
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
-
+    private Toolbar toolbar;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grupo);
         RecyclerView rv = findViewById(R.id.recyclerChat);
-
-        btnChat =  findViewById(R.id.btnChat);
-        editChat = findViewById(R.id.editChat);
-        layout = findViewById(R.id.layout);
+        startComponents();
+        setSupportActionBar(toolbar);
         set.clone(layout);
-
-        groupFromContact = getIntent().getExtras().getParcelable("group2");
-        group = getIntent().getExtras().getParcelable("group");
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         fetchAtributes();
+
+        txtNameGroup.setText(groupName);
+        Picasso.get()
+                .load(profileUrl)
+                .into(imageGroup);
 
         btnChat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -79,7 +84,18 @@ public class ActivityGrupo extends AppCompatActivity {
                 sendMessage();
             }
         });
-        
+
+        txtNameGroup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityGrupo.this, ActivityPerfilGroup.class);
+                if(group != null)
+                    intent.putExtra("group", group);
+                else
+                    intent.putExtra("group2", groupFromContact);
+                startActivity(intent);
+            }
+        });
         adapter = new GroupAdapter();
         
         rv.setLayoutManager( new LinearLayoutManager(  this));
@@ -97,7 +113,17 @@ public class ActivityGrupo extends AppCompatActivity {
                 });
     }
 
+    private void startComponents() {
+        toolbar = findViewById(R.id.toolbar_grupo);
+        btnChat =  findViewById(R.id.btnChat);
+        editChat = findViewById(R.id.editChat);
+        layout = findViewById(R.id.layout);
+        txtNameGroup = findViewById(R.id.textNameGrupo);
+        imageGroup = findViewById(R.id.imageGrupo);
+    }
+
     private void fetchAtributes(){
+        group = getIntent().getExtras().getParcelable("group");
         if(group != null) {
             uuid = group.getUid();
             groupName = group.getGroupName();
@@ -107,6 +133,7 @@ public class ActivityGrupo extends AppCompatActivity {
             usersMax = group.getMaxUsers();
             listIDUser = group.getListIDUser();
         }else{
+            groupFromContact = getIntent().getExtras().getParcelable("group2");
             uuid = groupFromContact.getUid();
             groupName = groupFromContact.getUsername();
             profileUrl = groupFromContact.getPhotoUrl();

@@ -51,7 +51,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityLogin" />
         </activity>
-        <activity android:name=".ActivityMonitoria">
+        <activity android:name=".ActivityMonitoria"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
@@ -63,7 +64,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
-        <activity android:name=".ActivityGrupo">
+        <activity android:name=".ActivityGrupo"
+            android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
