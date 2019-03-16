@@ -1,5 +1,6 @@
 package com.example.vincius.myapplication;
 
+import android.app.Activity;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -49,7 +50,7 @@ public class ActivitySettings extends AppCompatActivity {
     private ListView listView;
     private CardView cardView;
     private String photoPerfil;
-    private String items[] = new String[]{"Mudar a senha", "Mudar o nome", "Apagar minha conta", "Sair"};
+    private String items[] = new String[]{"Mudar a senha", "Mudar o nome", "Apagar minha conta","Reportar Problema", "Sair"};
     final String uid = FirebaseAuth.getInstance().getUid();
 
 
@@ -110,6 +111,10 @@ public class ActivitySettings extends AppCompatActivity {
                         FirebaseAuth.getInstance().signOut();
                         break;
                     case 3:
+                        Intent intent3 = new Intent(ActivitySettings.this, ActivityReportarProblema.class);
+                        startActivity(intent3);
+                        break;
+                    case 4:
                         FirebaseAuth.getInstance().signOut();
                         Intent inten = new Intent(ActivitySettings.this, ActivityLogin.class);
                         startActivity(inten);
