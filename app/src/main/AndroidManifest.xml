@@ -101,8 +101,8 @@
                 android:label="Perfil"
                 android:value=".ActivitySettings" />
         </activity>
-        <activity android:name=".ActivityWatson" />
 
+        <activity android:name=".ActivityWatson" />
         <service
             android:name=".Notifications.MyFirebaseIdService"
             android:enabled="true"
@@ -119,12 +119,16 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
         <activity
             android:name=".ActivityChangeName"
             android:label="Digite seu nome"
             android:windowSoftInputMode="adjustResize"></activity>
-
+        <activity
+            android:name=".ActivityReportarProblema"
+            android:label="@string/title_activity_reportar_problema"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ActivityDenunciar"></activity>
+      
     </application>
 
 </manifest>
