@@ -102,7 +102,7 @@ public class ActivityPerfil extends AppCompatActivity {
                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                     Point point = documentSnapshot.toObject(Point.class);
                     if (point != null) {
-                        if (point.isSend() == true) {
+                        if (point.isSend()) {
                             btnMais.setVisibility(View.INVISIBLE);
                             btnMenos.setVisibility(View.VISIBLE);
                         } else {
@@ -151,7 +151,6 @@ public class ActivityPerfil extends AppCompatActivity {
     }
 
     private void fetchPontos() {
-
         FirebaseFirestore.getInstance().collection("users").document(uuid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {

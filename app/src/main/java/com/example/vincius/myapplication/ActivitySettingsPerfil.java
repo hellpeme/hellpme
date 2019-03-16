@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vincius.myapplication.Fragments.FragmentHome;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -43,7 +44,6 @@ public class ActivitySettingsPerfil extends AppCompatActivity {
     private Uri selectedUri;
     private String photoPerfil;
     final String uid = FirebaseAuth.getInstance().getUid();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,7 +81,7 @@ public class ActivitySettingsPerfil extends AppCompatActivity {
                         Picasso.get()
                                 .load(doc.getString("profileUrl"))
                                 .into(imageDoPerfil);
-
+                        FragmentHome.adapter.notifyDataSetChanged();
                         Log.i("teste", "ProfileUrl: "+ doc.getString("profileUrl"));
 
                     }

@@ -50,7 +50,7 @@ import java.util.Objects;
 
 public class FragmentHome extends Fragment {
 
-    private GroupAdapter adapter;
+    public static GroupAdapter adapter;
     View view;
     public FragmentHome() {
         // Required empty public constructor
