@@ -26,11 +26,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
         <activity
             android:name=".ActivityLogin"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".ActivityCadastro"
             android:label="Cadastro">
@@ -51,7 +49,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityLogin" />
         </activity>
-        <activity android:name=".ActivityMonitoria"
+        <activity
+            android:name=".ActivityMonitoria"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -64,7 +63,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivityFragmentsNavigation" />
         </activity>
-        <activity android:name=".ActivityGrupo"
+        <activity
+            android:name=".ActivityGrupo"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -94,7 +94,8 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ActivitySettings" />
         </activity>
-        <activity android:name=".ActivitySettingsPerfil"
+        <activity
+            android:name=".ActivitySettingsPerfil"
             android:label="Perfil">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
@@ -121,14 +122,23 @@
         </service>
         <activity
             android:name=".ActivityChangeName"
-            android:label="Digite seu nome"
-            android:windowSoftInputMode="adjustResize"></activity>
+            android:label="Digite seu nome"    
+            android:windowSoftInputMode="adjustResize" />
+      
+        <activity android:name=".ActivitySubjectSelect" />
+      
+        <activity
+            android:name=".ActivityListUserInGroup"
+            android:label="@string/title_activity_list_user_in_group"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+
         <activity
             android:name=".ActivityReportarProblema"
             android:label="@string/title_activity_reportar_problema"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ActivityDenunciar"></activity>
       
+
     </application>
 
 </manifest>

@@ -21,8 +21,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-
 import com.example.vincius.myapplication.Fragments.ContactGroup;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -31,10 +29,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.squareup.picasso.Picasso;
-import com.xwray.groupie.GroupAdapter;
-import com.xwray.groupie.Item;
-import com.xwray.groupie.ViewHolder;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -42,7 +36,7 @@ import java.util.List;
 public class ActivityPerfilGroup extends AppCompatActivity {
 
     private ImageView imgPerfilPhoto;
-    private TextView txtNameGroup,txtMonitor;
+    private TextView txtNameGroup,txtMonitor, alunos;
     private ListView listAlunos;
     private AdapterUsername adapter;
     private ArrayList<User> users;
@@ -103,6 +97,19 @@ public class ActivityPerfilGroup extends AppCompatActivity {
             }
         });
 
+
+        /*alunos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(ActivityPerfilGroup.this, ActivityListUserInGroup.class);
+                if(group!=null){
+                    intent.putExtra("group", group);
+                }else{
+                    intent.putExtra("group2", groupFromContact);
+                }
+                startActivity(intent);
+            }
+        });*/
 
     }
 
@@ -171,6 +178,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
 
 
     private void startComponents() {
+        alunos = findViewById(R.id.textView4);
         imgPerfilPhoto = findViewById(R.id.imagePerfilPhoto);
         txtMonitor = findViewById(R.id.txtMonitor);
         listAlunos = findViewById(R.id.listAlunos);
