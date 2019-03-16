@@ -15,6 +15,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -71,7 +72,7 @@ public class ActivityMonitoria extends AppCompatActivity {
     private User me, user;
     private Contact userFromContact;
     private Toolbar toolbar;
-
+    boolean dontsend = false;
     APIService apiService;
     boolean notify = false;
     ConstraintSet set = new ConstraintSet();
@@ -135,6 +136,26 @@ public class ActivityMonitoria extends AppCompatActivity {
 
 
         apiService = Client.getCliente("https://fcm.googleapis.com/").create(APIService.class);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        MenuItem denuncia = menu.findItem(R.id.denuncia);
+
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.action_options:
+                //Intent i= new Intent(this);
+                //startActivity(i);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
     private void startComponents() {
@@ -220,11 +241,13 @@ public class ActivityMonitoria extends AppCompatActivity {
         message.setTimestamp(timestamp);
         message.setText(text);
 
-
+        if(uuid == fromId){
+            boolean dontsend = true;
+        }
 
         //
 
-        if(!message.getText().isEmpty()){
+        if(!message.getText().isEmpty()) {
 
             FirebaseFirestore.getInstance().collection("/conversas")
                     .document(fromId)
@@ -233,7 +256,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
-                            Log.d( "Teste",documentReference.getId());
+                            Log.d("Teste", documentReference.getId());
 
                             rv.post(new Runnable() {
                                 @Override
@@ -264,7 +287,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                                 @Override
                                 public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
                                     User user = documentSnapshot.toObject(User.class);
-                                    if(notify){
+                                    if (notify) {
                                         sendNotification(toId, user.getUsername(), msg);
                                     }
                                     notify = false;
@@ -279,61 +302,62 @@ public class ActivityMonitoria extends AppCompatActivity {
                             Log.d("Teste", e.getMessage());
                         }
                     });
+            if (dontsend) {
+                FirebaseFirestore.getInstance().collection("/conversas")
+                        .document(toId)
+                        .collection(fromId)
+                        .add(message)
+                        .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                            @Override
+                            public void onSuccess(DocumentReference documentReference) {
+                                Log.d("Teste", documentReference.getId());
 
-            FirebaseFirestore.getInstance().collection("/conversas")
-                    .document(toId)
-                    .collection(fromId)
-                    .add(message)
-                    .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d( "Teste",documentReference.getId());
-
-                            rv.post(new Runnable() {
-                                @Override
-                                public void run() {
-                                    // Call smooth scroll
-                                    rv.smoothScrollToPosition(adapter.getItemCount() - 1);
-                                }
-                            });
-
-                            final Contact contact = new Contact();
-                            contact.setUid(fromId);
-                            contact.setUsername(me.getUsername());
-                            contact.setPhotoUrl(me.getProfileUrl());
-                            contact.setTimestamp(message.getTimestamp());
-                            contact.setLastMessage(message.getText());
-
-                            FirebaseFirestore.getInstance().collection("/last-messages")
-                                    .document(toId)
-                                    .collection("contacts")
-                                    .document(fromId)
-                                    .set(contact);
-
-                            final String msg = message.toString();
-
-                            DocumentReference reference = FirebaseFirestore.getInstance().collection("users").document(toId);
-                            reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
-                                @Override
-                                public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                                    User user = documentSnapshot.toObject(User.class);
-                                    if(notify){
-                                        sendNotification(username, user.getUsername(), msg);
+                                rv.post(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        // Call smooth scroll
+                                        rv.smoothScrollToPosition(adapter.getItemCount() - 1);
                                     }
-                                    notify = false;
-                                }
-                            });
+                                });
+
+                                final Contact contact = new Contact();
+                                contact.setUid(fromId);
+                                contact.setUsername(me.getUsername());
+                                contact.setPhotoUrl(me.getProfileUrl());
+                                contact.setTimestamp(message.getTimestamp());
+                                contact.setLastMessage(message.getText());
+
+                                FirebaseFirestore.getInstance().collection("/last-messages")
+                                        .document(toId)
+                                        .collection("contacts")
+                                        .document(fromId)
+                                        .set(contact);
+
+                                final String msg = message.toString();
+
+                                DocumentReference reference = FirebaseFirestore.getInstance().collection("users").document(toId);
+                                reference.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
+                                        User user = documentSnapshot.toObject(User.class);
+                                        if (notify) {
+                                            sendNotification(username, user.getUsername(), msg);
+                                        }
+                                        notify = false;
+                                    }
+                                });
 
 
-                        }
-                    })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.d("Teste", e.getMessage());
-                        }
-                    });
+                            }
+                        })
+                        .addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+                                Log.d("Teste", e.getMessage());
+                            }
+                        });
 
+            }
         }
 
 

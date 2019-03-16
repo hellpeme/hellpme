@@ -98,7 +98,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
         });
 
 
-        /*alunos.setOnClickListener(new View.OnClickListener() {
+        alunos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(ActivityPerfilGroup.this, ActivityListUserInGroup.class);
@@ -109,7 +109,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
                 }
                 startActivity(intent);
             }
-        });*/
+        });
 
     }
 
@@ -117,7 +117,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
 
     private void fetchAtributes() {
         group = getIntent().getExtras().getParcelable("group");
-        if(group != null) {
+        if(group instanceof  Group) {
             photoUrl = group.getProfileUrl();
             nameGroup = group.getGroupName();
             uuid = group.getUid();

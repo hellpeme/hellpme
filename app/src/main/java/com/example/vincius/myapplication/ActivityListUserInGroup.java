@@ -45,8 +45,9 @@ public class ActivityListUserInGroup extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list_user_in_group);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Usuarios do grupo");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         startComponents();
         fetchAtributes();
         seachListUsers();
@@ -126,7 +127,7 @@ public class ActivityListUserInGroup extends AppCompatActivity {
                 viewHolder = (AdapterUsername.ViewHolder) convertView.getTag();
             }
             Picasso.get()
-                    .load(photoUrl)
+                    .load(user.getProfileUrl())
                     .into(viewHolder.imageView);
             viewHolder.nome.setText(user.getUsername());
 

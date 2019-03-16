@@ -129,16 +129,17 @@
       
         <activity
             android:name=".ActivityListUserInGroup"
-            android:label="@string/title_activity_list_user_in_group"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:label="Usuarios do Grupo">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
 
         <activity
             android:name=".ActivityReportarProblema"
             android:label="@string/title_activity_reportar_problema"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ActivityDenunciar"></activity>
-      
-
     </application>
 
 </manifest>
