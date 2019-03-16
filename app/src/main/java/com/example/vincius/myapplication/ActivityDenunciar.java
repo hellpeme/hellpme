@@ -32,9 +32,18 @@ public class ActivityDenunciar extends AppCompatActivity {
 
         me = FirebaseAuth.getInstance().getCurrentUser();
 
+        btnGDenuncia.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                if(checkedId != R.id.denuncia){
+                    editDenuncia.setVisibility(View.VISIBLE);
+                }
+            }
+        });
+
+
         switch (btnGDenuncia.getCheckedRadioButtonId()){
             default:
-                    editDenuncia.setVisibility(View.VISIBLE);
                 btnEnviarDenuncia.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -65,7 +74,6 @@ public class ActivityDenunciar extends AppCompatActivity {
         switch (btnGDenuncia.getCheckedRadioButtonId()){
             case R.id.btnSpam:
                 MessageDenuncia dn = new MessageDenuncia();
-
                 User userDenunciado = getIntent().getExtras().getParcelable("user");
                 String denuncia = editDenuncia.getText().toString();
 
@@ -87,7 +95,6 @@ public class ActivityDenunciar extends AppCompatActivity {
 
             case R.id.btnDesrespeito:
                 MessageDenuncia dn2 = new MessageDenuncia();
-
                 User userDenunciado2 = getIntent().getExtras().getParcelable("user");
                 String denuncia2 = editDenuncia.getText().toString();
 

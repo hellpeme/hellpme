@@ -137,9 +137,14 @@
 
         <activity
             android:name=".ActivityReportarProblema"
-            android:label="@string/title_activity_reportar_problema"
+            android:label="Reportar problema"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ActivityDenunciar"></activity>
+        <activity android:name=".ActivityDenunciar"
+                    android:label="Denunciar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".ActivityFragmentsNavigation" />
+        </activity>
     </application>
 
 </manifest>

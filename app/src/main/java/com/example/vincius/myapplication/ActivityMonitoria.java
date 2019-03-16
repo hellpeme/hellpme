@@ -149,9 +149,10 @@ public class ActivityMonitoria extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()){
-            case R.id.action_options:
-                //Intent i= new Intent(this);
-                //startActivity(i);
+            case R.id.denuncia:
+                Intent i = new Intent(ActivityMonitoria.this, ActivityDenunciar.class);
+                i.putExtra("user", user);
+                startActivity(i);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
