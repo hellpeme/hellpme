@@ -59,7 +59,7 @@ public class ActivityPublico extends AppCompatActivity {
                 String name = editNome.getText().toString();
 
                 switch (rGruop.getCheckedRadioButtonId()){
-                    case R.id.rbtn15: criarGrupo(name,2); break  ;
+                    case R.id.rbtn15: criarGrupo(name,15); break  ;
                     case R.id.rbtn30: criarGrupo(name,30); break  ;
                     default:
                         Toast.makeText(ActivityPublico.this,

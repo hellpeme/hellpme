@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,16 +21,22 @@ import com.example.vincius.myapplication.ActivityMonitoria;
 import com.example.vincius.myapplication.ActivityPerfil;
 import com.example.vincius.myapplication.ActivityPrivado;
 import com.example.vincius.myapplication.ActivityPublico;
+import com.example.vincius.myapplication.ActivityWatson;
+import com.example.vincius.myapplication.Notifications.Token;
 import com.example.vincius.myapplication.R;
 import com.example.vincius.myapplication.User;
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentChange;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.iid.FirebaseInstanceId;
 import com.squareup.picasso.Picasso;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
@@ -51,8 +60,11 @@ public class FragmentHome extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         FloatingActionButton btnPrivate = view.findViewById(R.id.fabMonitoriaPrivada);
         FloatingActionButton btnPublico = view.findViewById(R.id.fabMonitoriaPublica);
+        FloatingActionButton watson = view.findViewById(R.id.fabWatson);
+
         RecyclerView rv = view.findViewById(R.id.lastMessages);
         adapter = new GroupAdapter();
 
@@ -78,7 +90,6 @@ public class FragmentHome extends Fragment {
                 startActivity(intent);
             }
         });
-
         fetchLastMessages();
         fetchLastMessagesGroup();
 
@@ -100,6 +111,16 @@ public class FragmentHome extends Fragment {
             }
         });
 
+        watson.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ActivityWatson.class);
+                startActivity(intent);
+            }
+        });
+
+
+        updateToken(FirebaseInstanceId.getInstance().getToken());
     }
 
     @Override
@@ -154,6 +175,13 @@ public class FragmentHome extends Fragment {
 
                     }
                 });
+    }
+
+    private void updateToken(String token){
+        CollectionReference reference = FirebaseFirestore.getInstance().collection("Tokens");
+        Token token1 = new Token(token);
+        reference.document(FirebaseAuth.getInstance().getUid())
+                .set(token1);
     }
 
     @Override
@@ -219,9 +247,6 @@ public class FragmentHome extends Fragment {
             Date d = new Date(contact.getTimestamp());
             String date = format.format(d);
 
-
-            if(contact.getPhotoUrl() == null)
-                contact.setPhotoUrl("https://firebasestorage.googleapis.com/v0/b/hellpme-5afb2.appspot.com/o/images%2Fno-avatar.jpg?alt=media&token=0971d28b-d919-47ac-b04b-857e7ed0639d");
 
             txtTimestamp.setText(date);
             username.setText(contact.getUsername());

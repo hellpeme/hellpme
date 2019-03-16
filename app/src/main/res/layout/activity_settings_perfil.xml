@@ -35,33 +35,54 @@
         app:layout_constraintTop_toTopOf="@+id/imgPerfilPhoto"
         app:srcCompat="@android:drawable/ic_menu_camera" />
 
-    <EditText
-        android:id="@+id/editTypName"
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardName"
         android:layout_width="0dp"
-        android:layout_height="53dp"
+        android:layout_height="39dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginRight="32dp"
-        android:ems="10"
-        android:hint="Nome"
-        android:inputType="textPersonName"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imgPerfilPhoto" />
-
-    <ImageButton
-        android:id="@+id/btnChangeName"
-        android:layout_width="32dp"
-        android:layout_height="34dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:background="@drawable/bordas_arredondadas_button"
-        app:layout_constraintBottom_toBottomOf="@+id/editTypName"
+        android:layout_marginBottom="8dp"
+        app:cardBackgroundColor="@color/transparent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/editTypName"
-        app:srcCompat="@android:drawable/ic_menu_rotate" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnChangePhoto"
+        app:layout_constraintVertical_bias="0.083">
+
+        <TextView
+            android:id="@+id/txtName"
+            android:layout_width="254dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="10dp"
+            android:gravity="start"
+            android:text="TextView"
+            app:layout_constraintBottom_toBottomOf="@+id/cardName"
+            app:layout_constraintEnd_toEndOf="@+id/editTypName"
+            app:layout_constraintHorizontal_bias="0.052"
+            app:layout_constraintStart_toStartOf="@+id/cardName" />
+
+    </android.support.v7.widget.CardView>
+
+    <ImageButton
+        android:id="@+id/btnPenName"
+        android:layout_width="38dp"
+        android:layout_height="38dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/transparent"
+        android:src="@drawable/ic_edit_black_24dp"
+        app:layout_constraintBottom_toBottomOf="@+id/cardName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/cardName"
+        app:layout_constraintTop_toTopOf="@+id/cardName"
+        app:layout_constraintVertical_bias="0.562" />
 
 </android.support.constraint.ConstraintLayout>
