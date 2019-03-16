@@ -130,9 +130,9 @@ public class FragmentPesquisa extends Fragment {
                     public void onClick(View v) {
                         btnDenuncia.setVisibility(View.INVISIBLE);
                         Intent intent;
-                        if (item instanceof UsersItem){
-                            intent= new Intent(getActivity(),ActivityDenunciar.class);
-                            UsersItem userItem = (UsersItem) item;
+                        if (item instanceof ActivityFragmentsNavigation.UsersItem){
+                            intent = new Intent(getActivity(),ActivityDenunciar.class);
+                            ActivityFragmentsNavigation.UsersItem userItem = (ActivityFragmentsNavigation.UsersItem) item;
                             intent.putExtra("user", userItem.user);
                             startActivity(intent);
                         }else{

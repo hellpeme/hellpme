@@ -88,11 +88,11 @@ public class ActivityDenunciar extends AppCompatActivity {
             case R.id.btnDesrespeito:
                 MessageDenuncia dn2 = new MessageDenuncia();
 
-                String userDenunciado2 = getIntent().getExtras().getParcelable("user");
+                User userDenunciado2 = getIntent().getExtras().getParcelable("user");
                 String denuncia2 = editDenuncia.getText().toString();
 
                 dn2.setMessagemDenuncia(denuncia2);
-                dn2.setUserDenunciado(userDenunciado2);
+                dn2.setUserDenunciado(userDenunciado2.getUid());
                 dn2.setUsername(me.getDisplayName());
                 FirebaseFirestore.getInstance().collection("denuncias")
                         .document("desrepeito")
@@ -110,11 +110,11 @@ public class ActivityDenunciar extends AppCompatActivity {
             case R.id.btnAssedio:
                 MessageDenuncia dn3 = new MessageDenuncia();
 
-                String userDenunciado3 = getIntent().getExtras().getParcelable("user");
+                User userDenunciado3 = getIntent().getExtras().getParcelable("user");
                 String denuncia3 = editDenuncia.getText().toString();
 
                 dn3.setMessagemDenuncia(denuncia3);
-                dn3.setUserDenunciado(userDenunciado3);
+                dn3.setUserDenunciado(userDenunciado3.getUid());
                 dn3.setUsername(me.getDisplayName());
                 FirebaseFirestore.getInstance().collection("denuncias")
                         .document("assedio")
@@ -131,11 +131,11 @@ public class ActivityDenunciar extends AppCompatActivity {
             case R.id.btnImproprio:
                 MessageDenuncia dn4 = new MessageDenuncia();
 
-                String userDenunciado4 = getIntent().getExtras().getParcelable("user");
+                User userDenunciado4 = getIntent().getExtras().getParcelable("user");
                 String denuncia4 = editDenuncia.getText().toString();
 
                 dn4.setMessagemDenuncia(denuncia4);
-                dn4.setUserDenunciado(userDenunciado4);
+                dn4.setUserDenunciado(userDenunciado4.getUid());
                 dn4.setUsername(me.getDisplayName());
                 FirebaseFirestore.getInstance().collection("denuncias")
                         .document("improprio")
@@ -152,11 +152,11 @@ public class ActivityDenunciar extends AppCompatActivity {
             case R.id.btnOutro:
                 MessageDenuncia dn5 = new MessageDenuncia();
 
-                String userDenunciado5 = getIntent().getExtras().getParcelable("user");
+                User userDenunciado5 = getIntent().getExtras().getParcelable("user");
                 String denuncia5 = editDenuncia.getText().toString();
 
                 dn5.setMessagemDenuncia(denuncia5);
-                dn5.setUserDenunciado(userDenunciado5);
+                dn5.setUserDenunciado(userDenunciado5.getUid());
                 dn5.setUsername(me.getDisplayName());
                 FirebaseFirestore.getInstance().collection("denuncias")
                         .document("Outro")
