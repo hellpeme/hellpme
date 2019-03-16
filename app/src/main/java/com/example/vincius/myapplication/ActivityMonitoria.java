@@ -72,7 +72,7 @@ public class ActivityMonitoria extends AppCompatActivity {
     private User me, user;
     private Contact userFromContact;
     private Toolbar toolbar;
-    boolean dontsend = false;
+    boolean canSend = true;
     APIService apiService;
     boolean notify = false;
     ConstraintSet set = new ConstraintSet();
@@ -243,7 +243,7 @@ public class ActivityMonitoria extends AppCompatActivity {
         message.setText(text);
 
         if(uuid == fromId){
-            boolean dontsend = true;
+            canSend = false;
         }
 
         //
@@ -303,7 +303,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                             Log.d("Teste", e.getMessage());
                         }
                     });
-            if (dontsend) {
+            if (canSend) {
                 FirebaseFirestore.getInstance().collection("/conversas")
                         .document(toId)
                         .collection(fromId)
