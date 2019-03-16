@@ -34,7 +34,7 @@ public class ActivityWatson extends AppCompatActivity {
     private EditText editChat;
     private User me;
     private Assistant assistant;
-
+    private RecyclerView rv;
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
 
@@ -44,12 +44,10 @@ public class ActivityWatson extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_watson);
 
-        RecyclerView rv = findViewById(R.id.recyclerChat);
-
+        rv = findViewById(R.id.recyclerChat);
         btnChat =  findViewById(R.id.btnChat);
         editChat = findViewById(R.id.editChat);
         layout = findViewById(R.id.layout);
-
         set.clone(layout);
 
         fetchAtributes();
@@ -147,6 +145,7 @@ public class ActivityWatson extends AppCompatActivity {
                             response.getOutput() != null &&
                             "text".equals(response.getOutput().getGeneric().get(0).getResponseType())
                             ){
+
                         outputMessage.setFromId("Watson");
                         outputMessage.setToId(fromId);
                         outputMessage.setPhotoUrl("null");
@@ -166,6 +165,7 @@ public class ActivityWatson extends AppCompatActivity {
                 }
             }
         });
+
 
         thread.start();
 

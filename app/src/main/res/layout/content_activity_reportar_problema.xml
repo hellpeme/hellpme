@@ -10,18 +10,20 @@
 
     <EditText
         android:id="@+id/txtReportarProblema"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="361dp"
+        android:layout_height="98dp"
         android:layout_marginStart="8dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="104dp"
+        android:layout_marginTop="56dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
+        android:background="@drawable/bordas_arredondadas_textview"
         android:ems="10"
-        android:hint="Digite seu problema aqui"
+        android:hint="Digite seu problema aqui..."
         android:inputType="textMultiLine"
+        android:paddingLeft="10dp"
+        android:paddingBottom="60dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.503"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,18 +31,16 @@
         android:id="@+id/btnReportarProblema"
         android:layout_width="220dp"
         android:layout_height="48dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
         android:background="@drawable/bordas_arredondadas_button"
         android:text="REPORTAR PROBLEMA"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/txtReportarProblema"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="@+id/txtReportarProblema"
         app:layout_constraintTop_toBottomOf="@+id/txtReportarProblema"
-        app:layout_constraintVertical_bias="0.06" />
+        app:layout_constraintVertical_bias="0.036" />
 
 </android.support.constraint.ConstraintLayout>

@@ -48,7 +48,7 @@
             android:id="@+id/fabWatson"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_group_black_24dp"
+            android:src="@drawable/watson_24dp"
             fab:fab_colorNormal="@color/colorPrimary"
             fab:fab_colorPressed="@color/colorPrimaryDark"
             fab:fab_colorRipple="@color/colorAccent"

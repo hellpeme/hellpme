@@ -116,7 +116,6 @@ public class ActivityDenunciar extends AppCompatActivity {
 
             case R.id.btnAssedio:
                 MessageDenuncia dn3 = new MessageDenuncia();
-
                 User userDenunciado3 = getIntent().getExtras().getParcelable("user");
                 String denuncia3 = editDenuncia.getText().toString();
 
@@ -137,7 +136,6 @@ public class ActivityDenunciar extends AppCompatActivity {
                 break;
             case R.id.btnImproprio:
                 MessageDenuncia dn4 = new MessageDenuncia();
-
                 User userDenunciado4 = getIntent().getExtras().getParcelable("user");
                 String denuncia4 = editDenuncia.getText().toString();
 
@@ -158,7 +156,6 @@ public class ActivityDenunciar extends AppCompatActivity {
                 break;
             case R.id.btnOutro:
                 MessageDenuncia dn5 = new MessageDenuncia();
-
                 User userDenunciado5 = getIntent().getExtras().getParcelable("user");
                 String denuncia5 = editDenuncia.getText().toString();
 

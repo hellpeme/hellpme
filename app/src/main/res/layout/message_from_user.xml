@@ -26,10 +26,9 @@
 
     <TextView
         android:id="@+id/timestamp"
-        android:textSize="11dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="textview"
+        android:textSize="11dp"
         app:layout_constraintBottom_toBottomOf="@+id/txtChat"
         app:layout_constraintEnd_toStartOf="@+id/txtChat" />
 </android.support.constraint.ConstraintLayout>

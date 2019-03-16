@@ -103,7 +103,13 @@
                 android:value=".ActivitySettings" />
         </activity>
 
-        <activity android:name=".ActivityWatson" />
+        <activity android:name=".ActivityWatson"
+            android:label="Watson">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:label="Perfil"
+            android:value=".ActivityFragmentsNavigation"/>
+        </activity>
         <service
             android:name=".Notifications.MyFirebaseIdService"
             android:enabled="true"
@@ -137,8 +143,12 @@
 
         <activity
             android:name=".ActivityReportarProblema"
-            android:label="Reportar problema"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="O que aconteceu?">
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".ActivityFragmentsNavigation" />
+        </activity>
+
         <activity android:name=".ActivityDenunciar"
                     android:label="Denunciar">
             <meta-data

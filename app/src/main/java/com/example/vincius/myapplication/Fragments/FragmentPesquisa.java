@@ -57,6 +57,7 @@ public class FragmentPesquisa extends Fragment {
     public static GroupAdapter adapter = new GroupAdapter();
     public  static  RecyclerView rv;
     public static Button btnDenuncia;
+    private boolean sair;
 
     View view;
 
@@ -89,7 +90,6 @@ public class FragmentPesquisa extends Fragment {
             public void onItemClick(@NonNull Item item, @NonNull View view) {
                 Intent intent;
 
-
                 if(item instanceof UsersItem) {
                     intent = new Intent(getActivity(), ActivityPerfil.class);
                     UsersItem userItem =(UsersItem) item;
@@ -119,6 +119,7 @@ public class FragmentPesquisa extends Fragment {
         adapter.setOnItemLongClickListener(new OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(@NonNull final Item item, @NonNull View view) {
+                sair = false;
                 btnDenuncia = view.findViewById(R.id.btnDenuncia);
                 btnDenuncia.setCursorVisible(true);
                 btnDenuncia.setEnabled(true);

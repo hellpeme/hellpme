@@ -37,9 +37,6 @@ public class ActivityReportarProblema extends AppCompatActivity {
                 ReportarProblema();
             }
         });
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-
 
     }
 

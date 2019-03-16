@@ -69,9 +69,6 @@ public class ActivityPerfilGroup extends AppCompatActivity {
         seachListUsers();
 
         set.clone(layout);
-        adapter = new AdapterUsername(ActivityPerfilGroup.this, users);
-        listAlunos.setAdapter(adapter);
-
         if(adminUserId.equals(fromId) || listUsersUpdate.containsValue(fromId)){
             btnIngress.setText("Entrar");
         }
@@ -86,10 +83,9 @@ public class ActivityPerfilGroup extends AppCompatActivity {
                             .update("listIDUser", listUsersUpdate);
                     intent = new Intent(ActivityPerfilGroup.this, ActivityGrupo.class);
                     if(group != null)
-                    intent.putExtra("group",group);
+                        intent.putExtra("group",group);
                     else{
                         intent.putExtra("group2",groupFromContact);
-
                     }
                     startActivity(intent);
                 }
@@ -117,7 +113,7 @@ public class ActivityPerfilGroup extends AppCompatActivity {
 
     private void fetchAtributes() {
         group = getIntent().getExtras().getParcelable("group");
-        if(group instanceof  Group) {
+        if(group != null) {
             photoUrl = group.getProfileUrl();
             nameGroup = group.getGroupName();
             uuid = group.getUid();
@@ -181,7 +177,6 @@ public class ActivityPerfilGroup extends AppCompatActivity {
         alunos = findViewById(R.id.textView4);
         imgPerfilPhoto = findViewById(R.id.imagePerfilPhoto);
         txtMonitor = findViewById(R.id.txtMonitor);
-        listAlunos = findViewById(R.id.listAlunos);
         txtNameGroup = findViewById(R.id.textNameUserPerfil);
         btnIngress = findViewById(R.id.btnIngress);
         layout = findViewById(R.id.layoutPG);
