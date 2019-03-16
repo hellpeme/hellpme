@@ -51,6 +51,7 @@ import java.util.Objects;
 public class FragmentHome extends Fragment {
 
     public static GroupAdapter adapter;
+    RecyclerView rv;
     View view;
     public FragmentHome() {
         // Required empty public constructor
@@ -65,7 +66,7 @@ public class FragmentHome extends Fragment {
         FloatingActionButton btnPublico = view.findViewById(R.id.fabMonitoriaPublica);
         FloatingActionButton watson = view.findViewById(R.id.fabWatson);
 
-        RecyclerView rv = view.findViewById(R.id.lastMessages);
+        rv = view.findViewById(R.id.lastMessages);
         adapter = new GroupAdapter();
 
         rv.setAdapter(adapter);
@@ -90,6 +91,7 @@ public class FragmentHome extends Fragment {
                 startActivity(intent);
             }
         });
+        adapter.clear();
         fetchLastMessages();
         fetchLastMessagesGroup();
 
@@ -144,7 +146,7 @@ public class FragmentHome extends Fragment {
                                 if(doc.getType() == DocumentChange.Type.ADDED){
                                     Contact contact = doc.getDocument().toObject(Contact.class);
                                     adapter.add(new ContactItem(contact));
-
+                                    adapter.notifyDataSetChanged();
                                 }
                             }
                         }
@@ -168,7 +170,7 @@ public class FragmentHome extends Fragment {
                                 if(doc.getType() == DocumentChange.Type.ADDED){
                                     ContactGroup contact = doc.getDocument().toObject(ContactGroup.class);
                                     adapter.add(new ContactGroupItem(contact));
-
+                                    adapter.notifyDataSetChanged();
                                 }
                             }
                         }

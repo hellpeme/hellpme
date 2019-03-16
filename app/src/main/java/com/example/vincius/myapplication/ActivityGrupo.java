@@ -58,6 +58,7 @@ public class ActivityGrupo extends AppCompatActivity {
     private String uuid,adminUser,groupName,profileUrl;
     private int currentNumUser, usersMax;
     private HashMap<String,String> listIDUser;
+    private RecyclerView rv;
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
     private Toolbar toolbar;
@@ -65,7 +66,7 @@ public class ActivityGrupo extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_grupo);
-        RecyclerView rv = findViewById(R.id.recyclerChat);
+        rv = findViewById(R.id.recyclerChat);
         startComponents();
         setSupportActionBar(toolbar);
         set.clone(layout);
@@ -198,6 +199,14 @@ public class ActivityGrupo extends AppCompatActivity {
                         @Override
                         public void onSuccess(DocumentReference documentReference) {
                             Log.d( "Teste",documentReference.getId());
+
+                            rv.post(new Runnable() {
+                                @Override
+                                public void run() {
+                                    // Call smooth scroll
+                                    rv.smoothScrollToPosition(adapter.getItemCount() - 1);
+                                }
+                            });
 
                             ContactGroup contact = new ContactGroup();
                             contact.setUid(toId);

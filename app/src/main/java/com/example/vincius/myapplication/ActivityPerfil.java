@@ -154,9 +154,11 @@ public class ActivityPerfil extends AppCompatActivity {
         FirebaseFirestore.getInstance().collection("users").document(uuid).addSnapshotListener(new EventListener<DocumentSnapshot>() {
             @Override
             public void onEvent(@Nullable DocumentSnapshot documentSnapshot, @Nullable FirebaseFirestoreException e) {
-                User user = documentSnapshot.toObject(User.class);
-                pontos = user.getPontos();
-                txtPontosUser.setText(pontos.toString());
+                if(documentSnapshot != null) {
+                    User user = documentSnapshot.toObject(User.class);
+                    pontos = user.getPontos();
+                    txtPontosUser.setText(pontos.toString());
+                }
             }
         });
     }
