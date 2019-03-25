@@ -1,8 +1,13 @@
 package com.example.vincius.myapplication;
 
 import android.app.ActionBar;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Parcelable;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.constraint.ConstraintLayout;
@@ -45,6 +50,9 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.squareup.picasso.Picasso;
 import com.xwray.groupie.GroupAdapter;
 import com.xwray.groupie.Item;
@@ -52,9 +60,11 @@ import com.xwray.groupie.ViewHolder;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -66,17 +76,19 @@ public class ActivityMonitoria extends AppCompatActivity {
     private TextView txtnameUser;
     private ImageView imageUser;
     private RecyclerView rv;
-    private String username, uuid,photoUrl;
-    private ImageButton btnChat;
+    private String username, uuid,photoUrl, image;
+    private ImageButton btnChat, btnSelectImage;
     private EditText editChat;
     private User me, user;
     private Contact userFromContact;
     private Toolbar toolbar;
+    private Uri selectedUri;
     boolean canSend = true;
     APIService apiService;
     boolean notify = false;
     ConstraintSet set = new ConstraintSet();
     ConstraintLayout layout;
+    final String fromId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
 
     @Override
@@ -101,6 +113,13 @@ public class ActivityMonitoria extends AppCompatActivity {
             public void onClick(View v) {
                 notify = true;
                 sendMessage();
+            }
+        });
+
+        btnSelectImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                selecionarFoto();
             }
         });
 
@@ -131,6 +150,7 @@ public class ActivityMonitoria extends AppCompatActivity {
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
                         me = documentSnapshot.toObject(User.class);
                         fetchMessage();
+                        fetchImageMessage();
                     }
                 });
 
@@ -163,6 +183,7 @@ public class ActivityMonitoria extends AppCompatActivity {
         toolbar = findViewById(R.id.toolbar_monitoria);
         rv = findViewById(R.id.recyclerChat);
         btnChat =  findViewById(R.id.btnChat);
+        btnSelectImage = findViewById(R.id.imageSelect);
         editChat = findViewById(R.id.editChat);
         layout = findViewById(R.id.layout);
         imageUser = findViewById(R.id.imageUserMonitoria);
@@ -180,6 +201,44 @@ public class ActivityMonitoria extends AppCompatActivity {
             username = userFromContact.getUsername();
             uuid = userFromContact.getUid();
             photoUrl = userFromContact.getPhotoUrl();
+        }
+    }
+
+    private void fetchImageMessage() {
+        if (me != null) {
+            String fromId = me.getUid();
+            String toId = uuid;
+
+            FirebaseFirestore.getInstance().collection("/imagens-conversas")
+                    .document(fromId)
+                    .collection(toId)
+                    .orderBy("timestamp", Query.Direction.ASCENDING)
+                    .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                        @Override
+                        public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                            List<DocumentChange> documentChanges = queryDocumentSnapshots.getDocumentChanges();
+
+                            if (documentChanges != null) {
+                                for (DocumentChange doc : documentChanges) {
+                                    if (doc.getType() == DocumentChange.Type.ADDED) {
+                                        ImageMessage message = doc.getDocument().toObject(ImageMessage.class);
+                                        adapter.add(new ImageMessageItem(message));
+
+                                        rv.post(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                // Call smooth scroll
+                                                rv.smoothScrollToPosition(adapter.getItemCount() - 1);
+                                            }
+                                        });
+
+                                        set.clear(R.id.txtChat, ConstraintSet.TOP);
+                                    }
+                                }
+                            }
+                        }
+                    });
+
         }
     }
 
@@ -225,16 +284,10 @@ public class ActivityMonitoria extends AppCompatActivity {
     private void sendMessage() {
 
         String text = editChat.getText().toString();
-
-
-        editChat.setText(null);
-
         final String toId = uuid;
 
+        editChat.setText(null);
         long timestamp = System.currentTimeMillis();
-
-        final String fromId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         final Message message = new Message();
 
         message.setFromId(fromId);
@@ -303,7 +356,6 @@ public class ActivityMonitoria extends AppCompatActivity {
                             Log.d("Teste", e.getMessage());
                         }
                     });
-            if (canSend) {
                 FirebaseFirestore.getInstance().collection("/conversas")
                         .document(toId)
                         .collection(fromId)
@@ -358,10 +410,39 @@ public class ActivityMonitoria extends AppCompatActivity {
                             }
                         });
 
-            }
         }
 
 
+    }
+
+    private void uploadImageFirestore(String image) {
+        final ImageMessage message = new ImageMessage();
+        final String toId = uuid;
+        long timestamp = System.currentTimeMillis();
+        message.setFromId(fromId);
+        message.setToId(toId);
+        message.setTimestamp(timestamp);
+        message.setPhotoUrl(image);
+
+        FirebaseFirestore.getInstance().collection("/imagens-conversas")
+                .document(toId)
+                .collection(fromId)
+                .add(message).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d("Teste", documentReference.getId());
+            }
+        });
+
+        FirebaseFirestore.getInstance().collection("/imagens-conversas")
+                .document(fromId)
+                .collection(toId)
+                .add(message).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+            @Override
+            public void onSuccess(DocumentReference documentReference) {
+                Log.d("Teste", documentReference.getId());
+            }
+        });
     }
 
     private void sendNotification(final String username, final String username1, final String msg) {
@@ -393,6 +474,50 @@ public class ActivityMonitoria extends AppCompatActivity {
         });
 
 
+    }
+
+    private void selecionarFoto() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("image/*");
+        startActivityForResult(intent, 0);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        ContentResolver resolver = this.getContentResolver();
+
+        if(resultCode == RESULT_OK) {
+            if (data.getData() != null) {
+                selectedUri = data.getData();
+                createImageInFirestore();
+            }else{
+                this.finish();
+            }
+            Bitmap bitmap = null;
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(resolver, selectedUri);
+            } catch (IOException e) {
+                this.finish();
+            }
+        }
+    }
+
+    private void createImageInFirestore() {
+        String filename = UUID.randomUUID().toString();
+        final StorageReference ref = FirebaseStorage.getInstance().getReference("/images/" + filename);
+        ref.putFile(selectedUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                ref.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        image = uri.toString();
+                        uploadImageFirestore(image);
+                    }
+                });
+            }
+        });
     }
 
     private class MessageItem extends Item<ViewHolder> {
@@ -428,6 +553,38 @@ public class ActivityMonitoria extends AppCompatActivity {
             return message.getFromId().equals(FirebaseAuth.getInstance().getUid())
                     ? R.layout.message_from_user
                     : R.layout.message_to_user;
+        }
+    }
+
+    private class ImageMessageItem extends Item<ViewHolder> {
+
+        private final ImageMessage message;
+
+        private ImageMessageItem(ImageMessage message) {
+            this.message = message;
+        }
+
+        @Override
+        public void bind(@NonNull ViewHolder viewHolder, int position) {
+            ImageView imageView = viewHolder.itemView.findViewById(R.id.imageView_message_item);
+            TextView timestamp = viewHolder.itemView.findViewById(R.id.timestamp);
+
+            SimpleDateFormat format = new SimpleDateFormat("HH:mm");
+            Date d = new Date(message.getTimestamp());
+            String date = format.format(d);
+            timestamp.setText(date);
+
+            Picasso.get()
+                    .load(message.getPhotoUrl())
+                    .into(imageView);
+
+        }
+
+        @Override
+        public int getLayout() {
+            return message.getFromId().equals(FirebaseAuth.getInstance().getUid())
+                    ? R.layout.message_image_from_user
+                    : R.layout.message_image_to_user;
         }
     }
 }
