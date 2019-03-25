@@ -144,7 +144,6 @@ public class ActivitySettingsPerfil extends AppCompatActivity {
                 this.finish();
             }
         }
-
     }
 
     private void changePhotoInFirestore() {

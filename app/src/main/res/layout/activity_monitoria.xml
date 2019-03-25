@@ -45,26 +45,12 @@
     </android.support.design.widget.AppBarLayout>
 
 
-    <ImageButton
-        android:id="@+id/btnChat"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginBottom="8dp"
-        android:background="@drawable/circulo_completo"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_send" />
-
     <EditText
         android:id="@+id/editChat"
         android:layout_width="0dp"
         android:layout_height="50dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginEnd="4dp"
-        android:layout_marginRight="4dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
         android:layout_marginBottom="4dp"
         android:background="@drawable/bordas_arredondadas_textview"
         android:ems="10"
@@ -73,8 +59,9 @@
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/btnChat"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/imageSelect" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerChat"
@@ -87,5 +74,29 @@
         app:layout_constraintTop_toBottomOf="@+id/appBarLayout">
 
     </android.support.v7.widget.RecyclerView>
+
+    <ImageButton
+        android:id="@+id/btnChat"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:background="@drawable/custom_ripple"
+        app:layout_constraintBottom_toBottomOf="@+id/editChat"
+        app:layout_constraintEnd_toEndOf="@+id/editChat"
+        app:layout_constraintTop_toTopOf="@+id/editChat"
+        app:srcCompat="@android:drawable/ic_menu_send" />
+
+    <ImageButton
+        android:id="@+id/imageSelect"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
+        android:background="@drawable/circulo_completo"
+        app:layout_constraintBottom_toBottomOf="@+id/editChat"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/editChat"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
 </android.support.constraint.ConstraintLayout>
